@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.petfinder.entity.AnimalType;
 import org.petfinder.entity.Petfinder;
@@ -19,7 +24,6 @@ import org.petfinder.entity.PetfinderShelterRecord;
 import org.petfinder.entity.PetfinderShelterRecordList;
 import org.petfinder.web.service.Method;
 import org.petfinder.web.service.QueryParam;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.client.RestTemplate;
@@ -37,23 +41,38 @@ import com.systemsinmotion.util.Strings;
 @Service("petFinderService")
 public class PetFinderConsumer {
 
+	private static PetfinderAuthData authData;
+
 	private static final Logger logger = Logger.getLogger(PetFinderConsumer.class);
-
-	@Value("${shelter.id}")
-	public String shelterId;
-
-	@Value("${shelter.api.key}")
-	private String shelterApiKey;
-
-	@Value("${shelter.api.secret}")
-	private String shelterApiSecret;
 
 	private static final String PETFINDER_HOST = "http://api.petfinder.com/";
 
-	private static PetfinderAuthData authData;
-
-//	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();
+
+	private String shelterApiKey;
+
+	private String shelterApiSecret;
+
+	public String shelterId;
+
+	/**
+	 * Method getAuthData is a private method to only get a new
+	 * PetfinderAuthData if the original one was never instantiated or has
+	 * expired or is about to expire.
+	 * 
+	 * @return PetfinderAuthData
+	 */
+	PetfinderAuthData authData() {
+		/*
+		 * subtracting some time to ensure token is still good by the time it is
+		 * used
+		 */
+		final BigInteger now = BigInteger.valueOf(GregorianCalendar.getInstance().getTimeInMillis() - 500);
+		if (authData == null || authData.getExpires().compareTo(now) < 1) {
+			authData = authToken();
+		}
+		return authData;
+	}
 
 	/**
 	 * Method authToken calls the PetFinder API to retrieve a new token. The
@@ -108,6 +127,13 @@ public class PetFinderConsumer {
 		return encodedUrl;
 	}
 
+	private Integer defaultCount(Integer count) {
+		if (count == null) {
+			count = 999;
+		}
+		return count;
+	}
+
 	private String encodeQueryParam(String url) {
 		try {
 			return UriUtils.encodeQueryParam(url, "UTF-8");
@@ -159,23 +185,34 @@ public class PetFinderConsumer {
 		return petfinder.getShelters();
 	}
 
-	/**
-	 * Method getAuthData is a private method to only get a new
-	 * PetfinderAuthData if the original one was never instantiated or has
-	 * expired or is about to expire.
-	 * 
-	 * @return PetfinderAuthData
-	 */
-	PetfinderAuthData authData() {
-		/*
-		 * subtracting some time to ensure token is still good by the time it is
-		 * used
-		 */
-		final BigInteger now = BigInteger.valueOf(GregorianCalendar.getInstance().getTimeInMillis() - 500);
-		if (authData == null || authData.getExpires().compareTo(now) < 1) {
-			authData = authToken();
+	@PostConstruct
+	public void init() {
+		Configuration config;
+		try {
+			config = new PropertiesConfiguration("shelter.properties");
+			this.shelterId = config.getString("shelter.id");
+			this.shelterApiKey = config.getString("shelter.api.key");
+			this.shelterApiSecret = config.getString("shelter.api.secret");
+		} catch (ConfigurationException e) {
+			logger.error("File shelter.properties must exist in the classpath.");
+			throw new RuntimeException(e);
 		}
-		return authData;
+	}
+
+	public PetfinderPetRecord randomPet(String animal, String breed, String size, Character sex, String location,
+			String shelterId, String output, String format) {
+		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		params.put(QueryParam.animal, animal);
+		params.put(QueryParam.breed, breed);
+		params.put(QueryParam.size, size);
+		params.put(QueryParam.sex, sex);
+		params.put(QueryParam.location, location);
+		params.put(QueryParam.shelterid, shelterId);
+		params.put(QueryParam.output, output);
+		params.put(QueryParam.format, format);
+
+		final Petfinder petfinder = executeQuery(Method.RANDOM_PET, params);
+		return petfinder.getPet();
 	}
 
 	public PetfinderPetRecord readPet(BigInteger animalId, String format) {
@@ -200,49 +237,6 @@ public class PetFinderConsumer {
 		return petfinder.getShelter();
 	}
 
-	public PetfinderPetRecord randomPet(String animal, String breed, String size, Character sex, String location,
-			String shelterId, String output, String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
-		params.put(QueryParam.animal, animal);
-		params.put(QueryParam.breed, breed);
-		params.put(QueryParam.size, size);
-		params.put(QueryParam.sex, sex);
-		params.put(QueryParam.location, location);
-		params.put(QueryParam.shelterid, shelterId);
-		params.put(QueryParam.output, output);
-		params.put(QueryParam.format, format);
-
-		final Petfinder petfinder = executeQuery(Method.RANDOM_PET, params);
-		return petfinder.getPet();
-	}
-
-	public List<PetfinderPetRecord> shelterPets(Character status, Integer offset, Integer count, String output,
-			String format) {
-
-		List<PetfinderPetRecord> pets = null;// cacheWrapper.get("pets");
-		if (pets == null) {
-			Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
-			params.put(QueryParam.id, shelterId);
-			params.put(QueryParam.status, status);
-			params.put(QueryParam.offset, offset);
-			params.put(QueryParam.count, defaultCount(count));
-			params.put(QueryParam.output, output);
-
-			final Petfinder petfinder = executeQuery(Method.SHELTER_PETS, params);
-			PetfinderPetRecordList petRecordList = petfinder.getPets();
-			pets = petRecordList.getPet();
-			// cacheWrapper.put("pets", pets);
-		}
-		return pets;
-	}
-
-	private Integer defaultCount(Integer count) {
-		if (count == null) {
-			count = 999;
-		}
-		return count;
-	}
-
 	public List<PetfinderPetRecord> shelterCats(Character status, Integer offset, Integer count, String output,
 			String format) {
 		final List<PetfinderPetRecord> pets = this.shelterPets(status, offset, count, output, format);
@@ -265,6 +259,26 @@ public class PetFinderConsumer {
 			}
 		}
 		return dogs;
+	}
+
+	public List<PetfinderPetRecord> shelterPets(Character status, Integer offset, Integer count, String output,
+			String format) {
+
+		List<PetfinderPetRecord> pets = null;// cacheWrapper.get("pets");
+		if (pets == null) {
+			Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+			params.put(QueryParam.id, shelterId);
+			params.put(QueryParam.status, status);
+			params.put(QueryParam.offset, offset);
+			params.put(QueryParam.count, defaultCount(count));
+			params.put(QueryParam.output, output);
+
+			final Petfinder petfinder = executeQuery(Method.SHELTER_PETS, params);
+			PetfinderPetRecordList petRecordList = petfinder.getPets();
+			pets = petRecordList.getPet();
+			// cacheWrapper.put("pets", pets);
+		}
+		return pets;
 	}
 
 	public PetfinderShelterRecordList shelterPetsByBreed(String animal, String breed, Integer offset, Integer count,

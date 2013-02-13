@@ -1,9 +1,17 @@
 package com.systemsinmotion.petrescue.entity;
 
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,72 +20,188 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 
 	private static final long serialVersionUID = -3413224203938895552L;
 
-	private Long id;
+	protected BigInteger petId;
 
-	private String shelterId;
+	protected BigInteger petFinderId;
 
-	private String shelterPetId;
+	protected String shelterId;
 
-	private String name;
+	protected String shelterPetId;
 
-	private Long petFinderId;
+	protected String name;
 
-	private AnimalType animalType;
+	protected AnimalType animal;
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue
-	public Long getId() {
-		return id;
+	protected List<String> breeds;
+
+	protected String mix;
+
+	protected AgeType age;
+
+	protected GenderType gender;
+
+	protected SizeType size;
+
+	protected List<OptionType> options;
+
+	protected String description;
+
+	protected Date petFinderLastUpdate;
+
+	protected StatusType status;
+
+	protected List<Photo> photos;
+
+	protected ContactType contact;
+
+	@Column(name = "age_type", length = 10)
+	public AgeType getAge() {
+		return this.age;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Column(name = "animal_type", length = 20)
+	public AnimalType getAnimal() {
+		return this.animal;
 	}
 
-	@Column(name = "shelter_id", nullable = false, length = 20)
-	public String getShelterId() {
-		return shelterId;
+	@ElementCollection
+	@CollectionTable(name = "pet_breeds", joinColumns = @JoinColumn(name = "pet_id"))
+	@Column(name = "breed", length = 50)
+	public List<String> getBreeds() {
+		return this.breeds;
 	}
 
-	public void setShelterId(String shelterId) {
-		this.shelterId = shelterId;
+	@OneToOne(mappedBy = "pet_id")
+	public ContactType getContact() {
+		return this.contact;
 	}
 
-	@Column(name = "shelter_pet_id", length = 20)
-	public String getShelterPetId() {
-		return shelterPetId;
+	@Column(name = "description", length = 2500)
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setShelterPetId(String shelterPetId) {
-		this.shelterPetId = shelterPetId;
+	public GenderType getGender() {
+		return this.gender;
+	}
+
+	public String getMix() {
+		return this.mix;
 	}
 
 	@Column(name = "pet_name", nullable = false, length = 50)
 	public String getName() {
-		return name;
+		return this.name;
+	}
+
+	public List<OptionType> getOptions() {
+		return this.options;
+	}
+
+	@Column(name = "pet_finder_id")
+	public BigInteger getPetFinderId() {
+		return this.petFinderId;
+	}
+
+	public Date getPetFinderLastUpdate() {
+		return this.petFinderLastUpdate;
+	}
+
+	@Id
+	@Column(name = "pet_id")
+	@GeneratedValue
+	public BigInteger getPetId() {
+		return this.petId;
+	}
+
+	public List<Photo> getPhotos() {
+		return this.photos;
+	}
+
+	@Column(name = "shelter_id", nullable = false, length = 20)
+	public String getShelterId() {
+		return this.shelterId;
+	}
+
+	@Column(name = "shelter_pet_id", length = 20)
+	public String getShelterPetId() {
+		return this.shelterPetId;
+	}
+
+	public SizeType getSize() {
+		return this.size;
+	}
+
+	public StatusType getStatus() {
+		return this.status;
+	}
+
+	public void setAge(AgeType age) {
+		this.age = age;
+	}
+
+	public void setAnimal(AnimalType animal) {
+		this.animal = animal;
+	}
+
+	public void setBreeds(List<String> breeds) {
+		this.breeds = breeds;
+	}
+
+	public void setContact(ContactType contact) {
+		this.contact = contact;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setGender(GenderType gender) {
+		this.gender = gender;
+	}
+
+	public void setMix(String mix) {
+		this.mix = mix;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	@Column(name = "pet_finder_id")
-	public Long getPetFinderId() {
-		return petFinderId;
+	public void setOptions(List<OptionType> options) {
+		this.options = options;
 	}
 
-	public void setPetFinderId(Long petFinderId) {
+	public void setPetFinderId(BigInteger petFinderId) {
 		this.petFinderId = petFinderId;
 	}
 
-	@Column(name = "animal_type", nullable = false, columnDefinition = "")
-	public AnimalType getAnimalType() {
-		return animalType;
+	public void setPetFinderLastUpdate(Date petFinderLastUpdate) {
+		this.petFinderLastUpdate = petFinderLastUpdate;
 	}
 
-	public void setAnimalType(AnimalType animalType) {
-		this.animalType = animalType;
+	public void setPetId(BigInteger id) {
+		this.petId = id;
+	}
+
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos;
+	}
+
+	public void setShelterId(String shelterId) {
+		this.shelterId = shelterId;
+	}
+
+	public void setShelterPetId(String shelterPetId) {
+		this.shelterPetId = shelterPetId;
+	}
+
+	public void setSize(SizeType size) {
+		this.size = size;
+	}
+
+	public void setStatus(StatusType status) {
+		this.status = status;
 	}
 
 }

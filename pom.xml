@@ -1,54 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.systemsinmotion</groupId>
-	<artifactId>petrescue-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bonecp-version>0.7.1.RELEASE</bonecp-version>
-		<ehcache.version>2.6.0</ehcache.version>
-		<hibernate.version>4.1.7.Final</hibernate.version>
-		<jackson.version>1.9.12</jackson.version>
-		<jsp.api.version>2.2.1</jsp.api.version>
-		<jstl.api.version>1.2.1</jstl.api.version>
-		<junit.version>4.11</junit.version>
-		<mysql.connector.version>5.1.21</mysql.connector.version>
-		<restassured.version>1.6.2</restassured.version>
-		<servlet.api.version>3.0.1</servlet.api.version>
-		<slf4j.version>1.7.2</slf4j.version>
-		<spring.version>3.2.1.RELEASE</spring.version>
-		<spring.data.version>1.2.0.RELEASE</spring.data.version>
-		<taglib.version>1.1.2</taglib.version>
-		<tiles.version>2.2.2</tiles.version>
-	</properties>
+	<parent>
+		<groupId>com.systemsinmotion</groupId>
+		<artifactId>petrescue-parent</artifactId>
+		<version>0.5-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>petrescue-core</artifactId>
+	<!-- <version>0.1-SNAPSHOT</version> -->
+
+	<scm>
+		<url>https://github.com/SystemsInMotion/PetRescue-Core</url>
+		<developerConnection>https://github.com/SystemsInMotion/PetRescue-Core.git</developerConnection>
+	</scm>
 
 	<dependencies>
-		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring.data.version}</version>
-		</dependency>
 
 		<!-- PetRescue related projects -->
 		<dependency>
@@ -57,65 +25,6 @@
 			<version>1.0</version>
 		</dependency>
 
-		<!-- Data -->
-
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
-		</dependency>
-
-
-		<!-- Spring Web -->
-
-
-		<!-- JSON -->
-
-
-		<!-- Java Mail -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.3</version>
-		</dependency>
-
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.9</version>
-		</dependency>
-
-		<!-- Testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
 	</dependencies>
 
 </project>

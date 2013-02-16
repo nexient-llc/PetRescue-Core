@@ -31,4 +31,9 @@ public enum OptionType {
 		this.value = value;
 		this.description = description;
 	}
+
+	public String getValue() {
+		return this.value;
+	}
+
 }

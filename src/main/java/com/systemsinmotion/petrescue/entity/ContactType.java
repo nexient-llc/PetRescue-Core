@@ -25,20 +25,14 @@ public class ContactType {
 
 	private String email;
 
+	@Column(name = "address1", length = 50)
 	public String getAddress1() {
 		return this.address1;
 	}
 
+	@Column(name = "address2", length = 50)
 	public String getAddress2() {
 		return this.address2;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public String getFax() {
-		return this.fax;
 	}
 
 	@Id
@@ -48,18 +42,32 @@ public class ContactType {
 		return this.contactId;
 	}
 
+	@Column(name = "email", length = 100)
+	public String getEmail() {
+		return this.email;
+	}
+
+	@Column(name = "fax", length = 15)
+	public String getFax() {
+		return this.fax;
+	}
+
+	@Column(name = "name", length = 50)
 	public String getName() {
 		return this.name;
 	}
 
+	@Column(name = "phone", length = 15)
 	public String getPhone() {
 		return this.phone;
 	}
 
+	@Column(name = "state", length = 2)
 	public String getState() {
 		return this.state;
 	}
 
+	@Column(name = "zip_code", length = 10)
 	public String getZip() {
 		return this.zip;
 	}
@@ -72,16 +80,16 @@ public class ContactType {
 		this.address2 = address2;
 	}
 
+	public void setContactId(BigInteger id) {
+		this.contactId = id;
+	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
 	public void setFax(String fax) {
 		this.fax = fax;
-	}
-
-	public void setContactId(BigInteger id) {
-		this.contactId = id;
 	}
 
 	public void setName(String name) {

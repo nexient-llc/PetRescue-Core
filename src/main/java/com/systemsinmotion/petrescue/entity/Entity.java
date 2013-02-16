@@ -3,6 +3,8 @@ package com.systemsinmotion.petrescue.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+
 public class Entity implements Serializable {
 
 	private static final long serialVersionUID = 119126717292593188L;
@@ -15,32 +17,36 @@ public class Entity implements Serializable {
 
 	private String updator;
 
+	@Column(name = "created_timestamp")
 	public Date getCreatedTimestamp() {
-		return createdTimestamp;
+		return this.createdTimestamp;
+	}
+
+	@Column(name = "creator", length = 20)
+	public String getCreator() {
+		return this.creator;
+	}
+
+	@Column(name = "updated_timestamp")
+	public Date getUpdatedTimestamp() {
+		return this.updatedTimestamp;
+	}
+
+	@Column(name = "updator", length = 20)
+	public String getUpdator() {
+		return this.updator;
 	}
 
 	public void setCreatedTimestamp(Date createdTimestamp) {
 		this.createdTimestamp = createdTimestamp;
 	}
 
-	public String getCreator() {
-		return creator;
-	}
-
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 
-	public Date getUpdatedTimestamp() {
-		return updatedTimestamp;
-	}
-
 	public void setUpdatedTimestamp(Date updatedTimestamp) {
 		this.updatedTimestamp = updatedTimestamp;
-	}
-
-	public String getUpdator() {
-		return updator;
 	}
 
 	public void setUpdator(String updator) {

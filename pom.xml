@@ -9,7 +9,6 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>petrescue-core</artifactId>
-	<!-- <version>0.1-SNAPSHOT</version> -->
 
 	<scm>
 		<url>https://github.com/SystemsInMotion/PetRescue-Core</url>

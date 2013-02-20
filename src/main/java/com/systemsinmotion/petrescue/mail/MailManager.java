@@ -68,6 +68,30 @@ public class MailManager {
 		});
 	}
 
+	String getFrom() {
+		return this.from;
+	}
+
+	String getHost() {
+		return this.host;
+	}
+
+	String getPassword() {
+		return this.password;
+	}
+
+	String[] getRecipients() {
+		return this.recipients;
+	}
+
+	String getSubject() {
+		return this.subject;
+	}
+
+	String getUsername() {
+		return this.username;
+	}
+
 	@PostConstruct
 	public void init() {
 		Configuration config;
@@ -77,7 +101,7 @@ public class MailManager {
 			this.username = config.getString("shelter.email.username");
 			this.password = config.getString("shelter.email.password");
 			this.from = config.getString("shelter.email.from");
-			this.recipients = config.getString("shelter.email.recipients").split(",");
+			this.recipients = config.getString("shelter.email.recipients").split(";");
 			this.subject = config.getString("shelter.email.subject");
 		} catch (ConfigurationException e) {
 			logger.error("File shelter.properties must exist in the classpath.");
@@ -98,8 +122,33 @@ public class MailManager {
 		Transport.send(message);
 	}
 
+	void setFrom(String from) {
+		this.from = from;
+	}
+
+	void setHost(String host) {
+		this.host = host;
+	}
+
+	void setPassword(String password) {
+		this.password = password;
+	}
+
+	void setRecipients(String[] recipients) {
+		this.recipients = recipients;
+	}
+
+	void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	void setUsername(String username) {
+		this.username = username;
+	}
+
 	private String toJson(AdoptionApplication application) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(application);
 	}
+
 }

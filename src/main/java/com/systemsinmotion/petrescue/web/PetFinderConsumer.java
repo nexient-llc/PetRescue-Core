@@ -190,9 +190,9 @@ public class PetFinderConsumer {
 		Configuration config;
 		try {
 			config = new PropertiesConfiguration("shelter.properties");
-			this.shelterId = config.getString("shelter.id");
-			this.shelterApiKey = config.getString("shelter.api.key");
-			this.shelterApiSecret = config.getString("shelter.api.secret");
+			this.shelterId = config.getString("petfinder.shelter.id");
+			this.shelterApiKey = config.getString("petfinder.shelter.api.key");
+			this.shelterApiSecret = config.getString("petfinder.shelter.api.secret");
 		} catch (ConfigurationException e) {
 			logger.error("File shelter.properties must exist in the classpath.");
 			throw new RuntimeException(e);

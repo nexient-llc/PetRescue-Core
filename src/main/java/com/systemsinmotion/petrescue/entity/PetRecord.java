@@ -1,50 +1,50 @@
 package com.systemsinmotion.petrescue.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "pet_record")
-public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
+public class PetRecord extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = -3413224203938895552L;
 
-	protected Long id;
+	// private Long petFinderId;
 
-	// protected BigInteger petFinderId;
+	// private String shelterId;
 
-	// protected String shelterId;
+	// private String shelterPetId;
 
-	// protected String shelterPetId;
+	// @Column(name = "pet_name", length = 50)
+	// private String name;
 
-	protected String name;
+	// private AnimalType animal;
 
-	// protected AnimalType animal;
+	// private List<String> breeds;
 
-	// protected List<String> breeds;
+	// private String mix;
 
-	// protected String mix;
+	// private AgeType age;
 
-	// protected AgeType age;
+	// private GenderType gender;
 
-	protected GenderType gender;
+	// private SizeType size;
 
-	// protected SizeType size;
+	// private Set<OptionType> options;
 
-	// protected Set<OptionType> options;
+	// @Column(name = "description", length = 2500)
+	// private String description;
 
-	protected String description;
+	// private Date petFinderLastUpdate;
 
-	// protected Date petFinderLastUpdate;
+	// private StatusType status;
 
-	// protected StatusType status;
+	// @OneToMany(mappedBy = "pet")
+	// private Set<Photo> photos;
 
-	// protected List<Photo> photos;
-
-	// protected ContactType contact;
+	// private ContactType contact;
 
 	// @Column(name = "age_type", length = 10)
 	// @Enumerated(EnumType.STRING)
@@ -69,25 +69,19 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 	// return this.contact;
 	// }
 
-	@Column(name = "description", length = 2500)
-	public String getDescription() {
-		return this.description;
-	}
+	// public String getDescription() {
+	// return this.description;
+	// }
 
-	@Column(name = "gender", length = 1)
-	public GenderType getGender() {
-		return this.gender;
-	}
+	// @Column(name = "gender", length = 1)
+	// public GenderType getGender() {
+	// return this.gender;
+	// }
 
 	// @Column(name = "mix", length = 3)
 	// public String getMix() {
 	// return this.mix;
 	// }
-
-	@Column(name = "pet_name", length = 50)
-	public String getName() {
-		return this.name;
-	}
 
 	// @CollectionTable(name = "pet_options", joinColumns = @JoinColumn(name = "pet_id"))
 	// @Column(name = "option", length = 20)
@@ -97,7 +91,7 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 	// }
 
 	// @Column(name = "pet_finder_id")
-	// public BigInteger getPetFinderId() {
+	// public Long getPetFinderId() {
 	// return this.petFinderId;
 	// }
 
@@ -106,15 +100,11 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 	// return this.petFinderLastUpdate;
 	// }
 
-	@Id
-	@Column(name = "pet_id")
-	@GeneratedValue
-	public Long getId() {
-		return this.id;
-	}
+	// public String getName() {
+	// return this.name;
+	// }
 
-	// @OneToMany(mappedBy = "petId")
-	// public List<Photo> getPhotos() {
+	// public Set<Photo> getPhotos() {
 	// return this.photos;
 	// }
 
@@ -156,27 +146,23 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 	// this.contact = contact;
 	// }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	// public void setDescription(String description) {
+	// this.description = description;
+	// }
 
-	public void setGender(GenderType gender) {
-		this.gender = gender;
-	}
+	// public void setGender(GenderType gender) {
+	// this.gender = gender;
+	// }
 
 	// public void setMix(String mix) {
 	// this.mix = mix;
 	// }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	// public void setOptions(Set<OptionType> options) {
 	// this.options = options;
 	// }
 
-	// public void setPetFinderId(BigInteger petFinderId) {
+	// public void setPetFinderId(Long petFinderId) {
 	// this.petFinderId = petFinderId;
 	// }
 
@@ -184,11 +170,11 @@ public class PetRecord extends com.systemsinmotion.petrescue.entity.Entity {
 	// this.petFinderLastUpdate = petFinderLastUpdate;
 	// }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	// public void setName(String name) {
+	// this.name = name;
+	// }
 
-	// public void setPhotos(List<Photo> photos) {
+	// public void setPhotos(Set<Photo> photos) {
 	// this.photos = photos;
 	// }
 

@@ -1,30 +1,36 @@
 package com.systemsinmotion.petrescue.entity;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
-@Table(name = "pet_record")
 public class PetRecord extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = -3413224203938895552L;
 
-	// private Long petFinderId;
+	@Column(name = "description", length = 2500)
+	private String description;
 
-	// private String shelterId;
+	private String mix;
 
-	// private String shelterPetId;
+	@Column(length = 50)
+	private String name;
 
-	// @Column(name = "pet_name", length = 50)
-	// private String name;
+	private Long petFinderId;
+
+	private Date petFinderLastUpdate;
+
+	private String shelterId;
 
 	// private AnimalType animal;
 
 	// private List<String> breeds;
 
-	// private String mix;
+	private String shelterPetId;
 
 	// private AgeType age;
 
@@ -34,10 +40,13 @@ public class PetRecord extends AbstractPersistable<Long> {
 
 	// private Set<OptionType> options;
 
-	// @Column(name = "description", length = 2500)
-	// private String description;
+	public PetRecord() {
+		this(null);
+	}
 
-	// private Date petFinderLastUpdate;
+	public PetRecord(Long id) {
+		setId(id);
+	}
 
 	// private StatusType status;
 
@@ -100,9 +109,9 @@ public class PetRecord extends AbstractPersistable<Long> {
 	// return this.petFinderLastUpdate;
 	// }
 
-	// public String getName() {
-	// return this.name;
-	// }
+	public String getDescription() {
+		return this.description;
+	}
 
 	// public Set<Photo> getPhotos() {
 	// return this.photos;
@@ -170,9 +179,57 @@ public class PetRecord extends AbstractPersistable<Long> {
 	// this.petFinderLastUpdate = petFinderLastUpdate;
 	// }
 
-	// public void setName(String name) {
-	// this.name = name;
-	// }
+	public String getMix() {
+		return this.mix;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public Long getPetFinderId() {
+		return this.petFinderId;
+	}
+
+	public Date getPetFinderLastUpdate() {
+		return this.petFinderLastUpdate;
+	}
+
+	public String getShelterId() {
+		return this.shelterId;
+	}
+
+	public String getShelterPetId() {
+		return this.shelterPetId;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setMix(String mix) {
+		this.mix = mix;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPetFinderId(Long petFinderId) {
+		this.petFinderId = petFinderId;
+	}
+
+	public void setPetFinderLastUpdate(Date petFinderLastUpdate) {
+		this.petFinderLastUpdate = petFinderLastUpdate;
+	}
+
+	public void setShelterId(String shelterId) {
+		this.shelterId = shelterId;
+	}
+
+	public void setShelterPetId(String shelterPetId) {
+		this.shelterPetId = shelterPetId;
+	}
 
 	// public void setPhotos(Set<Photo> photos) {
 	// this.photos = photos;

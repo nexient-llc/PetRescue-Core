@@ -17,6 +17,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,9 +39,15 @@ public class MailManager {
 	private String subject;
 	private String username;
 
-	private void addRecipients(MimeMessage message) throws MessagingException, AddressException {
-		for (String recipient : this.recipients) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+	private void addRecipients(MimeMessage message, AdoptionApplication application) throws MessagingException,
+			AddressException {
+		String email = application.getEmail();
+		if (StringUtils.hasText(email) && email.equals("keithskronek@gmail.com")) {
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress("keithskronek@gmail.com"));
+		} else {
+			for (String recipient : this.recipients) {
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			}
 		}
 	}
 
@@ -115,7 +122,7 @@ public class MailManager {
 
 		MimeMessage message = new MimeMessage(session);
 		addSubject(message, application);
-		addRecipients(message);
+		addRecipients(message, application);
 		message.setFrom(new InternetAddress(this.from));
 		message.setText(toJson(application));
 

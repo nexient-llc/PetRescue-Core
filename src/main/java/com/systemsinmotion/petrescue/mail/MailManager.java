@@ -117,6 +117,8 @@ public class MailManager {
 	}
 
 	public void send(AdoptionApplication application) throws MessagingException {
+		logger.debug("Received application to be emailed.");
+		
 		Properties props = createMailProperties();
 		Session session = createSession(props);
 

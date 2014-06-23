@@ -4,10 +4,11 @@
 	<parent>
 		<groupId>com.systemsinmotion</groupId>
 		<artifactId>petrescue-parent</artifactId>
-		<version>0.5-SNAPSHOT</version>
+		<version>0.6-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
+
 	<artifactId>petrescue-core</artifactId>
 
 	<scm>
@@ -21,7 +22,7 @@
 		<dependency>
 			<groupId>org.petfinder</groupId>
 			<artifactId>petfinder-api</artifactId>
-			<version>1.0</version>
+			<version>0.9</version>
 		</dependency>
 
 	</dependencies>

@@ -1,2 +1,6 @@
-/target
-/.settings
+*.iml
+.classpath
+.idea/
+.project
+.settings/
+target/

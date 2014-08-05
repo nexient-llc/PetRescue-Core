@@ -64,13 +64,15 @@ public class PetFinderConsumerTest {
 		assertTrue(breedList.getAnimal().equals(ANIMAL_DOG));
 	}
 
+	
 	// @Ignore
 	@Test
 	public void buildQuery() {
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.animal, ANIMAL_CAT);
 		params.put(QueryParam.breed, BREED_DOMESTIC_SHORT_HAIR);
-		final String token = this.petFinderService.authData().getToken();
+		// Token is no longer supported by petFinder  
+		final String token = "";//this.petFinderService.authData().getToken();
 		final String query = this.petFinderService.buildQuery(token, params,
 				true);
 		assertTrue(query.contains("&animal=cat"));
@@ -115,12 +117,13 @@ public class PetFinderConsumerTest {
 		BigInteger id = randomPet.getId();
 		assertNotNull(id);
 		assertEquals(AnimalType.CAT, randomPet.getAnimal());
-		assertEquals(PetGenderType.M, randomPet.getSex());
+		// Random pet does not accept gender causes test to fail
+		//assertEquals(PetGenderType.M, randomPet.getSex());
 
 		final PetfinderPetRecord pet = this.petFinderService.readPet(
 				id, null);
 		assertNotNull(pet);
-//		assertEquals(id, pet.getId());
+		assertEquals(id, pet.getId());
 	}
 
 	// @Ignore

@@ -47,7 +47,7 @@ public class PetFinderConsumer {
 
 	private static final String ANIMAL_TYPE_CAT = "cat";
 
-	private static PetfinderAuthData authData;
+	//private static PetfinderAuthData authData;
 
 	private static final Logger logger = Logger
 			.getLogger(PetFinderConsumer.class);
@@ -72,18 +72,19 @@ public class PetFinderConsumer {
 	 * 
 	 * @return PetfinderAuthData
 	 */
-	PetfinderAuthData authData() {
-		/*
-		 * subtracting some time to ensure token is still good by the time it is
-		 * used
-		 */
-		final BigInteger now = BigInteger.valueOf(GregorianCalendar
-				.getInstance().getTimeInMillis() - 500);
-		if (authData == null || authData.getExpires().compareTo(now) < 1) {
-			authData = authToken();
-		}
-		return authData;
-	}
+	// Disabled until petfinder enables authToken support
+//	PetfinderAuthData authData() {
+//		/*
+//		 * subtracting some time to ensure token is still good by the time it is
+//		 * used
+//		 */
+//		final BigInteger now = BigInteger.valueOf(GregorianCalendar
+//				.getInstance().getTimeInMillis() - 500);
+//		if (authData == null || authData.getExpires().compareTo(now) < 1) {
+//			//authData = authToken();
+//		}
+//		return authData;
+//	}
 
 	/**
 	 * Method authToken calls the PetFinder API to retrieve a new token. The
@@ -91,17 +92,18 @@ public class PetFinderConsumer {
 	 * 
 	 * @return PetfinderAuthData
 	 */
-	public PetfinderAuthData authToken() {
-		String queryAuthToken = "key=" + this.shelterApiKey;
-		final String sig = signatureParam(queryAuthToken);
-		final String url = Strings.concat(PETFINDER_HOST,
-				Method.AUTH_TOKEN.value, queryAuthToken, sig);
-		final Petfinder petfinder = this.restTemplate.getForObject(url,
-				Petfinder.class);
-		final PetfinderAuthData auth = petfinder.getAuth();
-		logger.debug("authToken: " + auth.getToken());
-		return auth;
-	}
+	//This is removed because petfinder api no longer accepts authTokens 
+//	public PetfinderAuthData authToken() {
+//		String queryAuthToken = "key=" + this.shelterApiKey;
+//		final String sig = signatureParam(queryAuthToken);
+//		final String url = Strings.concat(PETFINDER_HOST,
+//				Method.AUTH_TOKEN.value, queryAuthToken, sig);
+//		final Petfinder petfinder = this.restTemplate.getForObject(url,
+//				Petfinder.class);
+//		final PetfinderAuthData auth = petfinder.getAuth();
+//		logger.debug("authToken: " + auth.getToken());
+//		return auth;
+//	}
 
 	/**
 	 * Method breedList.
@@ -125,7 +127,7 @@ public class PetFinderConsumer {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("key=").append(this.shelterApiKey);
-		sb.append("&token=").append(token);
+		//sb.append("&token=").append(token);
 		if (params != null && !params.isEmpty()) {
 			for (QueryParam key : params.keySet()) {
 				final String value = String.valueOf(params.get(key));
@@ -142,6 +144,7 @@ public class PetFinderConsumer {
 		return encodedUrl;
 	}
 
+	@SuppressWarnings("unused")
 	private Integer defaultCount(Integer count) {
 		if (count == null) {
 			count = DEFAULT_COUNT;
@@ -158,9 +161,11 @@ public class PetFinderConsumer {
 	}
 
 	private Petfinder executeQuery(Method method, Map<QueryParam, Object> params) {
-		final String token = authData().getToken();
-		final String query = buildQuery(token, params, false);
-		final String sig = signatureParam(buildQuery(token, params, true));
+	    // No longer needed until petfinder fixes authToken on their api 
+		//	final String token = authData().getToken();
+		final String query = buildQuery("", params, false);
+		// sig is not needed while authToken broken. 
+		final String sig = ""; //signatureParam(buildQuery("", params, true));
 		final String url = Strings.concat(PETFINDER_HOST, method.value, query,
 				sig);
 		logger.debug("executeQuery(): url: " + url);
@@ -399,19 +404,21 @@ public class PetFinderConsumer {
 	 *            String[]
 	 * @return String the generated MD5 hash as a hex string
 	 */
-	private String signatureParam(String query) {
-		logger.debug("generateSignature(): query parameter: " + query);
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.shelterApiSecret).append(query);
-		final String secretQuery = sb.toString();
-		logger.debug("generateSignature(): query to be encoded: " + secretQuery);
-
-		final String md5DigestAsHex = DigestUtils.md5DigestAsHex(secretQuery
-				.getBytes());
-		logger.debug("generateSignature(): md5: " + md5DigestAsHex);
-
-		return "&sig=" + md5DigestAsHex;
-	}
+     //
+	// Disabled until petfinder enables authToken
+//	private String signatureParam(String query) {
+//		logger.debug("generateSignature(): query parameter: " + query);
+//
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(this.shelterApiSecret).append(query);
+//		final String secretQuery = sb.toString();
+//		logger.debug("generateSignature(): query to be encoded: " + secretQuery);
+//
+//		final String md5DigestAsHex = DigestUtils.md5DigestAsHex(secretQuery
+//				.getBytes());
+//		logger.debug("generateSignature(): md5: " + md5DigestAsHex);
+//
+//		return "&sig=" + md5DigestAsHex;
+//	}
 
 }

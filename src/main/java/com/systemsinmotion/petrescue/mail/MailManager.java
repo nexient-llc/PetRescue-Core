@@ -25,7 +25,7 @@ import com.google.gson.GsonBuilder;
 import com.systemsinmotion.petrescue.web.bean.AdoptionApplication;
 
 @Component("emailManager")
-@PropertySource("classpath:/resources/shelter.properties")
+@PropertySource("classpath:shelter.properties")
 public class MailManager {
 	private static final Logger logger = Logger.getLogger(MailManager.class);
 
@@ -34,16 +34,22 @@ public class MailManager {
 	private static final String SUBJECT_FIRST_NAME = "[firstName]";
 	private static final String SUBJECT_LAST_NAME = "[lastName]";
 	private static final String SUBJECT_PET_NAME = "[petName]";
+
 	@Value("${shelter.email.from}")
 	private String from;
+
 	@Value("${shelter.email.host}")
 	private String host;
+
 	@Value("${shelter.email.password}")
 	private String password;
-	@Value("${shelter.email.recipients}")
+
+	@Value("${admin.email.recipients}")
 	private String[] recipients;
+
 	@Value("${shelter.email.subject}")
 	private String subject;
+
 	@Value("${shelter.email.username}")
 	private String username;
 

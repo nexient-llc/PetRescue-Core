@@ -41,7 +41,7 @@ import com.systemsinmotion.util.Strings;
  * @author kskronek
  */
 @Service("petFinderService")
-@PropertySource("classpath:/resources/shelter.properties")
+@PropertySource("classpath:/shelter.properties")
 public class PetFinderConsumer {
 
 	private static final Logger logger = Logger

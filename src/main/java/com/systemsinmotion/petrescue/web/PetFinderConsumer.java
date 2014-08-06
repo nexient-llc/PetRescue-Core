@@ -47,9 +47,6 @@ public class PetFinderConsumer {
 	private static final Logger logger = Logger
 			.getLogger(PetFinderConsumer.class);
 
-	private static final Logger logger = Logger
-			.getLogger(PetFinderConsumer.class);
-
 	private static final int DEFAULT_COUNT = 50;
 
 	private static final String ANIMAL_TYPE_DOG = "dog";
@@ -72,6 +69,7 @@ public class PetFinderConsumer {
 	public String shelterId;
 
 	private static List<String> catBreeds = null;
+
 	private static List<String> dogBreeds = null;
 
 	/**

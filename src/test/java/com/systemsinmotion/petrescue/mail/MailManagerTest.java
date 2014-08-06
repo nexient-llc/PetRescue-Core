@@ -18,7 +18,7 @@ public class MailManagerTest {
 
 	@Test
 	public void init() {
-		String[] recipients = this.mailManager.getRecipients();
+		String[] recipients = this.mailManager.getShelterRecipients();
 		assertNotNull(recipients);
 		assertEquals(3, recipients.length);
 	}

@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -35,8 +33,7 @@ import org.springframework.web.util.UriUtils;
 import com.systemsinmotion.util.Strings;
 
 /**
- * Class to consume PetFinder services. PetFinder API documentation can be found
- * at http://www.petfinder.com/developers/api-docs
+ * Class to consume PetFinder services. PetFinder API documentation can be found at http://www.petfinder.com/developers/api-docs
  * 
  * @author kskronek
  */
@@ -44,8 +41,7 @@ import com.systemsinmotion.util.Strings;
 @PropertySource("classpath:/shelter.properties")
 public class PetFinderConsumer {
 
-	private static final Logger logger = Logger
-			.getLogger(PetFinderConsumer.class);
+	private static final Logger logger = Logger.getLogger(PetFinderConsumer.class);
 
 	private static final int DEFAULT_COUNT = 50;
 
@@ -73,21 +69,17 @@ public class PetFinderConsumer {
 	private static List<String> dogBreeds = null;
 
 	/**
-	 * @Deprecated Use of token is no longer supported by PetFinder API. Method
-	 *             getAuthData is a private method to only get a new
-	 *             PetfinderAuthData if the original one was never instantiated
-	 *             or has expired or is about to expire.
+	 * @Deprecated Use of token is no longer supported by PetFinder API. Method getAuthData is a private method to only get a new PetfinderAuthData if the
+	 *             original one was never instantiated or has expired or is about to expire.
 	 * 
 	 * @return PetfinderAuthData
 	 */
 	@Deprecated
 	PetfinderAuthData authData() {
 		/*
-		 * subtracting some time to ensure token is still good by the time it is
-		 * used
+		 * subtracting some time to ensure token is still good by the time it is used
 		 */
-		final BigInteger now = BigInteger.valueOf(GregorianCalendar
-				.getInstance().getTimeInMillis() - 500);
+		final BigInteger now = BigInteger.valueOf(GregorianCalendar.getInstance().getTimeInMillis() - 500);
 		if (authData == null || authData.getExpires().compareTo(now) < 1) {
 			authData = authToken();
 		}
@@ -95,9 +87,7 @@ public class PetFinderConsumer {
 	}
 
 	/**
-	 * @Deprecated Method authToken calls the PetFinder API to retrieve a new
-	 *             token. The token is contained within PetfinderAuthData and
-	 *             expires after an hour.
+	 * @Deprecated Method authToken calls the PetFinder API to retrieve a new token. The token is contained within PetfinderAuthData and expires after an hour.
 	 * 
 	 * @return PetfinderAuthData
 	 */
@@ -105,10 +95,8 @@ public class PetFinderConsumer {
 	public PetfinderAuthData authToken() {
 		String queryAuthToken = "key=" + this.shelterApiKey;
 		final String sig = signatureParam(queryAuthToken);
-		final String url = Strings.concat(PETFINDER_HOST,
-				Method.AUTH_TOKEN.value, queryAuthToken, sig);
-		final Petfinder petfinder = this.restTemplate.getForObject(url,
-				Petfinder.class);
+		final String url = Strings.concat(PETFINDER_HOST, Method.AUTH_TOKEN.value, queryAuthToken, sig);
+		final Petfinder petfinder = this.restTemplate.getForObject(url, Petfinder.class);
 		final PetfinderAuthData auth = petfinder.getAuth();
 		logger.debug("authToken: " + auth.getToken());
 		return auth;
@@ -130,8 +118,7 @@ public class PetFinderConsumer {
 		return petfinder.getBreeds();
 	}
 
-	String buildQuery(String token, Map<QueryParam, Object> params,
-			boolean doEncode) {
+	String buildQuery(String token, Map<QueryParam, Object> params, boolean doEncode) {
 		logger.debug("buildQuery()");
 
 		StringBuilder sb = new StringBuilder();
@@ -141,8 +128,7 @@ public class PetFinderConsumer {
 			for (QueryParam key : params.keySet()) {
 				final String value = String.valueOf(params.get(key));
 				if (params.get(key) != null && Strings.hasText(value)) {
-					final String param = doEncode ? encodeQueryParam(value)
-							: value;
+					final String param = doEncode ? encodeQueryParam(value) : value;
 					sb.append("&").append(key).append("=").append(param);
 				}
 			}
@@ -171,19 +157,17 @@ public class PetFinderConsumer {
 
 	private Petfinder executeQuery(Method method, Map<QueryParam, Object> params) {
 		// No longer needed until petfinder fixes authToken on their api
-		// final String token = authData().getToken();
-		final String query = buildQuery("", params, false);
+		final String token = ""; // authData().getToken();
+		final String query = buildQuery(token, params, false);
 		// sig is not needed while authToken broken.
 		final String sig = ""; // signatureParam(buildQuery("", params, true));
-		final String url = Strings.concat(PETFINDER_HOST, method.value, query,
-				sig);
+		final String url = Strings.concat(PETFINDER_HOST, method.value, query, sig);
 		logger.debug("executeQuery(): url: " + url);
 		return this.restTemplate.getForObject(url, Petfinder.class);
 	}
 
-	public PetfinderPetRecordList findPet(String animal, String breed,
-			String size, Character sex, String location, String age,
-			Integer offset, Integer count, String output, String format) {
+	public PetfinderPetRecordList findPet(String animal, String breed, String size, Character sex, String location, String age, Integer offset, Integer count,
+			String output, String format) {
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
@@ -203,8 +187,7 @@ public class PetFinderConsumer {
 		return pets;
 	}
 
-	public PetfinderShelterRecordList findShelter(String location, String name,
-			Integer offset, Integer count, String format) {
+	public PetfinderShelterRecordList findShelter(String location, String name, Integer offset, Integer count, String format) {
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.location, location);
 		params.put(QueryParam.name, name);
@@ -216,15 +199,14 @@ public class PetFinderConsumer {
 		return petfinder.getShelters();
 	}
 
-	@PostConstruct
+	// @PostConstruct
 	public void init() {
 		Configuration config;
 		try {
 			config = new PropertiesConfiguration("shelter.properties");
 			this.shelterId = config.getString("petfinder.shelter.id");
 			this.shelterApiKey = config.getString("petfinder.shelter.api.key");
-			this.shelterApiSecret = config
-					.getString("petfinder.shelter.api.secret");
+			this.shelterApiSecret = config.getString("petfinder.shelter.api.secret");
 		} catch (ConfigurationException e) {
 			logger.error("File shelter.properties must exist in the classpath.");
 			throw new RuntimeException(e);
@@ -234,8 +216,7 @@ public class PetFinderConsumer {
 	private boolean isCat(PetfinderPetRecord pet) {
 		boolean isCat = false;
 		if (catBreeds == null) {
-			PetfinderBreedList breedList = this
-					.breedList(ANIMAL_TYPE_CAT, null);
+			PetfinderBreedList breedList = this.breedList(ANIMAL_TYPE_CAT, null);
 			catBreeds = breedList.getBreed();
 		}
 		for (String breedName : pet.getBreeds().getBreed()) {
@@ -261,9 +242,7 @@ public class PetFinderConsumer {
 		return isDog;
 	}
 
-	public PetfinderPetRecord randomPet(String animal, String breed,
-			String size, Character sex, String location, String shelterId,
-			String output, String format) {
+	public PetfinderPetRecord randomPet(String animal, String breed, String size, Character sex, String location, String shelterId, String output, String format) {
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
@@ -316,10 +295,8 @@ public class PetFinderConsumer {
 		return shelterCats(null, null, null, null, null);
 	}
 
-	public List<PetfinderPetRecord> shelterCats(Character status,
-			Integer offset, Integer count, String output, String format) {
-		List<PetfinderPetRecord> pets = allShelterAdoptablePets(status, offset,
-				count, output, format);
+	public List<PetfinderPetRecord> shelterCats(Character status, Integer offset, Integer count, String output, String format) {
+		List<PetfinderPetRecord> pets = allShelterAdoptablePets(status, offset, count, output, format);
 
 		List<PetfinderPetRecord> cats = new ArrayList<PetfinderPetRecord>();
 		for (PetfinderPetRecord pet : pets) {
@@ -330,8 +307,7 @@ public class PetFinderConsumer {
 		return cats;
 	}
 
-	private List<PetfinderPetRecord> allShelterAdoptablePets(Character status,
-			Integer offset, Integer count, String output, String format) {
+	private List<PetfinderPetRecord> allShelterAdoptablePets(Character status, Integer offset, Integer count, String output, String format) {
 		List<PetfinderPetRecord> pets = null;// cacheWrapper.get("pets");
 		if (pets == null) {
 			pets = new ArrayList<PetfinderPetRecord>();
@@ -351,10 +327,8 @@ public class PetFinderConsumer {
 		return shelterDogs(null, null, null, null, null);
 	}
 
-	public List<PetfinderPetRecord> shelterDogs(Character status,
-			Integer offset, Integer count, String output, String format) {
-		final List<PetfinderPetRecord> pets = shelterPets(status, offset,
-				count, output, format);
+	public List<PetfinderPetRecord> shelterDogs(Character status, Integer offset, Integer count, String output, String format) {
+		final List<PetfinderPetRecord> pets = shelterPets(status, offset, count, output, format);
 		List<PetfinderPetRecord> dogs = new ArrayList<PetfinderPetRecord>();
 		for (PetfinderPetRecord pet : pets) {
 			if (pet.getAnimal().equals(AnimalType.DOG)) {
@@ -368,8 +342,7 @@ public class PetFinderConsumer {
 		return shelterPets(null, offset, null, null, null);
 	}
 
-	public List<PetfinderPetRecord> shelterPets(Character status,
-			Integer offset, Integer count, String output, String format) {
+	public List<PetfinderPetRecord> shelterPets(Character status, Integer offset, Integer count, String output, String format) {
 		List<PetfinderPetRecord> pets = Collections.emptyList();
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.id, this.shelterId);
@@ -388,8 +361,7 @@ public class PetFinderConsumer {
 		return pets;
 	}
 
-	public PetfinderShelterRecordList shelterPetsByBreed(String animal,
-			String breed, Integer offset, Integer count, String format) {
+	public PetfinderShelterRecordList shelterPetsByBreed(String animal, String breed, Integer offset, Integer count, String format) {
 		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
@@ -397,14 +369,12 @@ public class PetFinderConsumer {
 		params.put(QueryParam.count, count);
 		params.put(QueryParam.format, format);
 
-		final Petfinder petfinder = executeQuery(Method.SHELTER_PETS_BY_BREED,
-				params);
+		final Petfinder petfinder = executeQuery(Method.SHELTER_PETS_BY_BREED, params);
 		return petfinder.getShelters();
 	}
 
 	/**
-	 * @deprecated Method generateSignature generates a MD5 hash of the query
-	 *             string. The generated hash is appended to the query string as
+	 * @deprecated Method generateSignature generates a MD5 hash of the query string. The generated hash is appended to the query string as
 	 *             "&sig={generatedMD5Signature}".
 	 * 
 	 * @param query
@@ -422,8 +392,7 @@ public class PetFinderConsumer {
 		final String secretQuery = sb.toString();
 		logger.debug("generateSignature(): query to be encoded: " + secretQuery);
 
-		final String md5DigestAsHex = DigestUtils.md5DigestAsHex(secretQuery
-				.getBytes());
+		final String md5DigestAsHex = DigestUtils.md5DigestAsHex(secretQuery.getBytes());
 		logger.debug("generateSignature(): md5: " + md5DigestAsHex);
 
 		return "&sig=" + md5DigestAsHex;

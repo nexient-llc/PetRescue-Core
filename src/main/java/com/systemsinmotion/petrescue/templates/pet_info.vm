@@ -1,0 +1,33 @@
+		<div>
+				## Pet Description
+				<h3>Pet to Adopt</h3>
+				<div>
+				#if ($pet.media)
+					#foreach($photo in $pet.media.photos.photo)
+						#if ($photo.id == 1 && $photo.size == 'pn')
+							<div style="float: left">
+								<img id="petImage" src="${photo.value}" title="${pet.name}" height="100px" />
+							</div>
+						#end
+					#end
+
+				<div class="pet-details">
+					<h2>${pet.name}</h2>
+					<hr>
+					<div>${pet.size.description}&nbsp;&#8226;&nbsp;${pet.age.value}&nbsp;&#8226;&nbsp;${pet.sex.description}</div>
+					<hr>
+				</div>						
+					
+				#else
+				<div class="row grid2col">
+					<div class="column">
+						<label for="pet.name">What's the name of the pet you wish to adopt?</label> <input type="text" name="pet.name">
+					</div>
+					<div class="column">
+						<label for="pet.description">Brief description</label> <input type="text" name="pet.description">
+					</div>
+				</div>
+				
+				#end
+				</div>
+		</div>

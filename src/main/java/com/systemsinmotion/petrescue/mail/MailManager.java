@@ -2,6 +2,8 @@ package com.systemsinmotion.petrescue.mail;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -16,9 +18,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.apache.velocity.app.VelocityEngine;
+import org.petfinder.entity.PetfinderPetRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
@@ -66,6 +72,9 @@ public class MailManager {
 
 	@Value("${shelter.name.abv}")
 	private String shelterabv;
+	
+	@Autowired
+    private VelocityEngine velocityEngine;
 
 	private void addRecipients(MimeMessage message, AdoptionApplication application) throws MessagingException, AddressException {
 		String email = application.getEmail();
@@ -88,18 +97,18 @@ public class MailManager {
 
 	private Properties createMailProperties() {
 		Properties props = System.getProperties();
-		props.put(MAIL_SMTP_HOST, this.host);
-		props.put(MAIL_SMTP_AUTH, "true");
+//		props.put(MAIL_SMTP_HOST, this.host);
+//		props.put(MAIL_SMTP_AUTH, "true");
 
 		// Google Connection Info
-		// final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-		// props.setProperty("mail.smtps.host", "smtp.gmail.com");
-		// props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
-		// props.setProperty("mail.smtp.socketFactory.fallback", "false");
-		// props.setProperty("mail.smtp.port", "465");
-		// props.setProperty("mail.smtp.socketFactory.port", "465");
-		// props.setProperty("mail.smtps.auth", "true");
-		// props.put("mail.smtps.quitwait", "false");
+		 final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+		 props.setProperty("mail.smtps.host", "smtp.gmail.com");
+		 props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+		 props.setProperty("mail.smtp.socketFactory.fallback", "false");
+		 props.setProperty("mail.smtp.port", "465");
+		 props.setProperty("mail.smtp.socketFactory.port", "465");
+		 props.setProperty("mail.smtps.auth", "true");
+		 props.put("mail.smtps.quitwait", "false");
 
 		return props;
 	}
@@ -147,7 +156,7 @@ public class MailManager {
 		this.adminRecipients = this.adminRecipeintList.split(";");
 	}
 
-	public void send(AdoptionApplication application) throws MessagingException {
+	public void send(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
 		logger.debug("Received application to be emailed.");
 
 		Properties props = createMailProperties();
@@ -157,9 +166,35 @@ public class MailManager {
 		addSubject(message, application);
 		addRecipients(message, application);
 		message.setFrom(new InternetAddress(this.from));
-		message.setText(toJson(application));
+		message.setText(getText(application, pet));
 
-		Transport.send(message);
+		// Google connection method
+//		 SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
+//		 t.connect("smtp.gmail.com", username, password);
+//		 t.sendMessage(message, message.getAllRecipients());
+//		 t.close();
+
+//		Transport.send(message);
+	}
+	
+	public String testEmail(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+		return getText(application, pet);
+	}
+	
+	private String getText(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+		Map<String, Object> app = new HashMap<String, Object>();
+		app.put("application", application);
+		app.put("pet", pet);
+		String text = new String();
+		try {
+			text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/com/systemsinmotion/petrescue/templates/adopt.vm",  "UTF-8", app);
+		} catch (Exception e) {
+			// TODO: send email to admin
+			text = toJson(application);
+			e.printStackTrace();
+		}
+		
+		return text;
 	}
 
 	public void send_error(Exception e, String path) throws MessagingException {

@@ -1,0 +1,47 @@
+				## Application Info
+				<h3>Applicant Information</h3>
+<div class="module">
+	<div class="innards">
+		<div class="row">
+			<label>First name</label>
+			<input type="text" name="firstName" id="firstName" class="required" value="$application.firstName" disabled>
+		</div>
+		<div class="row">
+			<label>Last name<label>
+			<input type="text" name="lastName" id="lastName" class="required" value="$application.lastName" disabled>
+		</div>
+		<div class="row">
+			<label>Address 1</label>
+			<input type="text" name="address1" id="address1" class="required" value="$application.address1" disabled>
+		</div>
+		<div class="row">
+			<label>Address 2</label>
+			<input type="text" name="address2" id="address2" value="$application.address2" disabled>
+		</div>
+		<div class="row">
+			<label>Zip code</label>
+			<input type="text" name="zipCode" id="zipCode" class="zipcodeUS required" value="$application.zipCode" disabled>
+		</div>
+		<div class="row">
+			<label>City</label>
+			<input type="text" name="city" id="city" class="required" value="$application.city" disabled>
+		</div>
+		<div class="row">
+			<label>Home phone</label>
+			<input type="text" name="homePhone" id="homePhone" class="phoneUS" value="$application.homePhone" disabled>
+		</div>
+		<div class="row">
+			<label>Mobile phone</label>
+			<input type="text" name="mobilePhone" id="mobilePhone" class="phoneUS" value="$application.mobilePhone" disabled>
+		</div>
+		<div class="row">
+			<label>Email address</label>
+			<input type="text" name="email" id="email" class="email required" value="$application.email" disabled>
+		</div>
+		<div class="row">
+			<label>Confirm email</label>
+			<input type="text" name="emailConfirm" id="emailConfirm" class="email required" value="$application.emailConfirm" disabled>
+		</div>
+		
+	</div>
+</div>

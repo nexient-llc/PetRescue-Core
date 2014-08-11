@@ -1,0 +1,21 @@
+<html>
+<body>
+	<div class="module">
+	<div class="innards">
+
+		#parse ("/com/systemsinmotion/petrescue/templates/pet_info.vm")				
+		#parse ("/com/systemsinmotion/petrescue/templates/applicant_info.vm")				
+		#parse ("/com/systemsinmotion/petrescue/templates/household_info.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/current_pets_dynamic.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/previous_pets_dynamic.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/vet_history.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/living_conditions.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/reasons_for_adopting.vm")
+		#parse ("/com/systemsinmotion/petrescue/templates/disclaimer.vm")
+			
+		## Bottom of Email
+	</div>
+</div>
+
+</body>
+</html>

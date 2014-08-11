@@ -1,0 +1,149 @@
+<div class="innards">
+		
+		#if($pet.animal  == 'CAT')
+			<div class="row">
+				<label for="planToDeclaw" path="planToDeclaw"
+					cssClass="autoWidth" cssErrorClass="error">Pet declawed </label>
+				#if($application.planToDeclaw.equals("all") )
+						#set($planToDeclaw ='yes all four')
+			    #elseif($application.planToDeclaw.equals("front") )
+				    	#set($planToDeclaw = 'front')
+				#else
+				     #set($planToDeclaw = 'No' )
+				#end
+					<input type="text" value="$planToDeclaw" disabled=true/>
+			</div>
+		
+		#else ## Dog block
+		
+		#if($application.planToAttendObedienceClasses)
+			 #set($planToAttendObedienceClasses = "Yes")
+		#else
+			 #set($planToAttendObedienceClasses = "No")
+		#end ## end of planToAttendObedienceClasses if block
+		
+		<div class="row">
+			<label for="planToAttendObedienceClasses"
+			 path="planToAttendObedienceClasses" cssClass="autoWidth"
+			 cssErrorClass="error">Do you plan on attending obedience classes </label>
+			 <input type="text" value="$planToAttendObedienceClasses" />
+		</div>
+		
+		<div class="row ">
+			
+			 #if($application.fencedYard.equals("partial") )
+			 	#set($fenced = 'partial')
+			 #elseif($application.fencedYard.equals("completely") )  
+			 	#set($fenced = 'completely' )
+			 #else
+			    #set($fenced = 'No')
+			 #end     
+			
+			 <div class="minorElemBigger">
+				  <label>Fenced Yard </label> <input type="text" value="$fenced" disabled=true>
+			 </div>
+			
+			</div>
+			
+			#if($fenced == 'No' )
+			<div class="row" id="willingToInstallFenceDiv">
+				#if ($application.willingToInstallFence.equals("electric") )
+					#set($willingToInstallFence = 'electric')
+				#elseif ($application.willingToInstallFence.equals("physical") )
+					#set($willingToInstallFence = 'physical')
+				#else
+					#set($willingToInstallFence = 'no')
+				<div class="row" id="howContainPetDiv">
+					<label>Contained in your yard without a fence </label>
+				    <input type="text" value="$application.howContainPet" disabled=true>
+				</div>	
+				#end
+				
+				<div class="minorElem">
+					<label>Willing to install fence</label> <input type="text" value="$willingToInstallFence">
+				</div>
+			</div>
+			#end
+			## end of dog block
+		#end
+		<div class="row">
+			<label for="hoursAlone" path="hoursAlone" cssClass="autoWidth"
+				cssErrorClass="error">Approximately,hours left alone</label>
+			&nbsp;<input type="text" name="hoursAlone" value="$application.hoursAlone">
+		</div>
+		
+		<div class="row">
+			<label for="daytimeLocation" path="daytimeLocation"
+				cssClass="autoWidth" cssErrorClass="error">When not home ${pet.name} will be </label>
+			<br> <input type="text" name="daytimeLocation" value="$application.daytimeLocation" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label for="sleepLocation" path="sleepLocation"
+				cssClass="autoWidth" cssErrorClass="error">Where will ${pet.name} sleep </label>
+			<br> <input type="text" name="sleepLocation" value="$application.sleepLocation disabled=true>
+		</div>
+		
+		<div class="row">
+			<label for="destructiveBehavior" path="destructiveBehavior"
+				cssClass="autoWidth" cssErrorClass="error">How will you handle destructive behavior </form:label>
+			<br> <input type="text" name="destructiveBehavior" value="$application.destructiveBehavior" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label for="petLivingLocation" path="petLivingLocation"
+				cssClass="autoWidth" cssErrorClass="error">Living location </label>
+				#if($application.petLivingLocation.equals("inside") )
+				   #set($petLivingLocation = "inside" )
+				#elseif($application.petLivingLocation.equals("outside") )
+				    #set($petLivingLocation = "outside" )
+				#else
+				   #set($petLivingLocation = $application.petLivingLocation) 
+				#end  
+				<input type="text" value="$petLivingLocation" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label  cssClass="autoWidth" cssErrorClass="error">What will you do with ${pet.name} if you move?</label>
+			<br> <input type="text" value="$application.movingPlan" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label cssClass="autoWidth" cssErrorClass="error">For what reason would you consider giving up
+				${pet.name}?</label>
+			<br> <input type="text" value="$application.giveUpSituation" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label cssClass="autoWidth" cssErrorClass="error">Please describe your ideal pet?</label>
+			<br> <input type="text" value="idealPet" disabled=true>
+		</div>
+		
+		<div class="row">
+			<label cssClass="autoWidth" cssErrorClass="error">How long have you been looking for a pet?</label>
+			<br> <input type="text" value="$application.timeSearching" disabled=true>
+		</div>
+		
+		#if($application.haveAppliedElsewhere == true)
+			#set($haveAppliedElsewhere = "Yes")
+		#else
+			#set($haveAppliedElsewhere = "No")
+		#end
+		
+		<div class="minorElemSmall">
+			<label>Have you applied elsewhere? </label> <input type="text"
+			 value="$haveAppliedElsewhere" disabled=true>
+		</div>
+		
+		#if($haveAppliedElsewhere == "Yes")
+		<div id="whereAppliedDiv">
+			<div class="row">
+				<label cssClass="autoWidth" cssErrorClass="error">Where else have you applied?</label>
+				<br> <input type="text" value="$application.whereApplied" disabled=true>
+		</div>
+		
+		<div class="row">
+				<label cssClass="autoWidth" cssErrorClass="error">What is the reason for not adopting from above?</label>
+				<br> <input type="text" value="$application.failedAdoptionReason" disabled=true>
+		</div>
+		#end

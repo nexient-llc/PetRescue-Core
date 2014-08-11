@@ -41,7 +41,7 @@ public class PreviousPet implements Serializable {
 		return this.isIndoor;
 	}
 
-	public void setIndoor(Boolean isIndoor) {
+	public void setIsIndoor(Boolean isIndoor) {
 		this.isIndoor = isIndoor;
 	}
 }

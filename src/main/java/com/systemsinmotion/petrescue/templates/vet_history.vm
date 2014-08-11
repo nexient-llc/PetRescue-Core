@@ -1,0 +1,30 @@
+<h3>Vet History</h3>
+<div class="module">
+	<div class="innards">
+		<label class="autoWidth">Name(s)/phone number(s) of
+			Veterinarian(s) that you have used <i>(If we cannot verify the
+				vet history of animals currently in the home with the information
+				you are providing on this application, your application will be
+				denied).</i>
+		</label>
+		<hr>
+		
+		#macro ( vetmacro $name $phone)
+				<div class="row grid2col">
+			<div class="column">
+				<input type="text" name="$name" id="$name" value="$name"
+					class="text" disbaled/>
+			</div>
+			<div class="column">
+				<input type="text" name="$name" id="$phone" value="$phone"
+					class="phoneUS" disabled/>
+			</div>
+		</div>
+		#end
+		
+		#foreach ($vet in $application.vets)
+			#vetmacro($vet.name $vet.phone)
+		#end
+		
+	</div>
+</div>

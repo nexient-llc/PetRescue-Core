@@ -17,13 +17,13 @@
 			#labelfield($f[0] $f[1] $f[2])
 		#end
 		
-		#foreach ($age in $application.householdMemberAgesDiv)
+		#foreach ($age in $application.householdMemberAges)
 			#if ($ageList)
-				#set ($ageList = '$ageList, $age')
+				#set ($ageList = $ageList + ', ' + $age)
 			#else
-				#set ($ageList = '$age')
+				#set ($ageList = $age)
 			#end
-			#labelfield("List the ages of each household member:", "householdMemberAgesDiv", $ageList)
 		#end
+		#labelfield("List the ages of each household member:", "householdMemberAgesDiv", $ageList)
 	</div>
 </div>

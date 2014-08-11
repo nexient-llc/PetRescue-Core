@@ -1,0 +1,15 @@
+<h3>Disclaimer</h3>
+<div class="module">
+	<div class="innards">
+	
+			#set( $fieldset = [
+							["Are you aware that rescue animals may have unknown medical and behavior history?", "awareOfUnknownIssues", $application.awareOfUnknownIssues],
+							["Would you allow a GAAR volunteer to do a home visit before or upon adoption?", "agreedToHomeVisit", $application.agreedToHomeVisit]
+							])
+		
+		#foreach($f in $fieldset)
+			#labelfield($f[0] $f[1] $f[2])
+		#end
+	
+	</div>
+</div>

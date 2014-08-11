@@ -30,6 +30,7 @@ public class AdoptionApplication implements Serializable {
 	private Integer householdMemberCount;
 	private Integer previousPetCount;
 	private List<Integer> childAges;
+	private List<CurrentPet> currentPets;
 	private List<Integer> householdMemberAges;
 	private List<PreviousPet> previousPets;
 	private List<Vet> vets;
@@ -110,6 +111,10 @@ public class AdoptionApplication implements Serializable {
 
 	public Integer getCurrentPetCount() {
 		return this.currentPetCount;
+	}
+	
+	public List<CurrentPet> getCurrentPets() {
+		return this.currentPets;
 	}
 
 	public String getDaytimeLocation() {
@@ -310,6 +315,10 @@ public class AdoptionApplication implements Serializable {
 
 	public void setCurrentPetCount(Integer currentPetCount) {
 		this.currentPetCount = currentPetCount;
+	}
+	
+	public void setCurrentPets(List<CurrentPet> currentPets) {
+		this.currentPets = currentPets;
 	}
 
 	public void setDaytimeLocation(String daytimeLocation) {

@@ -1,8 +1,23 @@
+#macro (currentPet $currentpet)
+	<hr>
+	#labelfield("Name", "", $currentpet.name)
+	#labelfield("Type/Breed", "", $currentpet.breed)
+	#labelfield("How old is this pet?", "", $currentpet.age)
+	#labelfield("Does this pet sleep inside?", "", $currentpet.isIndoor)
+	#labelfield("Is this pet sterilized?", "", $currentpet.isSterilized)
+	#labelfield("Is this pet current on its vaccines?", "", $currentpet.hasVaccines)
+	#labelfield("Is this pet on heartworm preventative?", "", $currentpet.isHeartwormed)
+#end
+
 <h3>Current Pets</h3>
 <div class="module">
 	<div class="innards">
 
-## TODO
+		#labelfield("How many pets do you currently own? (Max 20)", "currentPetCount", $application.currentPetCount)
+		
+		#foreach ($currentpet in $application.currentPets)
+			#currentPet($currentpet)
+		#end
 
 	</div>
 </div>

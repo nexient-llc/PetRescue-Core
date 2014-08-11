@@ -72,24 +72,31 @@ public class MailManager {
 
 	@Value("${shelter.name.abv}")
 	private String shelterabv;
-	
-	@Autowired
-    private VelocityEngine velocityEngine;
 
-	private void addRecipients(MimeMessage message, AdoptionApplication application) throws MessagingException, AddressException {
+	@Autowired
+	private VelocityEngine velocityEngine;
+
+	private void addRecipients(MimeMessage message,
+			AdoptionApplication application) throws MessagingException,
+			AddressException {
 		String email = application.getEmail();
-		if (StringUtils.hasText(email) && email.equals("keithskronek@gmail.com")) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("keithskronek@gmail.com"));
+		if (StringUtils.hasText(email)
+				&& email.equals("keithskronek@gmail.com")) {
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					"keithskronek@gmail.com"));
 		} else {
 			for (String recipient : this.shelterRecipients) {
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+				message.addRecipient(Message.RecipientType.TO,
+						new InternetAddress(recipient));
 			}
 		}
 	}
 
-	private void addSubject(MimeMessage message, AdoptionApplication application) throws MessagingException {
+	private void addSubject(MimeMessage message, AdoptionApplication application)
+			throws MessagingException {
 		String subject = this.subject;
-		subject = subject.replace(SUBJECT_FIRST_NAME, application.getFirstName());
+		subject = subject.replace(SUBJECT_FIRST_NAME,
+				application.getFirstName());
 		subject = subject.replace(SUBJECT_LAST_NAME, application.getLastName());
 		subject = subject.replace(SUBJECT_PET_NAME, application.getPetName());
 		message.setSubject(subject);
@@ -97,29 +104,32 @@ public class MailManager {
 
 	private Properties createMailProperties() {
 		Properties props = System.getProperties();
-//		props.put(MAIL_SMTP_HOST, this.host);
-//		props.put(MAIL_SMTP_AUTH, "true");
+		// props.put(MAIL_SMTP_HOST, this.host);
+		// props.put(MAIL_SMTP_AUTH, "true");
 
 		// Google Connection Info
-		 final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-		 props.setProperty("mail.smtps.host", "smtp.gmail.com");
-		 props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
-		 props.setProperty("mail.smtp.socketFactory.fallback", "false");
-		 props.setProperty("mail.smtp.port", "465");
-		 props.setProperty("mail.smtp.socketFactory.port", "465");
-		 props.setProperty("mail.smtps.auth", "true");
-		 props.put("mail.smtps.quitwait", "false");
+		final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+		props.setProperty("mail.smtps.host", "smtp.gmail.com");
+		props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+		props.setProperty("mail.smtp.socketFactory.fallback", "false");
+		props.setProperty("mail.smtp.port", "465");
+		props.setProperty("mail.smtp.socketFactory.port", "465");
+		props.setProperty("mail.smtps.auth", "true");
+		props.put("mail.smtps.quitwait", "false");
 
 		return props;
 	}
 
 	private Session createSession(Properties props) {
-		return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(MailManager.this.username, MailManager.this.password);
-			}
-		});
+		return Session.getDefaultInstance(props,
+				new javax.mail.Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(
+								MailManager.this.username,
+								MailManager.this.password);
+					}
+				});
 	}
 
 	String getFrom() {
@@ -137,7 +147,7 @@ public class MailManager {
 	String[] getShelterRecipients() {
 		return this.shelterRecipients;
 	}
-	
+
 	String[] getAdminRecipients() {
 		return this.adminRecipients;
 	}
@@ -156,7 +166,8 @@ public class MailManager {
 		this.adminRecipients = this.adminRecipeintList.split(";");
 	}
 
-	public void send(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+	public void send(AdoptionApplication application, PetfinderPetRecord pet)
+			throws MessagingException {
 		logger.debug("Received application to be emailed.");
 
 		Properties props = createMailProperties();
@@ -169,31 +180,35 @@ public class MailManager {
 		message.setText(getText(application, pet));
 
 		// Google connection method
-//		 SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
-//		 t.connect("smtp.gmail.com", username, password);
-//		 t.sendMessage(message, message.getAllRecipients());
-//		 t.close();
+		// SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
+		// t.connect("smtp.gmail.com", username, password);
+		// t.sendMessage(message, message.getAllRecipients());
+		// t.close();
 
-//		Transport.send(message);
+		// Transport.send(message);
 	}
-	
-	public String testEmail(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+
+	public String testEmail(AdoptionApplication application,
+			PetfinderPetRecord pet) throws MessagingException {
 		return getText(application, pet);
 	}
-	
-	private String getText(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+
+	private String getText(AdoptionApplication application,
+			PetfinderPetRecord pet) throws MessagingException {
 		Map<String, Object> app = new HashMap<String, Object>();
 		app.put("application", application);
 		app.put("pet", pet);
 		String text = new String();
 		try {
-			text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/com/systemsinmotion/petrescue/templates/adopt.vm",  "UTF-8", app);
+			text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+					"/com/systemsinmotion/petrescue/templates/adopt.vm",
+					"UTF-8", app);
 		} catch (Exception e) {
 			// TODO: send email to admin
 			text = toJson(application);
 			e.printStackTrace();
 		}
-		
+
 		return text;
 	}
 
@@ -207,28 +222,31 @@ public class MailManager {
 		setErrorMessageFields(e, path, message);
 		try {
 			Transport.send(message);
-			
+
 			// Google connection method
 			// SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
 			// t.connect("smtp.gmail.com", username, password);
 			// t.sendMessage(message, message.getAllRecipients());
 			// t.close();
-			
+
 		} catch (Exception e2) {
 			// There's nothing more to report at this level
 			logger.debug("Error! Email Failed to get sended");
 		}
 	}
 
-	private void setErrorMessageFields(Exception e, String path, MimeMessage message) throws MessagingException, AddressException {
+	private void setErrorMessageFields(Exception e, String path,
+			MimeMessage message) throws MessagingException, AddressException {
 		Date time = Calendar.getInstance().getTime();
 		message.setSubject("[" + this.shelterabv + "] Error Report " + time);
 		for (String recipient : this.adminRecipients) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					recipient));
 		}
 		message.setFrom(new InternetAddress(this.from));
 
-		String text = "Error occured on " + this.sheltername + " website when calling " + path;
+		String text = "Error occured on " + this.sheltername
+				+ " website when calling " + path;
 		text += " at " + time;
 		text += "\n\n" + ExceptionUtils.getStackTrace(e);
 

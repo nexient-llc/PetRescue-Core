@@ -1,3 +1,10 @@
+#macro (labelfield $label $field $value)
+	<div class="row">
+		<label>$label</label>
+		<input type="text" name="$field" id="$field" class="required" value="$value" disabled>
+	</div>		
+#end
+
 <html>
 <body>
 	<div class="module">

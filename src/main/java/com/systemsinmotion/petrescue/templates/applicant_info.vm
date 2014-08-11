@@ -1,17 +1,8 @@
 ## Application Info
 <h3>Applicant Information</h3>
 
-
 <div class="module">
 	<div class="innards">
-	
-		#macro (appinfo $label $field $value)
-		<div class="row">
-			<label>$label</label>
-			<input type="text" name="$field" id="$field" class="required" value="$value" disabled>
-		</div>		
-		#end
-		
 		#set( $fieldset = [["First Name", "firstName", $application.firstName],
 							["Last Name", "lastName", $application.lastName],
 							["Address 1", "address1", $application.address1],
@@ -25,7 +16,7 @@
 							])
 		
 		#foreach($f in $fieldset)
-			#appinfo($f[0] $f[1] $f[2])
+			#labelfield($f[0] $f[1] $f[2])
 		#end
 		
 	</div>

@@ -13,51 +13,55 @@ import com.systemsinmotion.petrescue.web.bean.Vet;
 
 public class Entities {
 	
-	private static final String PETNAME = "PETNAME";
-	private static final String ANIMALTYPE = "ANIMALTYPE";
+	public static final String PETNAME = "Pet name";
+	public static final String ANIMALTYPE = "Animal type";
 
-	private static final Boolean AGREEDTOHOMEVISIT = true;
-	private static final Boolean AWAREOFUNKNOWNISSUES = true;
-	private static final Boolean FAMILYAWARE = true;
-	private static final Boolean HAVEAPPLIEDELSEWHERE = true;
-	private static final Boolean PETSALLOWED = true;
-	private static final Boolean PETSALLOWEDPROOF = true;
-	private static final Boolean PLANTOATTENDOBEDIENCECLASSES = true;
-	private static final Integer ADULTCOUNT = 2;
-	private static final Integer CHILDCOUNT = 3;
-	private static final Integer CURRENTPETCOUNT = 4;
-	private static final Integer HOURSALONE = 5;
-	private static final Integer HOUSEHOLDMEMBERCOUNT = 6;
-	private static final Integer PREVIOUSPETCOUNT = 7;
-	private static final String ADDRESS1 = "ADDRESS1";
-	private static final String ADDRESS2 = "ADDRESS2";
-	private static final String CARETAKER = "CARETAKER";
-	private static final String CITY = "CITY";
-	private static final String DAYTIMELOCATION = "DAYTIMELOCATION";
-	private static final String DESTRUCTIVEBEHAVIOR = "DESTRUCTIVEBEHAVIOR";
-	private static final String EMAIL = "EMAIL";
-	private static final String EMAILCONFIRM = "EMAILCONFIRM";
-	private static final String FAILEDADOPTIONREASON = "FAILEDADOPTIONREASON";
-	private static final String FAMILYNOTAWAREREASON = "FAMILYNOTAWAREREASON";
-	private static final String FENCEDYARD = "FENCEDYARD";
-	private static final String FIRSTNAME = "FIRSTNAME";
-	private static final String GIVEUPSITUATION = "GIVEUPSITUATION";
-	private static final String HOMEPHONE = "HOMEPHONE";
-	private static final String HOWCONTAINPET = "HOWCONTAINPET";
-	private static final String IDEALPET = "IDEALPET";
-	private static final String LASTNAME = "LASTNAME";
-	private static final String LIVINGSITUATION = "LIVINGSITUATION";
-	private static final String MOBILEPHONE = "MOBILEPHONE";
-	private static final String MONTHSLIVED = "MONTHSLIVED";
-	private static final String MOVINGPLAN = "MOVINGPLAN";
-	private static final String PETLIVINGLOCATION = "PETLIVINGLOCATION";
-	private static final String PLANTODECLAW = "PLANTODECLAW";
-	private static final String SLEEPLOCATION = "SLEEPLOCATION";
-	private static final String TIMESEARCHING = "TIMESEARCHING";
-	private static final String WHEREAPPLIED = "WHEREAPPLIED";
-	private static final String WILLINGTOINSTALLFENCE = "WILLINGTOINSTALLFENCE";
-	private static final String YEARSLIVED = "YEARSLIVED";
-	private static final String ZIPCODE = "ZIPCODE";
+	public static final Boolean AGREEDTOHOMEVISIT = true;
+	public static final Boolean AWAREOFUNKNOWNISSUES = true;
+	public static final Boolean FAMILYAWARE = true;
+	public static final Boolean HAVEAPPLIEDELSEWHERE = true;
+	public static final Boolean PETSALLOWED = true;
+	public static final Boolean PETSALLOWEDPROOF = true;
+	public static final Boolean PLANTOATTENDOBEDIENCECLASSES = true;
+	
+	public static final Integer ADULTCOUNT = 2;
+	public static final Integer CHILDCOUNT = 3;
+	public static final Integer CURRENTPETCOUNT = 4;
+	public static final Integer HOURSALONE = 5;
+	public static final Integer HOUSEHOLDMEMBERCOUNT = 6;
+	public static final Integer PREVIOUSPETCOUNT = 7;
+	
+	public static final String ADDRESS1 = "Address 1";
+	public static final String ADDRESS2 = "Address 2";
+	public static final String CARETAKER = "Caretaker";
+	public static final String CITY = "City";
+	public static final String DAYTIMELOCATION = "Day time location";
+	public static final String DESTRUCTIVEBEHAVIOR = "Destructive Behavior";
+	public static final String EMAIL = "Email";
+	public static final String EMAILCONFIRM = "Confirm Email";
+	public static final String FAILEDADOPTIONREASON = "Failed adoption reason";
+	public static final String FAMILYNOTAWAREREASON = "Family not aware reason";
+	public static final String FENCEDYARD = "Fenced Yard";
+	public static final String FIRSTNAME = "Firstname";
+	public static final String GIVEUPSITUATION = "Give up situation";
+	public static final String HOMEPHONE = "Home phone";
+	public static final String HOWCONTAINPET = "How contain pet";
+	public static final String IDEALPET = "Ideal pet";
+	public static final String LASTNAME = "lastname";
+	public static final String LIVINGSITUATION = "Living situation";
+	public static final String MOBILEPHONE = "mobile phone";
+	public static final String MONTHSLIVED = "months lived";
+	public static final String MOVINGPLAN = "moving plan";
+	public static final String PETLIVINGLOCATION = "pet living location";
+	public static final String PLANTODECLAW = "plan to declaw";
+	public static final String SLEEPLOCATION = "sleep location";
+	public static final String TIMESEARCHING = "time searching";
+	public static final String WHEREAPPLIED = "where applied";
+	public static final String WILLINGTOINSTALLFENCE = "willing to install fense";
+	public static final String YEARSLIVED = "years lived";
+	public static final String ZIPCODE = "zipcode";
+	
+	public static final List<String> WHYWANTPET = Arrays.asList("Reason one", "Reason two", "Reason three");
 
 
 	public static AdoptionApplication getApplication() {
@@ -69,24 +73,23 @@ public class Entities {
 		List<Integer> HOUSEHOLDMEMBERAGES;
 		List<PreviousPet> PREVIOUSPETS;
 		List<Vet> VETS;
-		List<String> WHYWANTPET;
 
 		PetfinderPetRecord pet = getPet();
 		application.setPetName(pet.getName());
 		application.setAnimalType(pet.getAnimal().value());
 		application.setBreeds(pet.getBreeds().getBreed());
 
-		application.setFirstName("Bob");
-		application.setLastName("Law");
-		application.setAddress1("1234 Unknown Av");
-		application.setAddress2("Apt -1");
-		application.setZipCode("48197");
-		application.setCity("Ypsitucky");
-		application.setHomePhone("2342342345");
-		application.setMobilePhone("2342342345");
-		application.setEmail("bob@law.com");
-		application.setEmailConfirm("bob@law.com");
-		application.setWhyWantPet(Arrays.asList("Reason one", "Reason two", "Reason three"));
+		application.setFirstName(FIRSTNAME);
+		application.setLastName(LASTNAME);
+		application.setAddress1(ADDRESS1);
+		application.setAddress2(ADDRESS2);
+		application.setZipCode(ZIPCODE);
+		application.setCity(CITY);
+		application.setHomePhone(HOMEPHONE);
+		application.setMobilePhone(MOBILEPHONE);
+		application.setEmail(EMAIL);
+		application.setEmailConfirm(EMAILCONFIRM);
+		application.setWhyWantPet(WHYWANTPET);
 
 		List<Vet> vets = new ArrayList<Vet>();
 		Vet vet = new Vet();
@@ -142,13 +145,13 @@ public class Entities {
 		return application;
 	}
 
-	private static PetfinderPetRecord getPet() {
+	public static PetfinderPetRecord getPet() {
 		PetfinderPetRecord pet = new PetfinderPetRecord();
 
 		return pet;
 	}
 	
-	private static PetfinderPetRecord getPet(String name) {
+	public static PetfinderPetRecord getPet(String name) {
 		PetfinderPetRecord pet = getPet();
 		pet.setName(name);
 
@@ -156,7 +159,7 @@ public class Entities {
 		
 	}
 	
-	private static CurrentPet getCurrentPet() {
+	public static CurrentPet getCurrentPet() {
 		CurrentPet pet = new CurrentPet();
 		pet.setName("Spike Jr.");
 		pet.setBreed("Doggy");
@@ -168,14 +171,14 @@ public class Entities {
 		return pet;
 	}
 	
-	private static CurrentPet getCurrentPet(String name) {
+	public static CurrentPet getCurrentPet(String name) {
 		CurrentPet pet = getCurrentPet();
 		pet.setName(name);
 		
 		return pet;
 	}
 	
-	private static PreviousPet getPreviousPet() {
+	public static PreviousPet getPreviousPet() {
 		PreviousPet pet = new PreviousPet();
 		pet.setName("Spike");
 		pet.setBreed("Doggy");
@@ -185,7 +188,7 @@ public class Entities {
 		return pet;
 	}
 	
-	private static PreviousPet getPreviousPet(String name) {
+	public static PreviousPet getPreviousPet(String name) {
 		PreviousPet pet = getPreviousPet();
 		pet.setName(name);
 		

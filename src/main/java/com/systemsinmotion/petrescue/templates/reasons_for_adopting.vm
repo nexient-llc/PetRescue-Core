@@ -10,7 +10,7 @@
    			#end
 		#end
 		
-		#labelfield("Reasons for Adopting ${pet.name} as a pet:", "reasonsForAdopting", $reasonList)
+		#labelfield("Reasons for adopting ${pet.name} as a pet:", "reasonsForAdopting", $reasonList)
 	
 	</div>
 </div>

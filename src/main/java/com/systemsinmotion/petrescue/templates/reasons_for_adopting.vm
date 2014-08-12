@@ -1,17 +1,15 @@
 <h3>Reasons for Adopting</h3>
+#foreach ($reason in $application.whyWantPet)
+	#if ($reasonList)
+   		#set ($reasonList = $reasonList + ', ' + $reason)
+ 	#else
+    	#set ($reasonList = $reason)
+   	#end
+#end
 
 <div class="module">
 	<div class="innards">
-		#foreach ($reason in $application.whyWantPet)
-  			#if ($reasonList)
-   				#set ($reasonList = $reasonList + ', ' + $reason)
- 		 	#else
-    			#set ($reasonList = $reason)
-   			#end
-		#end
-		
-		#labelfield("Reasons for Adopting ${pet.name} as a pet:", "reasonsForAdopting", $reasonList)
-	
+		#labelfield("Reasons for adopting ${pet.name} as a pet:", "reasonsForAdopting", $reasonList)
 	</div>
 </div>
 

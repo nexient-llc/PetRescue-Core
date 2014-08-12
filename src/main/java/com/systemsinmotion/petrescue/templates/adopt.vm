@@ -1,4 +1,9 @@
 #macro (labelfield $label $field $value)
+	#if ($value == "true")
+		#set ($value = "yes")
+	#elseif ($value == "false")
+		#set ($value = "no")
+	#end
 	<div class="row">
 		<label>$label</label>
 		<input type="text" name="$field" id="$field" class="required" value="$value" disabled>
@@ -6,6 +11,195 @@
 #end
 
 <html>
+<head>
+
+<style>
+
+input {
+	border: 1px solid;
+	border-radius: 5px;
+	box-shadow: rgba(0,0,0,0.3) 0 1px 3px;
+	padding: 1em;
+	background-color: #F9F9F9;
+}
+
+.row { 
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: 2em;
+	margin-right: 2em; 
+}
+
+.row label {
+	width: 10em;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.row input {
+	width: 24em;
+	vertical-align: middle;
+}
+
+.column input {
+	width: 14em;
+	vertical-align: middle;
+	horizontal-align: middle;
+	display: inline-block;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
+.module {
+	background-color: #F9F9F9;
+	border: 1px solid #CCC;
+	box-shadow: none;
+}
+
+.minorElem {
+	margin: 0.2em 0;
+}
+
+.minorElem label {
+	font-size: 1em;
+	font-weight: normal;
+	width: 5em;
+}
+
+.minorElemBig label {
+	font-size: 1em;
+	font-weight: normal;
+	width: 7.5em;
+}
+
+.minorElemBigger label {
+	font-size: 1em;
+	font-weight: normal;
+	width: 9.5em;
+}
+
+.minorElemSmall label {
+	font-size: 1em;
+	font-weight: normal;
+	width: 2em;
+}
+
+.minorElem label.error, .minorElemBig label.error, .minorElemBigger label.error, .minorElemSmall label.error {
+	font-weight: bold;
+	width: auto;
+}
+
+.multi-option {
+	margin: .2em 2em .2em 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	color: #0033BB;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial,
+		Verdana, sans-serif;
+	margin-bottom: 0.2em;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid #E5E5E5;
+	margin: 0.5em auto;
+}
+
+.innards {
+	margin: 1em;
+	zoom: 1;
+}
+.innards:after {
+	content: '.';
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.module {
+	background-color: #FFF;
+	border: 1px solid #E5E5E5;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: rgba(0,0,0,0.3) 0 1px 3px;
+	box-shadow: rgba(0,0,0,0.3) 0 1px 3px;
+}
+
+.module .row {
+	/*margin-bottom: 10px;*/
+	zoom: 1;
+}
+
+.module .row.last {
+	margin-bottom: 0;
+}
+
+.module .row:after {
+	content: '.';
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.module-left {
+	background-color: #FFF;
+	border: 1px solid #E5E5E5;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+	float: left;
+	width: 78.5%;
+}
+.pet-desc {
+	clear: both;
+	float: none;
+	margin: 1em auto;
+}
+
+.pet-details {
+	float: left;
+	margin: 0 2em 1em 2em;
+}
+
+.pet-name {
+	color: mediumBlue;
+	font: normal bold 1.5em "Lucida Grande", "Lucida Sans Unicode",
+		Helvetica, Arial, Verdana, sans-serif;
+}
+
+.pet-preview {
+	margin-bottom: 1.0em;
+}
+
+.pet-thumbnail img {
+	height: 75px;
+	padding: 5px;
+	background: white;
+	margin: 2px;
+}
+
+.pet-thumbnail h4 {
+	font-weight: normal;
+	line-height: 13px;
+	margin-bottom: 0;
+}
+
+.pet-thumbnail img.shadow:hover {
+	cursor: pointer;
+	-webkit-box-shadow: rgba(2, 70, 160, 0.5) 0 2px 4px;
+	-moz-box-shadow: rgba(2, 70, 160, 0.5) 0 2px 4px;
+	box-shadow: rgba(2, 70, 160, 0.5) 0 2px 4px;
+}
+
+.pets-thumbnails .pet-thumbnail {
+	display: inline-block;
+}
+
+</style>
+
+</head>
 <body>
 	<div class="module">
 	<div class="innards">

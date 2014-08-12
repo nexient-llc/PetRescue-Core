@@ -13,9 +13,7 @@
 				<div class="row grid2col">
 			<div class="column">
 				<input type="text" name="$name" id="$name" value="$name"
-					class="text" disbaled/>
-			</div>
-			<div class="column">
+					class="text" disabled/>
 				<input type="text" name="$name" id="$phone" value="$phone"
 					class="phoneUS" disabled/>
 			</div>

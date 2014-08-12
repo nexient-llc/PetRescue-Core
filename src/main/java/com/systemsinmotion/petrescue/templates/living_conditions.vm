@@ -1,5 +1,5 @@
 <h3>Living Condition Information</h3>					
-
+<div class="module">
 <div class="innards">	
 		#if($pet.animal  == 'CAT')
 			<div class="row">
@@ -61,31 +61,17 @@
 					#end
 				
 					<div class="minorElem">
-						<label>Willing to install fence</label> <input type="text" value="$willingToInstallFence">
+						<label>Willing to install fence</label> <input type="text" value="$willingToInstallFence" disabled>
 					</div>
 				</div>
 			#end
 			
 		#end ## end of dog block
-		
-		#if($application.haveAppliedElsewhere == true)
-			#set($haveAppliedElsewhere = "Yes")
-		#else
-			#set($haveAppliedElsewhere = "No")
-		#end
 			
-		#if($application.petLivingLocation.equals("inside") )
-			 #set($petLivingLocation = "inside" )
-		#elseif($application.petLivingLocation.equals("outside") )
-			 #set($petLivingLocation = "outside" )
-		#else
-			 #set($petLivingLocation = $application.petLivingLocation) 
-		#end  
-		
 		#set( $fields = [["Hours alone", "hoursAlone", $application.hoursAlone],
 							["Sleep location", "sleepLocation", $application.sleepLocation],
 							["Destructive behavior", "destructiveBehavior", $application.destructiveBehavior],
-							["Pet living location", "petLivingLocation", $petLivingLocation],
+							["Pet living location", "petLivingLocation", $application.petLivingLocation],
 							["Moving plan", "movingPlan", $application.movingPlan],
 							["Give up situation", "giveUpSituation", $application.giveUpSituation],
 							["Ideal pet", "idealPet", $application.idealPet],
@@ -108,5 +94,6 @@
 				  <input type="text" value="$application.failedAdoptionReason" disabled=true>
 		</div>
 		#end
-		
-		
+	</div>
+	</div>
+	</div>

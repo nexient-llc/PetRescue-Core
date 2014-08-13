@@ -1,16 +1,20 @@
 <h3>Household Information</h3>
 <div class="module">
 	<div class="innards">
+	
+		#labelfield ("Living Situation", "livingSituation", $application.livingSituation)
+		#if ($application.livingSituation != "own")
+			#labelfield ("Pets are allowed there", "petsAllowed", $application.petsAllowed)
+			#labelfield ("They can provide proof", "petsAllowedProof", $application.petsAllowedProof)
+		#end
 			
-		#set( $fieldset = [["Living Situation", "livingSituation", $application.livingSituation],
-							["Years", "yearsLived", $application.yearsLived],
+			
+		#set( $fieldset = [["Years", "yearsLived", $application.yearsLived],
 							["Months", "monthsLived", $application.monthsLived],
-							["Are pets allowed?", "petsAllowed", $application.petsAllowed],
-							["Can you provide proof?", "petsAllowedProof", $application.petsAllowedProof],
-							["Is everyone in your household aware you are adopting a pet?", "familyAware", $application.familyAware],
-							["If No, explain:", "familyNotAwareReason", $application.familyNotAwareReason],
-							["Who will be the primary caretaker?", "caretaker", $application.caretaker],
-							["How may people are currently living in your household?", "householdMemberCount", $application.householdMemberCount]
+							["Everyone in their household is aware they are adopting a pet", "familyAware", $application.familyAware],
+							["If No, explaination:", "familyNotAwareReason", $application.familyNotAwareReason],
+							["Primary caretaker", "caretaker", $application.caretaker],
+							["Number of people currently living in their household", "householdMemberCount", $application.householdMemberCount]
 							])
 		
 		#foreach($f in $fieldset)
@@ -24,6 +28,6 @@
 				#set ($ageList = $age)
 			#end
 		#end
-		#labelfield("List the ages of each household member:", "householdMemberAgesDiv", $ageList)
+		#labelfield("Age of each household member", "householdMemberAgesDiv", $ageList)
 	</div>
 </div>

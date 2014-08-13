@@ -2,18 +2,14 @@
 <div class="module">
 <div class="innards">	
 		#if($pet.animal  == 'CAT')
-			<div class="row">
-				<label for="planToDeclaw" path="planToDeclaw"
-					cssClass="autoWidth" cssErrorClass="error">Pet declawed </label>
-				#if($application.planToDeclaw.equals("all") )
-						#set($planToDeclaw ='yes all four')
-			    #elseif($application.planToDeclaw.equals("front") )
-				    	#set($planToDeclaw = 'front')
-				#else
-				     #set($planToDeclaw = 'No' )
-				#end
-					<input type="text" value="$planToDeclaw" disabled=true/>
-			</div>
+			#if($application.planToDeclaw.equals("all") )
+					#set($planToDeclaw ='Yes all four')
+		    #elseif($application.planToDeclaw.equals("front") )
+			    	#set($planToDeclaw = 'Front only')
+			#else
+			     #set($planToDeclaw = 'No' )
+			#end
+			#labelfield("Pet declawed", "planToDeclaw", $planToDeclaw)
 		
 		#else ## Dog block logic
 		
@@ -23,57 +19,41 @@
 				 #set($planToAttendObedienceClasses = "No")
 			#end ## end of planToAttendObedienceClasses if block
 		
-		<div class="row">
-			<label for="planToAttendObedienceClasses"
-			 path="planToAttendObedienceClasses" cssClass="autoWidth"
-			 cssErrorClass="error">Do you plan on attending obedience classes </label>
-			 <input type="text" value="$planToAttendObedienceClasses" disabled=true/>
-		</div>
+			#labelfield("Do they plan on attending obedience classes", "planToAttendObedienceClasses", $planToAttendObedienceClasses) 
 		
-		<div class="row ">
-			
 			 #if($application.fencedYard.equals("partial") )
-			 	#set($fenced = 'partial')
+			 	#set($fenced = 'Partial')
 			 #elseif($application.fencedYard.equals("completely") )  
-			 	#set($fenced = 'completely' )
+			 	#set($fenced = 'Completely' )
 			 #else
 			    #set($fenced = 'No')
 			 #end     
 			
-			 <div class="minorElemBigger">
-				  <label>Fenced Yard </label> <input type="text" value="$fenced" disabled=true>
-			 </div>
-			
-			</div>
+			#labelfield("Fenced yard", "fencedYard", $fenced)
 			
 			#if($fenced == 'No' )
-				<div class="row" id="willingToInstallFenceDiv">
-					#if ($application.willingToInstallFence.equals("electric") )
-						#set($willingToInstallFence = 'electric')
-					#elseif ($application.willingToInstallFence.equals("physical") )
-						#set($willingToInstallFence = 'physical')
-					#else
-						#set($willingToInstallFence = 'no')
-					<div class="row" id="howContainPetDiv">
-						<label>Contained in your yard without a fence </label>
-				   		 <input type="text" value="$application.howContainPet" disabled=true>
-					</div>	
-					#end
+				#if ($application.willingToInstallFence.equals("electric") )
+					#set($willingToInstallFence = 'Electric')
+				#elseif ($application.willingToInstallFence.equals("physical") )
+					#set($willingToInstallFence = 'Physical')
+				#else
+					#set($willingToInstallFence = 'No')
+					
+				#labelfield ("How they plan to contain without a fence", "howContainPet", $application.howContainPet)
+
+				#end
 				
-					<div class="minorElem">
-						<label>Willing to install fence</label> <input type="text" value="$willingToInstallFence" disabled>
-					</div>
-				</div>
+				#labelfield ("Willing to install fence", "willingToInstallFence", $willingToInstallFence)
 			#end
 			
 		#end ## end of dog block
 			
-		#set( $fields = [["Hours alone", "hoursAlone", $application.hoursAlone],
-							["Sleep location", "sleepLocation", $application.sleepLocation],
-							["Destructive behavior", "destructiveBehavior", $application.destructiveBehavior],
+		#set( $fields = [["Hours pet would be alone", "hoursAlone", $application.hoursAlone],
+							["Sleep location of pet", "sleepLocation", $application.sleepLocation],
+							["Reaction to destructive behavior", "destructiveBehavior", $application.destructiveBehavior],
 							["Pet living location", "petLivingLocation", $application.petLivingLocation],
-							["Moving plan", "movingPlan", $application.movingPlan],
-							["Give up situation", "giveUpSituation", $application.giveUpSituation],
+							["Their moving plan", "movingPlan", $application.movingPlan],
+							["Situation they would give up pet", "giveUpSituation", $application.giveUpSituation],
 							["Ideal pet", "idealPet", $application.idealPet],
 							["Time searching for a pet", "timeSearching", $application.timeSearching]
 							])
@@ -85,15 +65,9 @@
 		
 		#if($haveAppliedElsewhere == "Yes")
 		<div id="whereAppliedDiv">
-			<div class="row">
-				<label cssClass="autoWidth" cssErrorClass="error">Where else have you applied?</label>
-				  <input type="text" value="$application.whereApplied" disabled=true>
-		</div>
-		<div class="row">
-				<label cssClass="autoWidth" cssErrorClass="error">What is the reason for not adopting from above?</label>
-				  <input type="text" value="$application.failedAdoptionReason" disabled=true>
-		</div>
+			#labelfield("Where else they have applied", "whereApplied", $application.whereApplied)
+			#labelfield("What is their reason for not adopting from above", "failedAdoptionReason", $application.failedAdoptionReason)
+		</div> 
 		#end
 	</div>
-	</div>
-	</div>
+</div>

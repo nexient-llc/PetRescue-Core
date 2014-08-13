@@ -9,10 +9,10 @@ public class PreviousPet implements Serializable {
 	 */
 	private static final long serialVersionUID = -2806484124715032595L;
 	String name;
-	Integer age;
+	Integer ownedHowLong;
 	String breed;
-	Boolean isIndoor;
-
+	String whereNow;
+	
 	public String getName() {
 		return name;
 	}
@@ -21,12 +21,12 @@ public class PreviousPet implements Serializable {
 		this.name = petName;
 	}
 
-	public Integer getAge() {
-		return age;
+	public Integer getOwnedHowLong() {
+		return ownedHowLong;
 	}
 
-	public void setAge(Integer petAge) {
-		this.age = petAge;
+	public void setOwnedHowLong(Integer petAge) {
+		this.ownedHowLong = petAge;
 	}
 
 	public String getBreed() {
@@ -37,11 +37,11 @@ public class PreviousPet implements Serializable {
 		this.breed = petBreed;
 	}
 
-	public Boolean getIsIndoor() {
-		return this.isIndoor;
+	public String getWhereNow() {
+		return whereNow;
 	}
 
-	public void setIsIndoor(Boolean isIndoor) {
-		this.isIndoor = isIndoor;
+	public void setWhereNow(String whereNow) {
+		this.whereNow = whereNow;
 	}
 }

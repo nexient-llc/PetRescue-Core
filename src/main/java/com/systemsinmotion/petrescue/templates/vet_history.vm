@@ -1,11 +1,10 @@
 <h3>Vet History</h3>
 <div class="module">
 	<div class="innards">
-		<label class="autoWidth">Name(s)/phone number(s) of
-			Veterinarian(s) that you have used <i>(If we cannot verify the
-				vet history of animals currently in the home with the information
-				you are providing on this application, your application will be
-				denied).</i>
+		<label class="autoWidth">Names and phone numbers of
+			veterinarians that they have used previously 
+			<i>(If the vet history of animals currently in the 
+			home cannot be verified, this application should be denied).</i>
 		</label>
 		<hr>
 		

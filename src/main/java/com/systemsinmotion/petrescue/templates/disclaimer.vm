@@ -3,8 +3,8 @@
 	<div class="innards">
 	
 			#set( $fieldset = [
-							["Are you aware that rescue animals may have unknown medical and behavior history?", "awareOfUnknownIssues", $application.awareOfUnknownIssues],
-							["Would you allow a GAAR volunteer to do a home visit before or upon adoption?", "agreedToHomeVisit", $application.agreedToHomeVisit]
+							["Are they aware that rescue animals may have unknown medical and behavior history", "awareOfUnknownIssues", $application.awareOfUnknownIssues],
+							["Would they allow a GAAR volunteer to do a home visit before or upon adoption", "agreedToHomeVisit", $application.agreedToHomeVisit]
 							])
 		
 		#foreach($f in $fieldset)

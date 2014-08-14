@@ -3,6 +3,8 @@
 		#set ($value = "Yes")
 	#elseif ($value == "false")
 		#set ($value = "No")
+	#elseif (!$value)
+		#set($value = "[ This field was left blank ]")
 	#end
 	
 	#if ($value)

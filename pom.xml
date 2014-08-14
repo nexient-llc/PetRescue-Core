@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.systemsinmotion</groupId>
 		<artifactId>petrescue-parent</artifactId>
-		<version>0.7-SNAPSHOT</version>
+		<version>0.8-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -24,6 +24,7 @@
 			<artifactId>petfinder-api</artifactId>
 			<version>0.9</version>
 		</dependency>
+		
 		<!-- VELOCITY -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>

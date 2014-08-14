@@ -20,6 +20,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
+import org.petfinder.entity.AnimalType;
 import org.petfinder.entity.PetfinderPetRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,14 +53,16 @@ public class MailManager {
 	@Value("${shelter.email.password}")
 	private String password;
 
-	@Value("${shelter.email.recipients}")
-	private String shelterRecipeintList;
-
-	@Value("${admin.email.recipients}")
-	private String adminRecipeintList;
-
+	@Value("#{'${shelter.email.recipients}'.split(';')}")
 	private String[] shelterRecipients;
 
+	@Value("#{'${shelter.email.dog.recipients}'.split(';')}")
+	private String[] shelterDogRecipients;
+
+	@Value("#{'${shelter.email.cat.recipients}'.split(';')}")
+	private String[] shelterCatRecipients;
+
+	@Value("#{'${admin.email.recipients}'.split(';')}")
 	private String[] adminRecipients;
 
 	@Value("${shelter.email.subject}")
@@ -77,18 +80,23 @@ public class MailManager {
 	@Autowired
 	private VelocityEngine velocityEngine;
 
-	private void addRecipients(MimeMessage message, AdoptionApplication application) throws MessagingException, AddressException {
-		String email = application.getEmail();
-		if (StringUtils.hasText(email) && email.equals("keithskronek@gmail.com")) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("keithskronek@gmail.com"));
+	protected void addRecipients(MimeMessage message, AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException, AddressException {
+		String[] recipients = {};
+		if (StringUtils.hasText(application.getEmail()) && application.getEmail().equals(adminRecipients[0])) {
+			recipients = new String[] {adminRecipients[0]};
+		} else if (pet != null && pet.getAnimal() == AnimalType.CAT) {
+			recipients = this.shelterCatRecipients;
+		} else if (pet != null && pet.getAnimal() == AnimalType.DOG) {
+			recipients = this.shelterDogRecipients;
 		} else {
-			for (String recipient : this.shelterRecipients) {
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-			}
+			recipients = this.shelterRecipients;
+		}
+		for (String recipient : recipients) {
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 		}
 	}
 
-	private void addSubject(MimeMessage message, AdoptionApplication application) throws MessagingException {
+	protected void addSubject(MimeMessage message, AdoptionApplication application) throws MessagingException {
 		String subject = this.subject;
 		subject = subject.replace(SUBJECT_FIRST_NAME, application.getFirstName());
 		subject = subject.replace(SUBJECT_LAST_NAME, application.getLastName());
@@ -96,7 +104,7 @@ public class MailManager {
 		message.setSubject(subject);
 	}
 
-	private Properties createMailProperties() {
+	protected Properties createMailProperties() {
 		Properties props = System.getProperties();
 		props.put(MAIL_SMTP_HOST, this.host);
 		props.put(MAIL_SMTP_AUTH, "true");
@@ -110,7 +118,7 @@ public class MailManager {
 		return props;
 	}
 
-	private Session createSession(Properties props) {
+	protected Session createSession(Properties props) {
 		return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -149,8 +157,6 @@ public class MailManager {
 
 	@PostConstruct
 	public void init() {
-		this.shelterRecipients = this.shelterRecipeintList.split(";");
-		this.adminRecipients = this.adminRecipeintList.split(";");
 	}
 
 	public void send(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
@@ -161,7 +167,7 @@ public class MailManager {
 
 		MimeMessage message = new MimeMessage(session);
 		addSubject(message, application);
-		addRecipients(message, application);
+		addRecipients(message, application, pet);
 		message.setFrom(new InternetAddress(this.from));
 
 		String type = "text/html";
@@ -178,7 +184,7 @@ public class MailManager {
 		Transport.send(message);
 	}
 
-	public String getText(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
+	protected String getText(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
 		Map<String, Object> app = new HashMap<String, Object>();
 		app.put("application", application);
 		app.put("pet", pet);
@@ -242,6 +248,22 @@ public class MailManager {
 
 	void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public String[] getShelterDogRecipients() {
+		return shelterDogRecipients;
+	}
+
+	public void setShelterDogRecipients(String[] shelterDogRecipients) {
+		this.shelterDogRecipients = shelterDogRecipients;
+	}
+
+	public String[] getShelterCatRecipients() {
+		return shelterCatRecipients;
+	}
+
+	public void setShelterCatRecipients(String[] shelterCatRecipients) {
+		this.shelterCatRecipients = shelterCatRecipients;
 	}
 
 	void setUsername(String username) {

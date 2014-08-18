@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.entity;
+package com.systemsinmotion.petrescue.entity.type;
 
 public enum SizeType {
 	S("Small"), M("Medium"), L("Large"), XL("XLarge");

@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.entity;
+package com.systemsinmotion.petrescue.entity.type;
 
 public enum FormType {
 	CAT_ADOPTION("cat-adoption"), DOG_ADOPTION("dog-adoption"), VOLUNTEER("volunteer-application");

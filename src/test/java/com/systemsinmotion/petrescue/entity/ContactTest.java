@@ -7,6 +7,8 @@ import java.math.BigInteger;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.systemsinmotion.petrescue.entity.type.ContactType;
+
 public class ContactTest {
 
 	ContactType mockType = new ContactType();

@@ -1,8 +1,10 @@
-package com.systemsinmotion.petrescue.entity;
+package com.systemsinmotion.petrescue.entity.type;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.systemsinmotion.petrescue.entity.type.AgeType;
 
 public class AgeTypeTest {
 

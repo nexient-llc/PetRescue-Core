@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.entity;
+package com.systemsinmotion.petrescue.entity.type;
 
 public enum AgeType {
 	BABY("Baby"), YOUNG("Young"), ADULT("Adult"), SENIOR("Senior");

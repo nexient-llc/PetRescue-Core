@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="schema-1" author="nthomas">
+
+		<createTable tableName="animal" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="animal_pk" />
+			</column>
+			<column name="name" type="varchar(30)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-2" author="nthomas">
+
+		<createTable tableName="breed" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="breed_pk" />
+			</column>
+			<column name="name" type="varchar(30)">
+				<constraints nullable="false" />
+			</column>
+			<column name="animal_id" type="integer">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-3" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="animal_id"
+			baseTableName="breed" constraintName="fk_breed_animal_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="animal" />
+	</changeSet>
+
+	<changeSet id="schema-4" author="nthomas">
+		<createTable tableName="location" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="location_pk" />
+			</column>
+			<column name="contact_name" type="varchar(100)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="address1" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="address2" type="varchar(50)" />
+			<column name="city" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="state_or_province" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="zip_code" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="country" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="latitude" type="varchar(10)" />
+			<column name="longitude" type="varchar(10)" />
+			<column name="phone" type="varchar(15)" />
+			<column name="fax" type="varchar(15)" />
+			<column name="email" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="varchar(255)" />
+			<column name="accept_more_pets" type="boolean"
+				remarks="this location accepts more pets" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-5" author="nthomas">
+		<createTable tableName="pet" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pet_pk" />
+			</column>
+			<column name="name" type="varchar(30)">
+				<constraints nullable="false" />
+			</column>
+			<column name="age_years" type="integer" />
+			<column name="age_category" type="varchar(20)" />
+			<column name="gender" type="char(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="status" type="varchar(20)" />
+			<column name="description" type="varchar(255)" />
+			<column name="size" type="varchar(10)" />
+			<column name="declawed" type="boolean" />
+			<column name="vaccinated" type="boolean" remarks="Has all shots" />
+			<column name="fixed" type="boolean" remarks="Spayed/Neutered" />
+			<column name="no_kids" type="boolean" remarks="No kids allowed in house" />
+			<column name="no_dogs" type="boolean" remarks="No dogs allowed in house" />
+			<column name="no_cats" type="boolean" remarks="No cats allowed in house" />
+			<column name="special_needs" type="boolean" remarks="Pet has special needs" />
+			<column name="animal_id" type="integer">
+				<constraints nullable="false" />
+			</column>
+			<column name="location_id" type="integer">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-6" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="animal_id"
+			baseTableName="pet" constraintName="fk_pet_animal_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="animal" />
+	</changeSet>
+
+	<changeSet id="schema-7" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="location_id"
+			baseTableName="pet" constraintName="fk_pet_location_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="location" />
+	</changeSet>
+
+	<changeSet id="schema-8" author="nthomas">
+		<createTable tableName="photo" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="photo_pk" />
+			</column>
+			<column name="url" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="size" type="varchar(3)">
+				<constraints nullable="false" />
+			</column>
+			<column name="pet_id" type="integer">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-9" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="pet_id"
+			baseTableName="photo" constraintName="fk_photo_pet_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="pet" />
+	</changeSet>
+
+	<changeSet id="schema-10" author="nthomas">
+		<createTable tableName="remote_identifier" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="remote_pk" />
+			</column>
+			<column name="remote_id" type="varchar(30)">
+				<constraints nullable="false" />
+			</column>
+			<column name="api" type="varchar(5)">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_updated" type="datetime" />
+			<column name="pet_id" type="integer">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="schema-11" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="pet_id"
+			baseTableName="remote_identifier" constraintName="fk_remote_pet_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="pet" />
+	</changeSet>
+	
+		<changeSet id="schema-12" author="nthomas">
+	<createTable tableName="pet_breed" schemaName="gaar">
+		<column name="id" type="integer" autoIncrement="true">
+		<constraints nullable="false" primaryKey="true" primaryKeyName="pet_breed_pk" />
+		</column>
+		<column name="pet_id" type="integer" />
+		<column name="breed_id" type="integer" />
+	</createTable>
+	</changeSet>
+
+	<changeSet id="schema-13" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="pet_id"
+			baseTableName="pet_breed" constraintName="fk_pet_breed_pet_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="pet" />
+	</changeSet>
+	
+	<changeSet id="schema-14" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="breed_id"
+			baseTableName="pet_breed" constraintName="fk_pet_breed_breed_id"
+			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
+			referencedColumnNames="id" referencedTableName="breed" />
+	</changeSet>
+	
+</databaseChangeLog>

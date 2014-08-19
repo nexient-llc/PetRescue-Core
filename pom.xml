@@ -51,6 +51,11 @@
 			<version>5.0.3.Final</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>0.7.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

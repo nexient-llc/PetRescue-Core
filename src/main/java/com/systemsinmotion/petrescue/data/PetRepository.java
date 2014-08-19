@@ -15,4 +15,6 @@ public interface PetRepository extends JpaRepository<PetRecord, Integer> {
 
 	List<PetRecord> findByStatus(StatusType status);
 
+	List<PetRecord> findByStatus(String status);
+	
 }

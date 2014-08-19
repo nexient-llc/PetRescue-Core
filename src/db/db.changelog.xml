@@ -102,6 +102,7 @@
 			<column name="no_dogs" type="boolean" remarks="No dogs allowed in house" />
 			<column name="no_cats" type="boolean" remarks="No cats allowed in house" />
 			<column name="special_needs" type="boolean" remarks="Pet has special needs" />
+			<column name="housebroken" type="boolean" remarks="Pet is housebroken"/>
 			<column name="animal_id" type="integer">
 				<constraints nullable="false" />
 			</column>
@@ -175,15 +176,16 @@
 			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
-	
-		<changeSet id="schema-12" author="nthomas">
-	<createTable tableName="pet_breed" schemaName="gaar">
-		<column name="id" type="integer" autoIncrement="true">
-		<constraints nullable="false" primaryKey="true" primaryKeyName="pet_breed_pk" />
-		</column>
-		<column name="pet_id" type="integer" />
-		<column name="breed_id" type="integer" />
-	</createTable>
+
+	<changeSet id="schema-12" author="nthomas">
+		<createTable tableName="pet_breed" schemaName="gaar">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pet_breed_pk" />
+			</column>
+			<column name="pet_id" type="integer" />
+			<column name="breed_id" type="integer" />
+		</createTable>
 	</changeSet>
 
 	<changeSet id="schema-13" author="nthomas">
@@ -192,12 +194,12 @@
 			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
-	
+
 	<changeSet id="schema-14" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="breed_id"
 			baseTableName="pet_breed" constraintName="fk_pet_breed_breed_id"
 			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="breed" />
 	</changeSet>
-	
+
 </databaseChangeLog>

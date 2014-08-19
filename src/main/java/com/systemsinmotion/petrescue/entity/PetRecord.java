@@ -9,24 +9,24 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import com.systemsinmotion.petrescue.entity.type.*;
 
 @Entity
-@Table(name="pet")
+@Table(name = "pet")
 public class PetRecord extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = -3413224203938895552L;
 
-	@Column(name="name", nullable=false, length=30)
+	@Column(name = "name", nullable = false, length = 30)
 	private String name;
-	
-	@Column(name="age_years")
+
+	@Column(name = "age_years")
 	private int age;
-	
-	@Column(name="age_category", length=20)
+
+	@Column(name = "age_category", length = 20)
 	private AgeType ageType;
-	
-	@Column(name="gender")
+
+	@Column(name = "gender")
 	private GenderType gender;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	private StatusType status;
 
 	public String getName() {
@@ -68,6 +68,5 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	public void setStatus(StatusType status) {
 		this.status = status;
 	}
-	
-	
+
 }

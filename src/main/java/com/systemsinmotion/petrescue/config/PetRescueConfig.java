@@ -1,4 +1,6 @@
-package com.systemsinmotion.petrescue.config;
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import java.util.Properties;
 
@@ -64,4 +66,8 @@ public class PetRescueConfig {
 		
 		return sessionFactory();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> stash

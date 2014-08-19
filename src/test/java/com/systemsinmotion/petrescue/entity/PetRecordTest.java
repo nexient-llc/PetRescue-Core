@@ -2,39 +2,18 @@ package com.systemsinmotion.petrescue.entity;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Date;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class PetRecordTest {
 
 	private PetRecord petRecord = new PetRecord();
-
-	@Test
-	public void setAndGetShelterId() throws Exception {
-
-		petRecord.setShelterId("ID");
-		assertEquals(petRecord.getShelterId(), "ID");
-
-	}
-
-	@Test
-	public void setAndGetShelterPetId() throws Exception {
-
-		petRecord.setShelterPetId("ID");
-		assertEquals(petRecord.getShelterPetId(), "ID");
-
-	}
-
-	@Test
-	public void setAndGetPetId() throws Exception {
-
-		Long id = new Long(12);
-		petRecord.setPetFinderId(id);
-		assertEquals(petRecord.getPetFinderId(), id);
-
-	}
 
 	@Test
 	public void setAndGetName() throws Exception {
@@ -51,18 +30,50 @@ public class PetRecordTest {
 	}
 
 	@Test
-	public void setAnGetdMix() throws Exception {
-
-		petRecord.setMix("mix");
-		assertEquals(petRecord.getMix(), "mix");
+	public void testAllSettersAndGetters() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Map<String, Method> getters = getters();
+		Map<String, Method> setters = setters();
+		
+		assertEquals("Number of getters should match setters", setters.size(), getters.size());
+		assertEquals("There should be a matching getter for each setter", setters.keySet(), getters.keySet());
+		for (String key : setters.keySet())
+		{
+			Method m = setters.get(key);
+			assertEquals("Expected one parameter", 1, m.getParameterCount());
+			Parameter[] p = m.getParameters();
+			assertEquals("Only expected a single parameters",1,p.length);
+			if (p[0].getType().isEnum()) {
+				System.out.println("Test: " + p[0].getType().isEnum());
+			} else {
+				Object o = p[0].getType().newInstance();
+				m.invoke(petRecord, o);
+			}
+		}
 	}
 
-	@Test
-	public void setAndGetPetFinderLastUpdate() throws Exception {
+	private Map<String, Method> getters() {
+		Map<String, Method> map = new HashMap<String, Method>();
+		Method[] methods = PetRecord.class.getDeclaredMethods();
+		for (Method m : methods) {
+			String name = m.getName();
+			if (name.startsWith("get")) {
+				map.put(name.substring(3), m);
+			}
+		}
 
-		Date mockDate = Mockito.mock(Date.class);
-		petRecord.setPetFinderLastUpdate(mockDate);
-		assertEquals(petRecord.getPetFinderLastUpdate(), mockDate);
+		return map;
 	}
 
+	private Map<String, Method> setters() {
+		Map<String, Method> map = new HashMap<String, Method>();
+		Method[] methods = PetRecord.class.getDeclaredMethods();
+		for (Method m : methods) {
+			String name = m.getName();
+			if (name.startsWith("set")) {
+				map.put(name.substring(3), m);
+			}
+		}
+
+		return map;
+	}
 }

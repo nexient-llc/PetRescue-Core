@@ -40,12 +40,12 @@ public class PhotoTest {
 	@Test
 	public void setAndGetUri() throws Exception {
 
-		doCallRealMethod().when(mockPhoto).setUri("uri");
-		doCallRealMethod().when(mockPhoto).getUri();
+		doCallRealMethod().when(mockPhoto).setUrl("uri");
+		doCallRealMethod().when(mockPhoto).getUrl();
 
-		mockPhoto.setUri("uri");
-		verify(mockPhoto).setUri("uri");
-		assertEquals(mockPhoto.getUri(), "uri");
+		mockPhoto.setUrl("uri");
+		verify(mockPhoto).setUrl("uri");
+		assertEquals(mockPhoto.getUrl(), "uri");
 	}
 
 }

@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-
 import com.systemsinmotion.petrescue.entity.RemoteIdentifer;
 import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 

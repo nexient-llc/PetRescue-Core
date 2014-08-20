@@ -1,6 +1,6 @@
 package com.systemsinmotion.petrescue.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -78,11 +79,11 @@ public class PetRecord extends AbstractPersistable<Integer> {
 
 	@ManyToMany
 	@JoinTable(name = "pet_breed", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "pet_id") })
-	private List<Breed> breeds;
+	private Set<Breed> breeds;
 
-	@ManyToMany
-	@JoinTable(name = "photo", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "pet_id") })
-	private List<Photo> photos;
+	@OneToMany
+	@JoinColumn(name = "pet_id")
+	private Set<Photo> photos;
 
 	public String getName() {
 		return name;
@@ -220,19 +221,19 @@ public class PetRecord extends AbstractPersistable<Integer> {
 		this.location = location;
 	}
 
-	public List<Breed> getBreeds() {
+	public Set<Breed> getBreeds() {
 		return breeds;
 	}
 
-	public void setBreeds(List<Breed> breeds) {
+	public void setBreeds(Set<Breed> breeds) {
 		this.breeds = breeds;
 	}
 
-	public List<Photo> getPhotos() {
+	public Set<Photo> getPhotos() {
 		return photos;
 	}
 
-	public void setPhotos(List<Photo> photos) {
+	public void setPhotos(Set<Photo> photos) {
 		this.photos = photos;
 	}
 }

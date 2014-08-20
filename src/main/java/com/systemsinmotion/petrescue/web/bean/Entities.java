@@ -1,5 +1,6 @@
 package com.systemsinmotion.petrescue.web.bean;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -161,6 +162,9 @@ public class Entities {
 		PetfinderPetRecord pet = new PetfinderPetRecord();
 		pet.setName("Meow");
 		pet.setAnimal(AnimalType.CAT);
+		pet.setDescription("A kitty cat");
+		pet.setId(BigInteger.TEN);
+		pet.setMix("Yes");
 		
 		PetfinderBreedList petBreeds = new PetfinderBreedList();
 		pet.setBreeds(petBreeds);

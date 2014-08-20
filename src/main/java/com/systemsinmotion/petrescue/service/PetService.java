@@ -7,28 +7,36 @@ import org.springframework.stereotype.Service;
 
 import com.systemsinmotion.petrescue.data.PetRepository;
 import com.systemsinmotion.petrescue.entity.PetRecord;
+import com.systemsinmotion.petrescue.entity.type.StatusType;
 
 @Service("petService")
 public class PetService {
 	@Autowired
 	PetRepository repository;
-	
-	public List<PetRecord> findAllPetRecords(){
+
+	public List<PetRecord> findAllPetRecords() {
 		return this.repository.findAll();
 	}
-	public List<PetRecord> findByStatus(String status){
+
+	public List<PetRecord> findByStatus(StatusType status) {
 		return this.repository.findByStatus(status);
 	}
-	
-	public PetRecord findByID(Integer id){
+
+	public PetRecord findByID(Integer id) {
 		return this.repository.findOne(id);
 	}
-	
-	public PetRecord storePetRecord(PetRecord pet){
-		return repository.saveAndFlush(pet);
+
+	public PetRecord storePetRecord(PetRecord petRecord) {
+		return repository.saveAndFlush(petRecord);
 	}
-	
-	public void removePetRecord(PetRecord pet){
-		repository.delete(pet);
+
+	public void removePetRecord(PetRecord petRecord) {
+		repository.delete(petRecord);
+	}
+
+	public void setPetRecordStatus(PetRecord petRecord, StatusType status) {
+		PetRecord pet = this.repository.findOne(petRecord.getId());
+		pet.setStatus(status);
+		storePetRecord(pet);
 	}
 }

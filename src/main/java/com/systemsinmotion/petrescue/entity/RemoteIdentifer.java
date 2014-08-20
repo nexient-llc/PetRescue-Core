@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -27,7 +26,6 @@ public class RemoteIdentifer extends AbstractPersistable<Integer>  {
 	@Column(name="last_updated")
 	private Date lastUpdated;
 
-	@ManyToMany
 	@JoinColumn(name="pet_id")
 	private PetRecord pet;
 

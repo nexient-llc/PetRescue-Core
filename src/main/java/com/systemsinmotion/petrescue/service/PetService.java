@@ -35,8 +35,7 @@ public class PetService {
 	}
 
 	public void setPetRecordStatus(PetRecord petRecord, StatusType status) {
-		PetRecord pet = this.repository.findOne(petRecord.getId());
-		pet.setStatus(status);
-		storePetRecord(pet);
+		petRecord.setStatus(status);
+		storePetRecord(petRecord);
 	}
 }

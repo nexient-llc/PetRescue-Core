@@ -1,6 +1,4 @@
-import java.util.Properties;
-
-import javax.sql.DataSource;
+package com.systemsinmotion.petrescue.config;
 
 import javax.sql.DataSource;
 
@@ -35,7 +33,8 @@ public class PetRescueConfig {
 	public static VelocityEngine velocityEngine() {
 		VelocityEngine velocityEngine = new VelocityEngine();
 		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "class");
-		velocityEngine.setProperty("class.resource.loader.class", ClasspathResourceLoader.class.getName());
+		velocityEngine.setProperty("class.resource.loader.class",
+				ClasspathResourceLoader.class.getName());
 		velocityEngine.init();
 		return velocityEngine;
 	}
@@ -55,39 +54,38 @@ public class PetRescueConfig {
 		return dataSource;
 	}
 
-//	@Bean
-//	public LocalSessionFactoryBean sessionFactory() {
-//		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-//		sessionFactory.setDataSource(dataSource());
-//		sessionFactory.setPackagesToScan("com.systemsinmotion.petrescue.entity");
-//
-//		Properties props = new Properties();
-//		props.setProperty("hibernate.show_sql", "true");
-//
-//		sessionFactory.setHibernateProperties(props);
-//		
-//		return sessionFactory();
-//	}
-	
+	// @Bean
+	// public LocalSessionFactoryBean sessionFactory() {
+	// LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+	// sessionFactory.setDataSource(dataSource());
+	// sessionFactory.setPackagesToScan("com.systemsinmotion.petrescue.entity");
+	//
+	// Properties props = new Properties();
+	// props.setProperty("hibernate.show_sql", "true");
+	//
+	// sessionFactory.setHibernateProperties(props);
+	//
+	// return sessionFactory();
+	// }
+
 	public static final String ENTITIES_PACKAGE = "com.systemsinmotion.petrescue.entity";
-	
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setDatabase(Database.HSQL);
-        vendorAdapter.setShowSql(true);
 
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setDataSource(dataSource());
-        factory.setPackagesToScan(ENTITIES_PACKAGE);
-		sessionFactory.setHibernateProperties(props);
-        return factory;
-    }
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		vendorAdapter.setDatabase(Database.HSQL);
+		vendorAdapter.setShowSql(true);
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager();
-    }
+		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+		factory.setJpaVendorAdapter(vendorAdapter);
+		factory.setDataSource(dataSource());
+		factory.setPackagesToScan(ENTITIES_PACKAGE);
+
+		return factory;
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		return new JpaTransactionManager();
+	}
 }
-

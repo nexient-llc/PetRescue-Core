@@ -1,8 +1,9 @@
 package com.systemsinmotion.util;
 
+import java.util.Date;
 import java.util.List;
 
-import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.petfinder.entity.PetfinderPetRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import com.systemsinmotion.petrescue.entity.RemoteIdentifer;
 import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 
 @Component
@@ -42,9 +44,8 @@ public class DataBaseBackUpUtil {
 	@SuppressWarnings("unchecked")
 	public boolean updateDataBase() {
 
-		List<PetfinderPetRecord> localPets = jpa.findAll(); // replace with our
-															// service and
-															// object when
+		List<RemoteIdentifer> localPets = jpa.findAll(); // replace with our
+															// service when
 															// created
 		List<PetfinderPetRecord> externalPets = petFinderService.shelterPets(
 				null, null, null, null, null);
@@ -53,18 +54,20 @@ public class DataBaseBackUpUtil {
 			jpa.save(externalPets);
 		} else {
 			for (PetfinderPetRecord externalRecords : externalPets) {
-				PetfinderPetRecord pet = (PetfinderPetRecord) jpa
+				RemoteIdentifer pet = (RemoteIdentifer) jpa
 						.findOne(externalRecords.getId());
 				if (pet != null
-						&& externalRecords.getLastUpdate().compare(
-								pet.getLastUpdate()) == DatatypeConstants.GREATER) {
-					pet = externalRecords;
+						&& timeStampCheck(externalRecords.getLastUpdate(),
+								pet.getLastUpdated())) {
 					jpa.save(pet);
 				}
 			}
 		}
-
 		return true;
 	}
 
+	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
+			Date date) {
+		return gregorianCalendar.toGregorianCalendar().after(date);
+	}
 }

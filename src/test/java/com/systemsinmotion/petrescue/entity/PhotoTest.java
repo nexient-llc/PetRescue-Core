@@ -17,16 +17,6 @@ public class PhotoTest {
 	PetRecord mockPet = mock(PetRecord.class);
 
 	@Test
-	public void setAndGetPet() throws Exception {
-
-		doCallRealMethod().when(mockPhoto).setPet(mockPet);
-		doCallRealMethod().when(mockPhoto).getPet();
-		mockPhoto.setPet(mockPet);
-		verify(mockPhoto).setPet(mockPet);
-		assertEquals(mockPhoto.getPet(), mockPet);
-	}
-
-	@Test
 	public void setAndGetSize() throws Exception {
 
 		doCallRealMethod().when(mockPhoto).setSize("size");

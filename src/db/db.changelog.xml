@@ -6,7 +6,7 @@
 
 	<changeSet id="schema-1" author="nthomas">
 
-		<createTable tableName="animal" schemaName="gaar">
+		<createTable tableName="animal">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="animal_pk" />
@@ -19,7 +19,7 @@
 
 	<changeSet id="schema-2" author="nthomas">
 
-		<createTable tableName="breed" schemaName="gaar">
+		<createTable tableName="breed">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="breed_pk" />
@@ -36,12 +36,11 @@
 	<changeSet id="schema-3" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="animal_id"
 			baseTableName="breed" constraintName="fk_breed_animal_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="animal" />
 	</changeSet>
 
 	<changeSet id="schema-4" author="nthomas">
-		<createTable tableName="location" schemaName="gaar">
+		<createTable tableName="location">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="location_pk" />
@@ -79,7 +78,7 @@
 	</changeSet>
 
 	<changeSet id="schema-5" author="nthomas">
-		<createTable tableName="pet" schemaName="gaar">
+		<createTable tableName="pet">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="pet_pk" />
@@ -115,19 +114,17 @@
 	<changeSet id="schema-6" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="animal_id"
 			baseTableName="pet" constraintName="fk_pet_animal_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="animal" />
 	</changeSet>
 
 	<changeSet id="schema-7" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="location_id"
 			baseTableName="pet" constraintName="fk_pet_location_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="location" />
 	</changeSet>
 
 	<changeSet id="schema-8" author="nthomas">
-		<createTable tableName="photo" schemaName="gaar">
+		<createTable tableName="photo">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="photo_pk" />
@@ -147,12 +144,11 @@
 	<changeSet id="schema-9" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="pet_id"
 			baseTableName="photo" constraintName="fk_photo_pet_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
 
 	<changeSet id="schema-10" author="nthomas">
-		<createTable tableName="remote_identifier" schemaName="gaar">
+		<createTable tableName="remote_identifier">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="remote_pk" />
@@ -173,12 +169,11 @@
 	<changeSet id="schema-11" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="pet_id"
 			baseTableName="remote_identifier" constraintName="fk_remote_pet_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
 
 	<changeSet id="schema-12" author="nthomas">
-		<createTable tableName="pet_breed" schemaName="gaar">
+		<createTable tableName="pet_breed">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
 					primaryKeyName="pet_breed_pk" />
@@ -191,14 +186,12 @@
 	<changeSet id="schema-13" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="pet_id"
 			baseTableName="pet_breed" constraintName="fk_pet_breed_pet_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
 
 	<changeSet id="schema-14" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="breed_id"
 			baseTableName="pet_breed" constraintName="fk_pet_breed_breed_id"
-			baseTableSchemaName="gaar" referencedTableSchemaName="gaar"
 			referencedColumnNames="id" referencedTableName="breed" />
 	</changeSet>
 

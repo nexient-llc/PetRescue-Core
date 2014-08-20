@@ -13,7 +13,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import com.systemsinmotion.petrescue.converter.Convert;
+import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifer;
+import com.systemsinmotion.petrescue.entity.type.ApiType;
 import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 
 @Component
@@ -46,20 +49,23 @@ public class DataBaseBackUpUtil {
 
 		List<RemoteIdentifer> localPets = jpa.findAll(); // replace with our
 															// service when
-															// created
 		List<PetfinderPetRecord> externalPets = petFinderService.shelterPets(
 				null, null, null, null, null);
 
 		if (localPets == null) {
 			jpa.save(externalPets);
 		} else {
-			for (PetfinderPetRecord externalRecords : externalPets) {
-				RemoteIdentifer pet = (RemoteIdentifer) jpa
-						.findOne(externalRecords.getId());
-				if (pet != null
-						&& timeStampCheck(externalRecords.getLastUpdate(),
-								pet.getLastUpdated())) {
-					jpa.save(pet);
+			for (PetfinderPetRecord externalRecord : externalPets) {
+				// @formatter:off
+				RemoteIdentifer remoteIdentifer = (RemoteIdentifer) jpa.findOne(externalRecord.getId());
+				
+				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),
+								               remoteIdentifer.getLastUpdated())) {
+					remoteIdentifer.setApi(ApiType.PF);
+					remoteIdentifer.setLastUpdated(externalRecord.getLastUpdate().toGregorianCalendar().getTime());
+			    // @formatter:on
+					remoteIdentifer.setPet(mapPetToExternalPet(externalRecord));
+					jpa.save(remoteIdentifer);
 				}
 			}
 		}
@@ -69,5 +75,9 @@ public class DataBaseBackUpUtil {
 	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
 			Date date) {
 		return gregorianCalendar.toGregorianCalendar().after(date);
+	}
+
+	private PetRecord mapPetToExternalPet(PetfinderPetRecord external) {
+		return Convert.from(external);
 	}
 }

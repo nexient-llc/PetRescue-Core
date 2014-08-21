@@ -10,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import com.systemsinmotion.petrescue.entity.RemoteIdentifer;
+
+import com.systemsinmotion.petrescue.converter.Convert;
+import com.systemsinmotion.petrescue.entity.PetRecord;
+import com.systemsinmotion.petrescue.service.PetService;
 import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 
 @Component
 @PropertySource("classpath:/backup.properties")
 public class DataBaseBackUpUtil {
 
-	@SuppressWarnings("rawtypes")
 	@Autowired
-	// service not created yet
-	JpaRepository jpa;
+	PetService petService;
 
 	@Autowired
 	PetFinderConsumer petFinderService;
@@ -43,22 +43,23 @@ public class DataBaseBackUpUtil {
 	@SuppressWarnings("unchecked")
 	public boolean updateDataBase() {
 
-		List<RemoteIdentifer> localPets = jpa.findAll(); // replace with our
-															// service when
-															// created
+		List<PetRecord> localPets = petService.findAllPetRecords(); // replace
+																	// with our
+		// service when
+		// created
 		List<PetfinderPetRecord> externalPets = petFinderService.shelterPets(
 				null, null, null, null, null);
 
 		if (localPets == null) {
-			jpa.save(externalPets);
+			; // petService.storePetRecord(externalPets);
 		} else {
-			for (PetfinderPetRecord externalRecords : externalPets) {
-				RemoteIdentifer pet = (RemoteIdentifer) jpa
-						.findOne(externalRecords.getId());
-				if (pet != null
-						&& timeStampCheck(externalRecords.getLastUpdate(),
-								pet.getLastUpdated())) {
-					jpa.save(pet);
+			for (PetfinderPetRecord externalRecord : externalPets) {
+				// @formatter:off
+				PetRecord remoteIdentifer = petService.findByID(externalRecord.getId().intValue());
+				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),null)) {
+					petService.storePetRecord(mapPetRecordAndReturn(externalRecord));
+					
+				//@formatter:on
 				}
 			}
 		}
@@ -68,5 +69,9 @@ public class DataBaseBackUpUtil {
 	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
 			Date date) {
 		return gregorianCalendar.toGregorianCalendar().after(date);
+	}
+
+	private PetRecord mapPetRecordAndReturn(PetfinderPetRecord external) {
+		return Convert.from(external);
 	}
 }

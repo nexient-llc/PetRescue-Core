@@ -23,6 +23,7 @@ import com.systemsinmotion.petrescue.entity.Breed;
 import com.systemsinmotion.petrescue.entity.Location;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
+import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
 import com.systemsinmotion.petrescue.entity.type.SizeType;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
@@ -102,8 +103,9 @@ public class DataBaseBackUpUtil {
 
 		AnimalType animal = new AnimalType();
 		animal.setAnimalType(externalPet.getAnimal().value());
-
-		pet.setAgeType(externalPet.getAge());
+		//(maybe) try AgeType.valueOf(externalPet.getAge().getValue())
+		//catch and set to "unknown"
+		pet.setAgeType(AgeType.valueOf(externalPet.getAge().getValue()));
 		pet.setAnimal(animal);
 		pet.setBreeds(copyBreeds(externalPet));
 		pet.setName(externalPet.getName());
@@ -123,11 +125,11 @@ public class DataBaseBackUpUtil {
 
 		Set<Breed> breeds = new HashSet<Breed>();
 		Breed breed = new Breed();
-		breed.setAnimal(externalPet.getBreeds().getAnimal());
+		breed.setAnimalType(externalPet.getBreeds().getAnimal());
 
 		for (String string : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
-			breed.setBreed(string);
+			breed.setName(string);
 			breeds.add(breed);
 		}
 		return breeds;

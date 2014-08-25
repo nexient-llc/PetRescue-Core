@@ -13,9 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.petfinder.entity.PetAgeType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
 import com.systemsinmotion.petrescue.entity.type.SizeType;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
@@ -34,12 +34,14 @@ public class PetRecord extends AbstractPersistable<Integer> {
 
 	@Column(name = "age_category", length = 20)
 	@Enumerated(EnumType.STRING)
-	private PetAgeType ageType;
+	private AgeType ageType;
 
 	@Column(name = "gender")
+	@Enumerated(EnumType.STRING)
 	private GenderType gender;
 
 	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
 	private StatusType status;
 
 	@Column(name = "description", length = 255)
@@ -73,7 +75,7 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	@Column(name = "housebroken")
 	private Boolean housebroken;
 
-	@Column(name = "animalType", nullable = false, length = 30)
+	@JoinColumn(name = "animalType_id", nullable = false)
 	private AnimalType animalType;
 
 	@ManyToOne
@@ -104,11 +106,11 @@ public class PetRecord extends AbstractPersistable<Integer> {
 		this.age = age;
 	}
 
-	public PetAgeType getAgeType() {
+	public AgeType getAgeType() {
 		return ageType;
 	}
 
-	public void setAgeType(PetAgeType ageType) {
+	public void setAgeType(AgeType ageType) {
 		this.ageType = ageType;
 	}
 

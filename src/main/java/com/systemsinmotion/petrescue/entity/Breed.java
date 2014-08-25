@@ -1,7 +1,5 @@
 package com.systemsinmotion.petrescue.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,25 +12,25 @@ public class Breed extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = 6033007191596936036L;
 
-	@Column(name = "animal", nullable = false, length = 30)
-	private String animal;
+	@Column(name = "name", nullable = false, length = 30)
+	private String name;
 
-	@Column(name = "breeds", nullable = false, length = 30)
-	private List<String> breeds;
+	@Column(name = "animalType", nullable = false, length = 30)
+	private String animalType;
 
-	public String getAnimal() {
-		return animal;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setAnimal(String animal) {
-		this.animal = animal;
+	public String getAnimalType() {
+		return animalType;
 	}
-
-	public void setBreed(String breed) {
-		this.breeds.add(animal);
+	
+	public void setName(String name) {
+		this.name = name;
 	}
-
-	public List<String> getBreeds() {
-		return this.breeds;
+	
+	public void setAnimalType(String animalType) {
+		this.animalType = animalType;
 	}
 }

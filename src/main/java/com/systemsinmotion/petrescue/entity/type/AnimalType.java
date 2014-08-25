@@ -1,5 +1,6 @@
 package com.systemsinmotion.petrescue.entity.type;
 
+
 public enum AnimalType {
 
 	/* @formatter:off */

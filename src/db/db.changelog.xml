@@ -4,19 +4,6 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="schema-1" author="nthomas">
-
-		<createTable tableName="animal">
-			<column name="id" type="integer" autoIncrement="true">
-				<constraints nullable="false" primaryKey="true"
-					primaryKeyName="animal_pk" />
-			</column>
-			<column name="name" type="varchar(30)">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-	</changeSet>
-
 	<changeSet id="schema-2" author="nthomas">
 
 		<createTable tableName="breed">
@@ -27,18 +14,12 @@
 			<column name="name" type="varchar(30)">
 				<constraints nullable="false" />
 			</column>
-			<column name="animal_id" type="integer">
+			<column name="animalType" type="varchar(30)">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 	</changeSet>
-
-	<changeSet id="schema-3" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="animal_id"
-			baseTableName="breed" constraintName="fk_breed_animal_id"
-			referencedColumnNames="id" referencedTableName="animal" />
-	</changeSet>
-
+	
 	<changeSet id="schema-4" author="nthomas">
 		<createTable tableName="location">
 			<column name="id" type="integer" autoIncrement="true">
@@ -102,19 +83,13 @@
 			<column name="no_cats" type="boolean" remarks="No cats allowed in house" />
 			<column name="special_needs" type="boolean" remarks="Pet has special needs" />
 			<column name="housebroken" type="boolean" remarks="Pet is housebroken"/>
-			<column name="animal_id" type="integer">
+			<column name="animalType" type="varchar(30)">
 				<constraints nullable="false" />
 			</column>
 			<column name="location_id" type="integer">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-	</changeSet>
-
-	<changeSet id="schema-6" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="animal_id"
-			baseTableName="pet" constraintName="fk_pet_animal_id"
-			referencedColumnNames="id" referencedTableName="animal" />
 	</changeSet>
 
 	<changeSet id="schema-7" author="nthomas">
@@ -194,5 +169,4 @@
 			baseTableName="pet_breed" constraintName="fk_pet_breed_breed_id"
 			referencedColumnNames="id" referencedTableName="breed" />
 	</changeSet>
-
 </databaseChangeLog>

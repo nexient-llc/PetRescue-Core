@@ -54,20 +54,6 @@ public class PetRescueConfig {
 		return dataSource;
 	}
 
-	// @Bean
-	// public LocalSessionFactoryBean sessionFactory() {
-	// LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-	// sessionFactory.setDataSource(dataSource());
-	// sessionFactory.setPackagesToScan("com.systemsinmotion.petrescue.entity");
-	//
-	// Properties props = new Properties();
-	// props.setProperty("hibernate.show_sql", "true");
-	//
-	// sessionFactory.setHibernateProperties(props);
-	//
-	// return sessionFactory();
-	// }
-
 	public static final String ENTITIES_PACKAGE = "com.systemsinmotion.petrescue.entity";
 
 	@Bean

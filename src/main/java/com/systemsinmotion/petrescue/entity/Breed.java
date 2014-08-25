@@ -1,39 +1,38 @@
 package com.systemsinmotion.petrescue.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
-@Table(name="breed")
+@Table(name = "breed")
 public class Breed extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = 6033007191596936036L;
 
-	@Column(name="name", nullable=false, length=30)
-	private String name;
-	
-	@ManyToOne
-	@JoinColumn(name = "animal_id", nullable=false)
-	private Animal animal;
+	@Column(name = "animal", nullable = false, length = 30)
+	private String animal;
 
-	public String getName() {
-		return name;
-	}
+	@Column(name = "breeds", nullable = false, length = 30)
+	private List<String> breeds;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Animal getAnimal() {
+	public String getAnimal() {
 		return animal;
 	}
 
-	public void setAnimal(Animal animal) {
+	public void setAnimal(String animal) {
 		this.animal = animal;
+	}
+
+	public void setBreed(String breed) {
+		this.breeds.add(animal);
+	}
+
+	public List<String> getBreeds() {
+		return this.breeds;
 	}
 }

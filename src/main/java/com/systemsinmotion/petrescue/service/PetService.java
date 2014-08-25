@@ -38,4 +38,8 @@ public class PetService {
 		petRecord.setStatus(status);
 		storePetRecord(petRecord);
 	}
+
+	public void storeAllPets(List<PetRecord> pets) {
+		this.repository.save(pets);
+	}
 }

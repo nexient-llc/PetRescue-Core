@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -11,9 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.petfinder.entity.PetAgeType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
 import com.systemsinmotion.petrescue.entity.type.SizeType;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
@@ -31,7 +33,8 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	private int age;
 
 	@Column(name = "age_category", length = 20)
-	private AgeType ageType;
+	@Enumerated(EnumType.STRING)
+	private PetAgeType ageType;
 
 	@Column(name = "gender")
 	private GenderType gender;
@@ -43,6 +46,7 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	private String description;
 
 	@Column(name = "size")
+	@Enumerated(EnumType.STRING)
 	private SizeType size;
 
 	@Column(name = "declawed")
@@ -69,9 +73,8 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	@Column(name = "housebroken")
 	private Boolean housebroken;
 
-	@ManyToOne
-	@JoinColumn(name = "animal_id", nullable = false)
-	private Animal animal;
+	@Column(name = "animalType", nullable = false, length = 30)
+	private AnimalType animalType;
 
 	@ManyToOne
 	@JoinColumn(name = "location_id", nullable = false)
@@ -101,11 +104,11 @@ public class PetRecord extends AbstractPersistable<Integer> {
 		this.age = age;
 	}
 
-	public AgeType getAgeType() {
+	public PetAgeType getAgeType() {
 		return ageType;
 	}
 
-	public void setAgeType(AgeType ageType) {
+	public void setAgeType(PetAgeType ageType) {
 		this.ageType = ageType;
 	}
 
@@ -205,12 +208,12 @@ public class PetRecord extends AbstractPersistable<Integer> {
 		this.housebroken = housebroken;
 	}
 
-	public Animal getAnimal() {
-		return animal;
+	public AnimalType getAnimal() {
+		return animalType;
 	}
 
-	public void setAnimal(Animal animal) {
-		this.animal = animal;
+	public void setAnimal(AnimalType animalType) {
+		this.animalType = animalType;
 	}
 
 	public Location getLocation() {

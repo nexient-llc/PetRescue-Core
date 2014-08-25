@@ -34,6 +34,11 @@ public class RemoteIdentifierService {
 		return this.remoteIdentifierRepository.findByRemoteId(id);
 	}
 
+	public List<RemoteIdentifier> findLastUpdatedBetweenDates(Date from,
+			Date to) {
+		return this.findLastUpdatedBetweenDates(from, to);
+	}
+
 	public List<RemoteIdentifier> findLastUpdatedThatIsLessThan(Date date) {
 
 		return this.remoteIdentifierRepository.findByLastUpdatedLessThan(date);

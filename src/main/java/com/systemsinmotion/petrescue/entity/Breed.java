@@ -19,18 +19,19 @@ public class Breed extends AbstractPersistable<Integer> {
 	private String animalType;
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public String getAnimalType() {
-		return animalType;
+		return this.animalType;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void setAnimalType(String animalType) {
 		this.animalType = animalType;
 	}
+
 }

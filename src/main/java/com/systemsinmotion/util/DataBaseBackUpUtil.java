@@ -10,6 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.petfinder.entity.PetContactType;
 import org.petfinder.entity.PetOptionType;
+import org.petfinder.entity.PetPhotoType;
 import org.petfinder.entity.PetfinderPetRecord;
 import org.petfinder.entity.PetfinderPetRecord.Options;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.systemsinmotion.petrescue.entity.AnimalType;
 import com.systemsinmotion.petrescue.entity.Breed;
 import com.systemsinmotion.petrescue.entity.Location;
 import com.systemsinmotion.petrescue.entity.PetRecord;
+import com.systemsinmotion.petrescue.entity.Photo;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
 import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
@@ -69,12 +71,15 @@ public class DataBaseBackUpUtil {
 			petService.storeAllPets(convertToPetRecords(petFinderPets));
 		} else {
 			for (PetfinderPetRecord externalRecord : petFinderPets) {
-				
-				RemoteIdentifier remoteIdentifer = 
-						remoteIdentifierService.findByRemoteId(String.valueOf(externalRecord.getId().intValue() ) );
-				
-				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),remoteIdentifer.getLastUpdated())) {	
-					petService.storePetRecord(null);					
+
+				RemoteIdentifier remoteIdentifer = remoteIdentifierService
+						.findByRemoteId(String.valueOf(externalRecord.getId()
+								.intValue()));
+
+				if (remoteIdentifer != null
+						&& timeStampCheck(externalRecord.getLastUpdate(),
+								remoteIdentifer.getLastUpdated())) {
+					petService.storePetRecord(null);
 				}
 			}
 		}
@@ -86,26 +91,23 @@ public class DataBaseBackUpUtil {
 		return gregorianCalendar.toGregorianCalendar().after(date);
 	}
 
-	
-	
-	private List<PetRecord> convertToPetRecords(List<PetfinderPetRecord> externalPets){
+	private List<PetRecord> convertToPetRecords(
+			List<PetfinderPetRecord> externalPets) {
 		List<PetRecord> pets = new ArrayList<PetRecord>();
 		for (PetfinderPetRecord externalRecords : externalPets) {
-			pets.add(copyToPetRecord(new PetRecord(),externalRecords));
+			pets.add(copyToPetRecord(new PetRecord(), externalRecords));
 		}
 		return pets;
 	}
-	
-	//@formatter:on
+
+	// @formatter:on
 
 	private PetRecord copyToPetRecord(PetRecord pet,
 			PetfinderPetRecord externalPet) {
 
 		AnimalType animal = new AnimalType();
 		animal.setAnimalType(externalPet.getAnimal().value());
-		//(maybe) try AgeType.valueOf(externalPet.getAge().getValue())
-		//catch and set to "unknown"
-		pet.setAgeType(AgeType.valueOf(externalPet.getAge().getValue()));
+		pet.setAgeType(AgeType.valueOf(externalPet.getAge().value()));
 		pet.setAnimal(animal);
 		pet.setBreeds(copyBreeds(externalPet));
 		pet.setName(externalPet.getName());
@@ -115,6 +117,7 @@ public class DataBaseBackUpUtil {
 		pet.setSize(SizeType.valueOf(externalPet.getSize().value()));
 
 		copyOptions(pet, externalPet);
+		copyPhotos(pet, externalPet);
 		pet.setLocation(copyLocation(externalPet));
 
 		return pet;
@@ -125,12 +128,14 @@ public class DataBaseBackUpUtil {
 
 		Set<Breed> breeds = new HashSet<Breed>();
 		Breed breed = new Breed();
-		breed.setAnimalType(externalPet.getBreeds().getAnimal());
-
-		for (String string : externalPet.getBreeds().getBreed()) {
+		breed.setName(externalPet.getBreeds().getAnimal());
+		
+		for (String breedType : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
-			breed.setName(string);
+			breed.setAnimalType(breedType);
 			breeds.add(breed);
+			breed = new Breed();
+			// breedService.save(breeds);
 		}
 		return breeds;
 	}
@@ -147,6 +152,7 @@ public class DataBaseBackUpUtil {
 		location.setFax(contract.getFax());
 		location.setPhone(contract.getPhone());
 		location.setStateOrProvince(contract.getState());
+		// locationService.save(location);
 		// save location with location service when service is created.
 
 		return location;
@@ -177,5 +183,23 @@ public class DataBaseBackUpUtil {
 			}
 		}
 
+	}
+
+	// mapped PetPhotoType property value to our url in case its wrong
+	private void copyPhotos(PetRecord pet, PetfinderPetRecord externalPet) {
+
+		Set<Photo> photos = new HashSet<Photo>();
+		Photo petRecordPhoto = new Photo();
+
+		for (PetPhotoType photo : externalPet.getMedia().getPhotos().getPhoto()) {
+
+			petRecordPhoto.setSize(photo.getSize());
+			petRecordPhoto.setUrl(photo.getValue());
+			petRecordPhoto.setPet(pet);
+			photos.add(petRecordPhoto);
+			// photoservice.save(photo);
+			petRecordPhoto = new Photo();
+		}
+		pet.setPhotos(photos);
 	}
 }

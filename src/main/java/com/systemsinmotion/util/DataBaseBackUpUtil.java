@@ -10,6 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.petfinder.entity.PetContactType;
 import org.petfinder.entity.PetOptionType;
+import org.petfinder.entity.PetPhotoType;
 import org.petfinder.entity.PetfinderPetRecord;
 import org.petfinder.entity.PetfinderPetRecord.Options;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ import com.systemsinmotion.petrescue.entity.AnimalType;
 import com.systemsinmotion.petrescue.entity.Breed;
 import com.systemsinmotion.petrescue.entity.Location;
 import com.systemsinmotion.petrescue.entity.PetRecord;
+import com.systemsinmotion.petrescue.entity.Photo;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
+import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
 import com.systemsinmotion.petrescue.entity.type.SizeType;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
@@ -103,7 +106,7 @@ public class DataBaseBackUpUtil {
 		AnimalType animal = new AnimalType();
 		animal.setAnimalType(externalPet.getAnimal().value());
 
-		pet.setAgeType(externalPet.getAge());
+		pet.setAgeType(AgeType.valueOf(externalPet.getAge().value()));
 		pet.setAnimal(animal);
 		pet.setBreeds(copyBreeds(externalPet));
 		pet.setName(externalPet.getName());
@@ -113,6 +116,7 @@ public class DataBaseBackUpUtil {
 		pet.setSize(SizeType.valueOf(externalPet.getSize().value()));
 
 		copyOptions(pet, externalPet);
+		copyPhotos(pet, externalPet);
 		pet.setLocation(copyLocation(externalPet));
 
 		return pet;
@@ -130,6 +134,7 @@ public class DataBaseBackUpUtil {
 			breed.setBreed(string);
 			breeds.add(breed);
 		}
+		// breedService.save(breeds);
 		return breeds;
 	}
 
@@ -145,6 +150,7 @@ public class DataBaseBackUpUtil {
 		location.setFax(contract.getFax());
 		location.setPhone(contract.getPhone());
 		location.setStateOrProvince(contract.getState());
+		// locationService.save(location);
 		// save location with location service when service is created.
 
 		return location;
@@ -175,5 +181,20 @@ public class DataBaseBackUpUtil {
 			}
 		}
 
+	}
+
+	private void copyPhotos(PetRecord pet, PetfinderPetRecord externalPet) {
+
+		Set<Photo> photos = new HashSet<Photo>();
+
+		for (PetPhotoType photo : externalPet.getMedia().getPhotos().getPhoto()) {
+
+			Photo petRecordPhoto = new Photo();
+			petRecordPhoto.setSize(photo.getSize());
+			petRecordPhoto.setUrl(photo.getValue());
+			photos.add(petRecordPhoto);
+		}
+
+		pet.setPhotos(photos);
 	}
 }

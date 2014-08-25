@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "photo")
-class Photo extends AbstractPersistable<Integer> {
+public class Photo extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = 7179570524027044221L;
 

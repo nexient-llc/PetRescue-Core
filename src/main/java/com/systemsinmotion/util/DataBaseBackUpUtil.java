@@ -129,12 +129,13 @@ public class DataBaseBackUpUtil {
 		Breed breed = new Breed();
 		breed.setAnimal(externalPet.getBreeds().getAnimal());
 
-		for (String string : externalPet.getBreeds().getBreed()) {
+		for (String breedType : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
-			breed.setBreed(string);
+			breed.setBreed(breedType);
 			breeds.add(breed);
+			breed = new Breed();
+			// breedService.save(breeds);
 		}
-		// breedService.save(breeds);
 		return breeds;
 	}
 
@@ -183,6 +184,7 @@ public class DataBaseBackUpUtil {
 
 	}
 
+	// mapped PetPhotoType property value to our url in case its wrong
 	private void copyPhotos(PetRecord pet, PetfinderPetRecord externalPet) {
 
 		Set<Photo> photos = new HashSet<Photo>();
@@ -193,8 +195,8 @@ public class DataBaseBackUpUtil {
 			petRecordPhoto.setSize(photo.getSize());
 			petRecordPhoto.setUrl(photo.getValue());
 			photos.add(petRecordPhoto);
+			// photoservice.save(photo);
 		}
-
 		pet.setPhotos(photos);
 	}
 }

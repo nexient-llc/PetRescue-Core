@@ -9,7 +9,7 @@
 		<createTable tableName="animalType">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
-					primaryKeyName="breed_pk" />
+					primaryKeyName="animalType_pk" />
 			</column>
 			<column name="animalType" type="varchar(30)">
 				<constraints nullable="false" />

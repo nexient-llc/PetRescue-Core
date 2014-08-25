@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-	<changeSet id="schema-1" author="nthomas">
+	<changeSet id="schema-1" author="brian">
 
 		<createTable tableName="animalType">
 			<column name="id" type="integer" autoIncrement="true">
@@ -31,9 +31,11 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+
 	</changeSet>
 	
-	<changeSet id="schema-4" author="nthomas">
+	<changeSet id="schema-3" author="nthomas">
+
 		<createTable tableName="location">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
@@ -69,9 +71,11 @@
 			<column name="accept_more_pets" type="boolean"
 				remarks="this location accepts more pets" />
 		</createTable>
+
 	</changeSet>
 
 	<changeSet id="schema-5" author="nthomas">
+
 		<createTable tableName="pet">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
@@ -103,21 +107,13 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+
 	</changeSet>
 
+	
+	
 	<changeSet id="schema-6" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="animalType_id"
-			baseTableName="pet" constraintName="fk_pet_animalType_id"
-			referencedColumnNames="id" referencedTableName="animalType" />
-	</changeSet>
-	
-	<changeSet id="schema-7" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="location_id"
-			baseTableName="pet" constraintName="fk_pet_location_id"
-			referencedColumnNames="id" referencedTableName="location" />
-	</changeSet>
-	
-	<changeSet id="schema-8" author="nthomas">
+
 		<createTable tableName="photo">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
@@ -133,15 +129,13 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+
 	</changeSet>
 
-	<changeSet id="schema-9" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="pet_id"
-			baseTableName="photo" constraintName="fk_photo_pet_id"
-			referencedColumnNames="id" referencedTableName="pet" />
-	</changeSet>
+	
 
-	<changeSet id="schema-10" author="nthomas">
+	<changeSet id="schema-7" author="nthomas">
+
 		<createTable tableName="remote_identifier">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
@@ -158,15 +152,12 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-	</changeSet>
 
-	<changeSet id="schema-11" author="nthomas">
-		<addForeignKeyConstraint baseColumnNames="pet_id"
-			baseTableName="remote_identifier" constraintName="fk_remote_pet_id"
-			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
-
-	<changeSet id="schema-12" author="nthomas">
+	
+	
+	
+	<changeSet id="schema-8" author="nthomas">
 		<createTable tableName="pet_breed">
 			<column name="id" type="integer" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"
@@ -176,16 +167,41 @@
 			<column name="breed_id" type="integer" />
 		</createTable>
 	</changeSet>
-
-	<changeSet id="schema-13" author="nthomas">
+	
+	<changeSet id="schema-9" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="pet_id"
+			baseTableName="photo" constraintName="fk_photo_pet_id"
+			referencedColumnNames="id" referencedTableName="pet" />
+	</changeSet>
+	
+	<changeSet id="schema-10" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="pet_id"
+			baseTableName="remote_identifier" constraintName="fk_remote_pet_id"
+			referencedColumnNames="id" referencedTableName="pet" />
+	</changeSet>
+	
+	<changeSet id="schema-11" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="pet_id"
 			baseTableName="pet_breed" constraintName="fk_pet_breed_pet_id"
 			referencedColumnNames="id" referencedTableName="pet" />
 	</changeSet>
 
-	<changeSet id="schema-14" author="nthomas">
+	<changeSet id="schema-12" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="breed_id"
 			baseTableName="pet_breed" constraintName="fk_pet_breed_breed_id"
 			referencedColumnNames="id" referencedTableName="breed" />
 	</changeSet>
+	
+	<changeSet id="schema-13" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="animalType_id"
+			baseTableName="pet" constraintName="fk_pet_animalType_id"
+			referencedColumnNames="id" referencedTableName="animalType" />
+	</changeSet>
+	
+	<changeSet id="schema-14" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="location_id"
+			baseTableName="pet" constraintName="fk_pet_location_id"
+			referencedColumnNames="id" referencedTableName="location" />
+	</changeSet>
+	
 </databaseChangeLog>

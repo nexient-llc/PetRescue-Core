@@ -4,6 +4,19 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
+	<changeSet id="schema-1" author="nthomas">
+
+		<createTable tableName="animalType">
+			<column name="id" type="integer" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="breed_pk" />
+			</column>
+			<column name="animalType" type="varchar(30)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
 	<changeSet id="schema-2" author="nthomas">
 
 		<createTable tableName="breed">
@@ -69,7 +82,7 @@
 			</column>
 			<column name="age_years" type="integer" />
 			<column name="age_category" type="varchar(20)" />
-			<column name="gender" type="char(1)">
+			<column name="gender" type="varchar(1)">
 				<constraints nullable="false" />
 			</column>
 			<column name="status" type="varchar(20)" />
@@ -83,7 +96,7 @@
 			<column name="no_cats" type="boolean" remarks="No cats allowed in house" />
 			<column name="special_needs" type="boolean" remarks="Pet has special needs" />
 			<column name="housebroken" type="boolean" remarks="Pet is housebroken"/>
-			<column name="animalType" type="varchar(30)">
+			<column name="animalType_id" type="integer">
 				<constraints nullable="false" />
 			</column>
 			<column name="location_id" type="integer">
@@ -92,12 +105,18 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet id="schema-6" author="nthomas">
+		<addForeignKeyConstraint baseColumnNames="animalType_id"
+			baseTableName="pet" constraintName="fk_pet_animalType_id"
+			referencedColumnNames="id" referencedTableName="animalType" />
+	</changeSet>
+	
 	<changeSet id="schema-7" author="nthomas">
 		<addForeignKeyConstraint baseColumnNames="location_id"
 			baseTableName="pet" constraintName="fk_pet_location_id"
 			referencedColumnNames="id" referencedTableName="location" />
 	</changeSet>
-
+	
 	<changeSet id="schema-8" author="nthomas">
 		<createTable tableName="photo">
 			<column name="id" type="integer" autoIncrement="true">

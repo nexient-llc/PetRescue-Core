@@ -75,7 +75,7 @@ public class PetRecord extends AbstractPersistable<Integer> {
 	@Column(name = "housebroken")
 	private Boolean housebroken;
 
-	@Column(name = "animalType", nullable = false, length = 30)
+	@JoinColumn(name = "animalType_id", nullable = false)
 	private AnimalType animalType;
 
 	@ManyToOne

@@ -127,11 +127,11 @@ public class DataBaseBackUpUtil {
 
 		Set<Breed> breeds = new HashSet<Breed>();
 		Breed breed = new Breed();
-		breed.setAnimal(externalPet.getBreeds().getAnimal());
+		breed.setName(externalPet.getBreeds().getAnimal());
 
 		for (String breedType : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
-			breed.setBreed(breedType);
+			breed.setAnimalType(breedType);
 			breeds.add(breed);
 			breed = new Breed();
 			// breedService.save(breeds);
@@ -188,14 +188,16 @@ public class DataBaseBackUpUtil {
 	private void copyPhotos(PetRecord pet, PetfinderPetRecord externalPet) {
 
 		Set<Photo> photos = new HashSet<Photo>();
+		Photo petRecordPhoto = new Photo();
 
 		for (PetPhotoType photo : externalPet.getMedia().getPhotos().getPhoto()) {
 
-			Photo petRecordPhoto = new Photo();
 			petRecordPhoto.setSize(photo.getSize());
 			petRecordPhoto.setUrl(photo.getValue());
+			petRecordPhoto.setPet(pet);
 			photos.add(petRecordPhoto);
 			// photoservice.save(photo);
+			petRecordPhoto = new Photo();
 		}
 		pet.setPhotos(photos);
 	}

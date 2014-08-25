@@ -110,8 +110,6 @@
 
 	</changeSet>
 
-	
-	
 	<changeSet id="schema-6" author="nthomas">
 
 		<createTable tableName="photo">
@@ -131,8 +129,6 @@
 		</createTable>
 
 	</changeSet>
-
-	
 
 	<changeSet id="schema-7" author="nthomas">
 
@@ -154,9 +150,7 @@
 		</createTable>
 
 	</changeSet>
-	
-	
-	
+		
 	<changeSet id="schema-8" author="nthomas">
 		<createTable tableName="pet_breed">
 			<column name="id" type="integer" autoIncrement="true">

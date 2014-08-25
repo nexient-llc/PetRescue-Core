@@ -24,8 +24,11 @@ public interface RemoteIdentifierRepository extends
 
 	List<RemoteIdentifier> findByLastUpdatedBefore(Date date);
 
-	List<RemoteIdentifier> findByLastUpdatedBetween(Date date, Date date2);
-
 	List<RemoteIdentifier> findByLastUpdatedLessThan(Date date);
+
+	List<RemoteIdentifier> findByPetAndLastUpdatedLessThan(PetRecord pet,
+			Date date);
+
+	List<RemoteIdentifier> findByLastUpdatedBetween(Date date, Date date2);
 
 }

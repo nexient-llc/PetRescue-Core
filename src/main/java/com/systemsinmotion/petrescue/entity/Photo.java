@@ -2,6 +2,7 @@ package com.systemsinmotion.petrescue.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -18,6 +19,13 @@ public class Photo extends AbstractPersistable<Integer> {
 	@Column(name = "url", length = 255, nullable = false)
 	private String url;
 
+	@JoinColumn(name = "pet_id")
+	private PetRecord pet;
+
+	public void setPet(PetRecord pet) {
+		this.pet = pet;
+	}
+
 	public String getSize() {
 		return size;
 	}
@@ -32,5 +40,9 @@ public class Photo extends AbstractPersistable<Integer> {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public PetRecord getPet() {
+		return pet;
 	}
 }

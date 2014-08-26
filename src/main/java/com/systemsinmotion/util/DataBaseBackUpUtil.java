@@ -71,11 +71,23 @@ public class DataBaseBackUpUtil {
 			petService.storeAllPets(convertToPetRecords(petFinderPets));
 		} else {
 			for (PetfinderPetRecord externalRecord : petFinderPets) {
+<<<<<<< HEAD
 				
 				RemoteIdentifier remoteIdentifer = 
 						remoteIdentifierService.findByRemoteId(String.valueOf(externalRecord.getId().intValue() ) );
 				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),remoteIdentifer.getLastUpdated())) {	
 					petService.storePetRecord(copyToPetRecord(new PetRecord(), externalRecord));					
+=======
+
+				RemoteIdentifier remoteIdentifer = remoteIdentifierService
+						.findByRemoteId(String.valueOf(externalRecord.getId()
+								.intValue()));
+
+				if (remoteIdentifer != null
+						&& timeStampCheck(externalRecord.getLastUpdate(),
+								remoteIdentifer.getLastUpdated())) {
+					petService.storePetRecord(null);
+>>>>>>> 4ff47d09b93a5b5b9dc721317efa6d6196d4c34c
 				}
 			}
 		}
@@ -87,24 +99,22 @@ public class DataBaseBackUpUtil {
 		return gregorianCalendar.toGregorianCalendar().after(date);
 	}
 
-	
-	
-	private List<PetRecord> convertToPetRecords(List<PetfinderPetRecord> externalPets){
+	private List<PetRecord> convertToPetRecords(
+			List<PetfinderPetRecord> externalPets) {
 		List<PetRecord> pets = new ArrayList<PetRecord>();
 		for (PetfinderPetRecord externalRecords : externalPets) {
-			pets.add(copyToPetRecord(new PetRecord(),externalRecords));
+			pets.add(copyToPetRecord(new PetRecord(), externalRecords));
 		}
 		return pets;
 	}
-	
-	//@formatter:on
+
+	// @formatter:on
 
 	private PetRecord copyToPetRecord(PetRecord pet,
 			PetfinderPetRecord externalPet) {
 
 		AnimalType animal = new AnimalType();
 		animal.setAnimalType(externalPet.getAnimal().value());
-
 		pet.setAgeType(AgeType.valueOf(externalPet.getAge().value()));
 		pet.setAnimal(animal);
 		pet.setBreeds(copyBreeds(externalPet));
@@ -127,7 +137,7 @@ public class DataBaseBackUpUtil {
 		Set<Breed> breeds = new HashSet<Breed>();
 		Breed breed = new Breed();
 		breed.setName(externalPet.getBreeds().getAnimal());
-
+		
 		for (String breedType : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
 			breed.setAnimalType(breedType);

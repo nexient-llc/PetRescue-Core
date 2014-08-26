@@ -22,6 +22,10 @@ public class Breed extends AbstractPersistable<Integer> {
 		return name;
 	}
 
+	public String getAnimalType() {
+		return this.animalType;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -30,7 +34,4 @@ public class Breed extends AbstractPersistable<Integer> {
 		this.animalType = animalType;
 	}
 
-	public String getAnimalType() {
-		return this.animalType;
-	}
 }

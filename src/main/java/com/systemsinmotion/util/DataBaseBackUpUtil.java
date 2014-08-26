@@ -74,9 +74,8 @@ public class DataBaseBackUpUtil {
 				
 				RemoteIdentifier remoteIdentifer = 
 						remoteIdentifierService.findByRemoteId(String.valueOf(externalRecord.getId().intValue() ) );
-				
 				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),remoteIdentifer.getLastUpdated())) {	
-					petService.storePetRecord(null);					
+					petService.storePetRecord(copyToPetRecord(new PetRecord(), externalRecord));					
 				}
 			}
 		}

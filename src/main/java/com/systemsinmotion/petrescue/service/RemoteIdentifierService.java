@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.systemsinmotion.petrescue.data.RemoteIdentifierRepository;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
+import com.systemsinmotion.petrescue.entity.type.ApiType;
 
 @Service("remoteIdentifierService")
 public class RemoteIdentifierService {
@@ -34,9 +35,8 @@ public class RemoteIdentifierService {
 		return this.remoteIdentifierRepository.findByRemoteId(id);
 	}
 
-	public List<RemoteIdentifier> findLastUpdatedBetweenDates(Date from,
-			Date to) {
-		return this.findLastUpdatedBetweenDates(from, to);
+	public List<RemoteIdentifier> findAllByAPIType(ApiType api) {
+		return this.remoteIdentifierRepository.findByApi(api);
 	}
 
 	public List<RemoteIdentifier> findLastUpdatedThatIsLessThan(Date date) {

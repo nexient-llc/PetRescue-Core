@@ -1,7 +1,7 @@
 package com.systemsinmotion.petrescue.entity.type;
 
 public enum GenderType {
-	M("Male"), F("Female");
+	M("Male"), F("Female"), UNKNOWN("Unknown");
 
 	public String description;
 
@@ -10,7 +10,7 @@ public enum GenderType {
 	}
 
 	public static GenderType byDescription(String description) {
-		GenderType genderType = null;
+		GenderType genderType = UNKNOWN;
 		for (GenderType type : GenderType.values()) {
 			if (type.description.equalsIgnoreCase(description)) {
 				genderType = type;

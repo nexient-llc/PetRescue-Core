@@ -41,13 +41,13 @@ public class DataBaseBackUpUtil {
 	PetService petService;
 
 	@Autowired
+	Environment environment;
+
+	@Autowired
 	PetFinderConsumer petFinderService;
 
 	@Autowired
 	RemoteIdentifierService remoteIdentifierService;
-
-	@Autowired
-	Environment environment;
 
 	@Bean
 	public DataBaseBackUpUtil dataBaseBackUpUtil() {
@@ -66,19 +66,11 @@ public class DataBaseBackUpUtil {
 		List<PetRecord> petRecordPets = petService.findAllPetRecords();
 		List<PetfinderPetRecord> petFinderPets = petFinderService.shelterPets(
 				null, null, null, null, null);
-
+ 
 		if (petRecordPets == null) {
 			petService.storeAllPets(convertToPetRecords(petFinderPets));
 		} else {
 			for (PetfinderPetRecord externalRecord : petFinderPets) {
-<<<<<<< HEAD
-				
-				RemoteIdentifier remoteIdentifer = 
-						remoteIdentifierService.findByRemoteId(String.valueOf(externalRecord.getId().intValue() ) );
-				if (remoteIdentifer != null && timeStampCheck(externalRecord.getLastUpdate(),remoteIdentifer.getLastUpdated())) {	
-					petService.storePetRecord(copyToPetRecord(new PetRecord(), externalRecord));					
-=======
-
 				RemoteIdentifier remoteIdentifer = remoteIdentifierService
 						.findByRemoteId(String.valueOf(externalRecord.getId()
 								.intValue()));
@@ -86,43 +78,39 @@ public class DataBaseBackUpUtil {
 				if (remoteIdentifer != null
 						&& timeStampCheck(externalRecord.getLastUpdate(),
 								remoteIdentifer.getLastUpdated())) {
-					petService.storePetRecord(null);
->>>>>>> 4ff47d09b93a5b5b9dc721317efa6d6196d4c34c
+					petService.storePetRecord( copyToPetRecord( new PetRecord(), externalRecord) );
 				}
 			}
 		}
 		return true;
 	}
 
-	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
-			Date date) {
-		return gregorianCalendar.toGregorianCalendar().after(date);
-	}
 
 	private List<PetRecord> convertToPetRecords(
-			List<PetfinderPetRecord> externalPets) {
+			final List<PetfinderPetRecord> externalPets) {
+		
 		List<PetRecord> pets = new ArrayList<PetRecord>();
+		
 		for (PetfinderPetRecord externalRecords : externalPets) {
 			pets.add(copyToPetRecord(new PetRecord(), externalRecords));
 		}
+		
 		return pets;
 	}
 
 	// @formatter:on
 
 	private PetRecord copyToPetRecord(PetRecord pet,
-			PetfinderPetRecord externalPet) {
+			final PetfinderPetRecord externalPet) {
 
-		AnimalType animal = new AnimalType();
-		animal.setAnimalType(externalPet.getAnimal().value());
-		pet.setAgeType(AgeType.valueOf(externalPet.getAge().value()));
-		pet.setAnimal(animal);
-		pet.setBreeds(copyBreeds(externalPet));
+		pet.setAnimal(copyAnimalType(externalPet));
 		pet.setName(externalPet.getName());
-		pet.setGender(GenderType.valueOf(externalPet.getSex().value()));
-		pet.setStatus(StatusType.valueOf(externalPet.getStatus().value()));
+		pet.setBreeds(copyBreeds(externalPet));
 		pet.setDescription(externalPet.getDescription());
-		pet.setSize(SizeType.valueOf(externalPet.getSize().value()));
+		pet.setSize(SizeType.byDescription(externalPet.getSize().value()));
+		pet.setAgeType(AgeType.byDescription(externalPet.getAge().value()));
+		pet.setGender(GenderType.byDescription(externalPet.getSex().value()));
+		pet.setStatus(StatusType.byDescription(externalPet.getStatus().value()));
 
 		copyOptions(pet, externalPet);
 		copyPhotos(pet, externalPet);
@@ -132,12 +120,19 @@ public class DataBaseBackUpUtil {
 
 	}
 
-	private Set<Breed> copyBreeds(PetfinderPetRecord externalPet) {
+	private AnimalType copyAnimalType(final PetfinderPetRecord externalPet) {
+		AnimalType animal = new AnimalType();
+		animal.setAnimalType(externalPet.getAnimal().value());
+		// call animalType service when created to save the animal
+		return animal;
+	}
+
+	private Set<Breed> copyBreeds(final PetfinderPetRecord externalPet) {
 
 		Set<Breed> breeds = new HashSet<Breed>();
 		Breed breed = new Breed();
 		breed.setName(externalPet.getBreeds().getAnimal());
-		
+
 		for (String breedType : externalPet.getBreeds().getBreed()) {
 			// service call for breeds table here when created
 			breed.setAnimalType(breedType);
@@ -148,7 +143,7 @@ public class DataBaseBackUpUtil {
 		return breeds;
 	}
 
-	private Location copyLocation(PetfinderPetRecord externalPet) {
+	private Location copyLocation(final PetfinderPetRecord externalPet) {
 
 		Location location = new Location();
 		PetContactType contract = externalPet.getContact();
@@ -166,7 +161,7 @@ public class DataBaseBackUpUtil {
 		return location;
 	}
 
-	private void copyOptions(PetRecord pet, PetfinderPetRecord externalPet) {
+	private void copyOptions(PetRecord pet, final PetfinderPetRecord externalPet) {
 
 		Options options = externalPet.getOptions();
 		List<PetOptionType> optionsList = options.getOption();
@@ -194,7 +189,7 @@ public class DataBaseBackUpUtil {
 	}
 
 	// mapped PetPhotoType property value to our url in case its wrong
-	private void copyPhotos(PetRecord pet, PetfinderPetRecord externalPet) {
+	private void copyPhotos(PetRecord pet, final PetfinderPetRecord externalPet) {
 
 		Set<Photo> photos = new HashSet<Photo>();
 		Photo petRecordPhoto = new Photo();
@@ -209,5 +204,10 @@ public class DataBaseBackUpUtil {
 			petRecordPhoto = new Photo();
 		}
 		pet.setPhotos(photos);
+	}
+
+	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
+			Date date) {
+		return gregorianCalendar.toGregorianCalendar().after(date);
 	}
 }

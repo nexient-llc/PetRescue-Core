@@ -1,7 +1,8 @@
 package com.systemsinmotion.petrescue.entity.type;
 
 public enum FormType {
-	CAT_ADOPTION("cat-adoption"), DOG_ADOPTION("dog-adoption"), VOLUNTEER("volunteer-application");
+	CAT_ADOPTION("cat-adoption"), DOG_ADOPTION("dog-adoption"), VOLUNTEER(
+			"volunteer-application"), UNKNOWN("Unknown");
 
 	private final String description;
 
@@ -10,7 +11,7 @@ public enum FormType {
 	}
 
 	public static FormType byDescription(String desc) {
-		FormType formType = null;
+		FormType formType = UNKNOWN;
 		for (FormType ft : FormType.values()) {
 			if (ft.description.equals(desc)) {
 				formType = ft;

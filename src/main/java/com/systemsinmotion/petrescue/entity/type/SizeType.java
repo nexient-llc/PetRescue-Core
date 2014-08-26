@@ -1,7 +1,7 @@
 package com.systemsinmotion.petrescue.entity.type;
 
 public enum SizeType {
-	S("Small"), M("Medium"), L("Large"), XL("XLarge");
+	S("Small"), M("Medium"), L("Large"), XL("XLarge"), UNKNOWN("Unknown");
 
 	public String description;
 
@@ -10,7 +10,7 @@ public enum SizeType {
 	}
 
 	public static SizeType byDescription(String description) {
-		SizeType sizeType = null;
+		SizeType sizeType = UNKNOWN;
 		for (SizeType type : SizeType.values()) {
 			if (type.description.equalsIgnoreCase(description)) {
 				sizeType = type;

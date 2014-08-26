@@ -1,6 +1,7 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -8,12 +9,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.systemsinmotion.petrescue.data.PetRepository;
+import com.systemsinmotion.petrescue.datamanager.PetManager;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
 
-public class PetServiceTest {
+public class PetManagerTest {
 	@InjectMocks
-	private PetService petService;
+	private PetManager petService;
 
 	@Mock
 	private PetRepository mockPetRepository;

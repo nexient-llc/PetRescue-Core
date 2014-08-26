@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import java.util.List;
 
@@ -10,28 +10,28 @@ import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
 
 @Service("petService")
-public class PetService {
+public class PetManager {
 	@Autowired
-	PetRepository repository;
+	PetRepository petRepository;
 
 	public List<PetRecord> findAllPetRecords() {
-		return this.repository.findAll();
+		return this.petRepository.findAll();
 	}
 
 	public List<PetRecord> findByStatus(StatusType status) {
-		return this.repository.findByStatus(status);
+		return this.petRepository.findByStatus(status);
 	}
 
 	public PetRecord findByID(Integer id) {
-		return this.repository.findOne(id);
+		return this.petRepository.findOne(id);
 	}
 
 	public PetRecord storePetRecord(PetRecord petRecord) {
-		return repository.saveAndFlush(petRecord);
+		return petRepository.saveAndFlush(petRecord);
 	}
 
 	public void removePetRecord(PetRecord petRecord) {
-		repository.delete(petRecord);
+		petRepository.delete(petRecord);
 	}
 
 	public void setPetRecordStatus(PetRecord petRecord, StatusType status) {
@@ -40,6 +40,6 @@ public class PetService {
 	}
 
 	public void storeAllPets(List<PetRecord> pets) {
-		this.repository.save(pets);
+		this.petRepository.save(pets);
 	}
 }

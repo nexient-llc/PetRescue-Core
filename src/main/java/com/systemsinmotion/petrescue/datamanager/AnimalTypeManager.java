@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.systemsinmotion.petrescue.data.AnimalTypeRepository;
 import com.systemsinmotion.petrescue.entity.AnimalType;
 
 @Service("animalTypeService")
-public class AnimalTypeService {
+public class AnimalTypeManager {
 
 	@Autowired
 	private AnimalTypeRepository animalTypeRepository;

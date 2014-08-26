@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import java.util.Date;
 import java.util.List;
@@ -13,14 +13,14 @@ import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
 import com.systemsinmotion.petrescue.entity.type.ApiType;
 
 @Service("remoteIdentifierService")
-public class RemoteIdentifierService {
+public class RemoteIdentifierManager {
 
 	@Autowired
 	RemoteIdentifierRepository remoteIdentifierRepository;
 
 	@Bean
-	public RemoteIdentifierService remoteIdentifierService() {
-		return new RemoteIdentifierService();
+	public RemoteIdentifierManager remoteIdentifierService() {
+		return new RemoteIdentifierManager();
 	}
 
 	public List<RemoteIdentifier> findAllRemoteIdentifiers() {

@@ -1,7 +1,6 @@
 package com.systemsinmotion.petrescue.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,11 +9,9 @@ import com.systemsinmotion.petrescue.entity.type.*;
 public class Entities {
 	static Random random = new Random();
 
-	// ****************************Pet Variables**********************************
 	public static final String PET_NAME = "Pet name" + random.nextInt();
 	public static final String PET_DESCRIPTION = "Pet description"
 			+ random.nextInt();
-	public static final Integer PET_ID = random.nextInt();
 	public static final Integer PET_AGE = random.nextInt();
 	public static final Boolean PET_DECLAWED = random.nextBoolean();
 	public static final Boolean PET_FIXED = random.nextBoolean();
@@ -37,30 +34,39 @@ public class Entities {
 	public static final SizeType[] sizeTypeList = SizeType.values();
 	public static final SizeType PET_SIZE_TYPE = sizeTypeList[random
 			.nextInt(sizeTypeList.length)];
-	// ***********************AnimalType Variables*****************************
-	public static final String ANIMALTYPE_NAME = "Animal type name" + random.nextInt();
-	// ************************Location Variables******************************
+
+	public static final String ANIMALTYPE_NAME = "Animal type name"
+			+ random.nextInt();
+
 	public static final String LOCATION_CONTACT_NAME = "loc contact name"
 			+ random.nextInt();
-	public static final String LOCATION_ADDRESS_1 = "loc first address" + random.nextInt();
-	public static final String LOCATION_ADDRESS_2 = "loc second address" + random.nextInt();
+	public static final String LOCATION_ADDRESS_1 = "loc first address"
+			+ random.nextInt();
+	public static final String LOCATION_ADDRESS_2 = "loc second address"
+			+ random.nextInt();
 	public static final String LOCATION_CITY = "loc city" + random.nextInt();
 	public static final String LOCATION_STATE_OR_PROVINCE = "loc state or province"
 			+ random.nextInt();
-	public static final String LOCATION_ZIP_CODE = "loc zip code" + random.nextInt();
-	public static final String LOCATION_COUNTRY = "loc country" + random.nextInt();
-	public static final String LOCATION_LATITUDE = "loc latitude" + random.nextInt();
-	public static final String LOCATION_LONGITUDE = "loc longitude" + random.nextInt();
+	public static final String LOCATION_ZIP_CODE = "loc zip code"
+			+ random.nextInt();
+	public static final String LOCATION_COUNTRY = "loc country"
+			+ random.nextInt();
+	public static final String LOCATION_LATITUDE = "loc latitude"
+			+ random.nextInt();
+	public static final String LOCATION_LONGITUDE = "loc longitude"
+			+ random.nextInt();
 	public static final String LOCATION_PHONE = "loc phone" + random.nextInt();
 	public static final String LOCATION_FAX = "loc fax" + random.nextInt();
 	public static final String LOCATION_EMAIL = "loc email" + random.nextInt();
-	public static final String LOCATION_DESCRIPTION = "loc description" + random.nextInt();
-	public static final Boolean LOCATION_ACCEPT_MORE_PETS = random.nextBoolean();
-	// ************************Breed Variables******************************
-	public static final String BREED_NAME=  "Breed name"+random.nextInt();
-	// ************************Photo Variables******************************
-	public static final String PHOTO_SIZE = "Photo size"+random.nextInt();
-	public static final String PHOTO_URL="Photo url"+random.nextInt();
+	public static final String LOCATION_DESCRIPTION = "loc description"
+			+ random.nextInt();
+	public static final Boolean LOCATION_ACCEPT_MORE_PETS = random
+			.nextBoolean();
+
+	public static final String BREED_NAME = "Breed name" + random.nextInt();
+
+	public static final String PHOTO_SIZE = "Photo size" + random.nextInt();
+	public static final String PHOTO_URL = "Photo url" + random.nextInt();
 
 	// ****************************Pet**********************************
 	public static PetRecord pet() {
@@ -88,7 +94,7 @@ public class Entities {
 
 	}
 
-	// ****************************Animal*********************************
+	// **************************Animal Type*******************************
 	public static AnimalType animalType() {
 		AnimalType animalType = new AnimalType();
 		animalType.setAnimalType(ANIMALTYPE_NAME);
@@ -120,7 +126,7 @@ public class Entities {
 		Breed breed = new Breed();
 		breed.setAnimalType(ANIMALTYPE_NAME);
 		breed.setName(BREED_NAME);
-		
+
 		Set<Breed> breeds = new HashSet<Breed>();
 		breeds.add(breed);
 		return breeds;
@@ -130,7 +136,8 @@ public class Entities {
 	public static Set<Photo> photos() {
 		Photo photo = new Photo();
 		photo.setSize(PHOTO_SIZE);
-		photo.setUrl(PHOTO_URL);		
+		photo.setUrl(PHOTO_URL);
+		
 		Set<Photo> photos = new HashSet<Photo>();
 		photos.add(photo);
 		return photos;

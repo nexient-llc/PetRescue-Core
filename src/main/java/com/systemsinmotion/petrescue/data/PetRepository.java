@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
 
-@Repository("repository")
+@Repository("petRepository")
 public interface PetRepository extends JpaRepository<PetRecord, Integer> {
 
 	List<PetRecord> findByStatus(StatusType status);

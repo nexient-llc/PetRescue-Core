@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import static org.mockito.Mockito.verify;
 
@@ -11,14 +11,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.systemsinmotion.petrescue.data.RemoteIdentifierRepository;
+import com.systemsinmotion.petrescue.datamanager.RemoteIdentifierManager;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
 import com.systemsinmotion.petrescue.entity.type.ApiType;
 
-public class RemoteIdentifierServiceTest {
+public class RemoteIdentifierManagerTest {
 
 	@InjectMocks
-	private RemoteIdentifierService remoteIdentifierService;
+	private RemoteIdentifierManager remoteIdentifierManager;
 
 	@Mock
 	private RemoteIdentifierRepository remoteIdentifierRepository;
@@ -40,49 +41,49 @@ public class RemoteIdentifierServiceTest {
 	@Test
 	public void findAllRemoteIdentifiersTest() {
 
-		remoteIdentifierService.findAllRemoteIdentifiers();
+		remoteIdentifierManager.findAllRemoteIdentifiers();
 		verify(remoteIdentifierRepository).findAll();
 	}
 
 	@Test
 	public void findPetByIdTest() {
 
-		remoteIdentifierService.findPetById(petRecord);
+		remoteIdentifierManager.findPetById(petRecord);
 		verify(remoteIdentifierRepository).findByPet(petRecord);
 	}
 
 	@Test
 	public void findByRemoteIdTest() {
 
-		remoteIdentifierService.findByRemoteId(petRecord.getName());
+		remoteIdentifierManager.findByRemoteId(petRecord.getName());
 		verify(remoteIdentifierRepository).findByRemoteId(petRecord.getName());
 	}
 
 	@Test
 	public void findLastUpdatedBetweenDatesTest() {
 
-		remoteIdentifierService.findLastUpdatedThatIsLessThan(date);
+		remoteIdentifierManager.findLastUpdatedThatIsLessThan(date);
 		verify(remoteIdentifierRepository).findByLastUpdatedLessThan(date);
 	}
 
 	@Test
 	public void findByLastUpdatedBeforeTest() {
 
-		remoteIdentifierService.findAllLastUpdatedThatIsBefore(date);
+		remoteIdentifierManager.findAllLastUpdatedThatIsBefore(date);
 		verify(remoteIdentifierRepository).findByLastUpdatedBefore(date);
 	}
 
 	@Test
 	public void findAllLastUpdatedThatIsAfterTest() {
 
-		remoteIdentifierService.findAllLastUpdatedThatIsAfter(date);
+		remoteIdentifierManager.findAllLastUpdatedThatIsAfter(date);
 		verify(remoteIdentifierRepository).findByLastUpdatedAfter(date);
 	}
 
 	@Test
 	public void findByApiTest() {
 
-		remoteIdentifierService.findAllByAPIType(ApiType.PF);
+		remoteIdentifierManager.findAllByAPIType(ApiType.PF);
 		verify(remoteIdentifierRepository).findByApi(ApiType.PF);
 	}
 

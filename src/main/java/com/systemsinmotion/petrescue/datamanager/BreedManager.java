@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.systemsinmotion.petrescue.data.BreedRepository;
 import com.systemsinmotion.petrescue.entity.Breed;
 
-@Service("breedService")
+@Service("breedManager")
 public class BreedManager {
 	@Autowired
 	BreedRepository breedRepository;

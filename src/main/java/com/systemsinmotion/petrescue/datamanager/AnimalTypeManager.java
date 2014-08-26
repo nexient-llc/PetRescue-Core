@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.systemsinmotion.petrescue.data.AnimalTypeRepository;
 import com.systemsinmotion.petrescue.entity.AnimalType;
 
-@Service("animalTypeService")
+@Service("animalTypeManager")
 public class AnimalTypeManager {
 
 	@Autowired

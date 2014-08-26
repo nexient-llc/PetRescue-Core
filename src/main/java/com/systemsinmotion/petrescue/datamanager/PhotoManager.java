@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.systemsinmotion.petrescue.data.PhotoRepository;
 
-@Service("photoService")
+@Service("photoManager")
 public class PhotoManager {
 	@Autowired
-	PhotoRepository repository;
+	PhotoRepository photoRepository;
 
 }

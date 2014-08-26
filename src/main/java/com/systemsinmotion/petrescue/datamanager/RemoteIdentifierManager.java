@@ -12,7 +12,7 @@ import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.RemoteIdentifier;
 import com.systemsinmotion.petrescue.entity.type.ApiType;
 
-@Service("remoteIdentifierService")
+@Service("remoteIdentifierManager")
 public class RemoteIdentifierManager {
 
 	@Autowired

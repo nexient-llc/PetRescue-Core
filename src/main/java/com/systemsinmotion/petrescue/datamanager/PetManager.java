@@ -9,7 +9,7 @@ import com.systemsinmotion.petrescue.data.PetRepository;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
 
-@Service("petService")
+@Service("petManager")
 public class PetManager {
 	@Autowired
 	PetRepository petRepository;

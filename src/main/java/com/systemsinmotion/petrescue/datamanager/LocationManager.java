@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.systemsinmotion.petrescue.data.LocationRepository;
 
-@Service("locationService")
+@Service("locationManager")
 public class LocationManager {
 	@Autowired
-	LocationRepository repository;
+	LocationRepository locationRepository;
 
 }

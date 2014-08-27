@@ -14,7 +14,6 @@ import org.petfinder.entity.PetPhotoType;
 import org.petfinder.entity.PetfinderPetRecord;
 import org.petfinder.entity.PetfinderPetRecord.Options;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -37,6 +36,8 @@ import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 @PropertySource("classpath:/backup.properties")
 public class DataBaseBackUpUtil {
 
+	private static final String DEFAULT_CRON_INTERVAL = "00 00 * * *";
+
 	@Autowired
 	PetService petService;
 
@@ -49,59 +50,44 @@ public class DataBaseBackUpUtil {
 	@Autowired
 	RemoteIdentifierService remoteIdentifierService;
 
-	@Bean
-	public DataBaseBackUpUtil dataBaseBackUpUtil() {
-		return new DataBaseBackUpUtil();
-	}
-
 	public String getCronProperty() {
 
-		return this.environment.getProperty("backup.cron.intervolve",
-				"00 00 * * *");
+		return this.environment.getProperty("backup.cron.intervolve", DEFAULT_CRON_INTERVAL);
 	}
 
-	// @formatter:off
 	public boolean updateDataBase() {
 
 		List<PetRecord> petRecordPets = petService.findAllPetRecords();
-		List<PetfinderPetRecord> petFinderPets = petFinderService.shelterPets(
-				null, null, null, null, null);
- 
+		List<PetfinderPetRecord> petFinderPets = petFinderService.shelterPets(null, null, null, null, null);
+
 		if (petRecordPets == null) {
 			petService.storeAllPets(convertToPetRecords(petFinderPets));
 		} else {
-			for (PetfinderPetRecord externalRecord : petFinderPets) {
-				RemoteIdentifier remoteIdentifer = remoteIdentifierService
-						.findByRemoteId(String.valueOf(externalRecord.getId()
-								.intValue()));
+			for (PetfinderPetRecord petFinderRecord : petFinderPets) {
+				RemoteIdentifier remoteIdentifer = remoteIdentifierService.findByRemoteId(petFinderRecord.getId()
+						.toString(10));
 
 				if (remoteIdentifer != null
-						&& timeStampCheck(externalRecord.getLastUpdate(),
-								remoteIdentifer.getLastUpdated())) {
-					petService.storePetRecord( copyToPetRecord( new PetRecord(), externalRecord) );
+						&& isPetRecordOutdated(petFinderRecord.getLastUpdate(), remoteIdentifer.getLastUpdated())) {
+					petService.storePetRecord(copyToPetRecord(new PetRecord(), petFinderRecord));
 				}
 			}
 		}
 		return true;
 	}
 
+	private List<PetRecord> convertToPetRecords(final List<PetfinderPetRecord> externalPets) {
 
-	private List<PetRecord> convertToPetRecords(
-			final List<PetfinderPetRecord> externalPets) {
-		
 		List<PetRecord> pets = new ArrayList<PetRecord>();
-		
+
 		for (PetfinderPetRecord externalRecords : externalPets) {
 			pets.add(copyToPetRecord(new PetRecord(), externalRecords));
 		}
-		
+
 		return pets;
 	}
 
-	// @formatter:on
-
-	private PetRecord copyToPetRecord(PetRecord pet,
-			final PetfinderPetRecord externalPet) {
+	private PetRecord copyToPetRecord(PetRecord pet, final PetfinderPetRecord externalPet) {
 
 		pet.setAnimal(copyAnimalType(externalPet));
 		pet.setName(externalPet.getName());
@@ -113,7 +99,7 @@ public class DataBaseBackUpUtil {
 		pet.setStatus(StatusType.byDescription(externalPet.getStatus().value()));
 
 		copyOptions(pet, externalPet);
-		copyPhotos(pet, externalPet);
+		copyPetFinderPhotosToPetRecord(pet, externalPet);
 		pet.setLocation(copyLocation(externalPet));
 
 		return pet;
@@ -167,29 +153,36 @@ public class DataBaseBackUpUtil {
 		List<PetOptionType> optionsList = options.getOption();
 
 		for (PetOptionType petOptionType : optionsList) {
-			if (petOptionType == PetOptionType.ALTERED) {
-				pet.setFixed(true);
-			} else if (petOptionType == PetOptionType.HAS_SHOTS) {
-				pet.setVaccinated(true);
-			} else if (petOptionType == PetOptionType.HOUSEBROKEN) {
-				pet.setHousebroken(true);
-			} else if (petOptionType == PetOptionType.NO_CATS) {
-				pet.setNoCats(true);
-			} else if (petOptionType == PetOptionType.NO_DOGS) {
-				pet.setNoDogs(true);
-			} else if (petOptionType == PetOptionType.NO_DOGS) {
-				pet.setNoDogs(true);
-			} else if (petOptionType == PetOptionType.NO_KIDS) {
-				pet.setNoKids(true);
-			} else {
-				pet.setSpecialNeeds(true);
+			switch (petOptionType) {
+				case ALTERED:
+					pet.setFixed(true);
+					break;
+				case HAS_SHOTS:
+					pet.setVaccinated(true);
+					break;
+				case HOUSEBROKEN:
+					pet.setHousebroken(true);
+					break;
+				case NO_CATS:
+					pet.setNoCats(true);
+					break;
+				case NO_DOGS:
+					pet.setNoDogs(true);
+					break;
+				case NO_KIDS:
+					pet.setNoKids(true);
+					break;
+				case NO_CLAWS:
+					pet.setDeclawed(true);
+					break;
+				default:
+					break;
 			}
 		}
-
 	}
 
 	// mapped PetPhotoType property value to our url in case its wrong
-	private void copyPhotos(PetRecord pet, final PetfinderPetRecord externalPet) {
+	private void copyPetFinderPhotosToPetRecord(PetRecord pet, final PetfinderPetRecord externalPet) {
 
 		Set<Photo> photos = new HashSet<Photo>();
 		Photo petRecordPhoto = new Photo();
@@ -206,8 +199,7 @@ public class DataBaseBackUpUtil {
 		pet.setPhotos(photos);
 	}
 
-	private boolean timeStampCheck(XMLGregorianCalendar gregorianCalendar,
-			Date date) {
-		return gregorianCalendar.toGregorianCalendar().after(date);
+	private boolean isPetRecordOutdated(XMLGregorianCalendar petFinderLastUpdated, Date remoteIdentifierLastUpdated) {
+		return petFinderLastUpdated.toGregorianCalendar().after(remoteIdentifierLastUpdated);
 	}
 }

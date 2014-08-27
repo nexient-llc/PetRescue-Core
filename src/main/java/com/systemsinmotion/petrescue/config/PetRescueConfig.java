@@ -33,8 +33,7 @@ public class PetRescueConfig {
 	public static VelocityEngine velocityEngine() {
 		VelocityEngine velocityEngine = new VelocityEngine();
 		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "class");
-		velocityEngine.setProperty("class.resource.loader.class",
-				ClasspathResourceLoader.class.getName());
+		velocityEngine.setProperty("class.resource.loader.class", ClasspathResourceLoader.class.getName());
 		velocityEngine.init();
 		return velocityEngine;
 	}
@@ -74,4 +73,5 @@ public class PetRescueConfig {
 	public PlatformTransactionManager transactionManager() {
 		return new JpaTransactionManager();
 	}
+
 }

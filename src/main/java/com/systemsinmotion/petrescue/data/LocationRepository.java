@@ -8,4 +8,8 @@ import com.systemsinmotion.petrescue.entity.Location;
 @Repository("locationRepository")
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 
+	Location findByContactName(String contactName);
+
+	Location findByAddress1(String address);
+
 }

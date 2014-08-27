@@ -34,7 +34,7 @@ public class RemoteIdentifierManagerTest {
 	private Date date;
 
 	@Before
-	public void init() {
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 

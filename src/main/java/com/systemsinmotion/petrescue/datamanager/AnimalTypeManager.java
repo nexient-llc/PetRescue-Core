@@ -12,22 +12,28 @@ import com.systemsinmotion.petrescue.entity.AnimalType;
 public class AnimalTypeManager {
 
 	@Autowired
-	private AnimalTypeRepository animalTypeRepository;
-
-	public void saveAnimalType(AnimalType animalType) {
-		this.animalTypeRepository.save(animalType);
-	}
+	private 
+	AnimalTypeRepository animalTypeRepository;
 
 	public AnimalType findAnimalTypeById(Integer id) {
 		return this.animalTypeRepository.findOne(id);
 	}
 
-	public List<AnimalType> findAllByAnimalType(String animalType) {
-		return this.animalTypeRepository.findByAnimalType(animalType);
+	public AnimalType findAnimalTypeByName(String name) {
+		return this.animalTypeRepository.findByName(name);
 	}
 
-	public List<AnimalType> findAllLikeThisAnimalType(String animalType) {
-		return this.animalTypeRepository.findByAnimalTypeLike(animalType);
+	public List<AnimalType> findAll() {
+		return this.animalTypeRepository.findAll();
+	}
+	
+	public AnimalType storeAnimalType(AnimalType animalType) {
+		return this.animalTypeRepository.saveAndFlush(animalType);
+	}
+
+	public void removeAnimalType(AnimalType animalType) {
+		this.animalTypeRepository.delete(animalType);
+		
 	}
 
 }

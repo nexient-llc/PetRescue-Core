@@ -16,7 +16,7 @@ import com.systemsinmotion.petrescue.entity.Breed;
 
 
 public class BreedManagerTest {
-	Random random = new Random();
+	Random random;
 	
 	@InjectMocks
 	private BreedManager breedService;
@@ -28,15 +28,16 @@ public class BreedManagerTest {
 	private BreedRepository mockBreedRepository;
 	
 	@Before
-	public void intialize(){
+	public void setUp(){
+		random = new Random();
 		MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test
-	public void findAllBreedsByAnimalType() throws Exception {
-		String animalType = mockBreed.getAnimalType();
-		breedService.findAllBreedsByAnimalType(animalType);
-		verify(mockBreedRepository).findAllBreedsByAnimalType(animalType);
+	public void findAllBreedsByAnimalTypeName() throws Exception {
+		String animalTypeName = mockBreed.getAnimalType();
+		breedService.findAllBreedsByAnimalTypeName(animalTypeName);
+		verify(mockBreedRepository).findAllBreedsByAnimalType(animalTypeName);
 	}
 
 	@Test

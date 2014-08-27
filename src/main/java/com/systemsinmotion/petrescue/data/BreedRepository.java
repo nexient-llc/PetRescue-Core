@@ -10,6 +10,6 @@ import com.systemsinmotion.petrescue.entity.Breed;
 @Repository("breedRepository")
 public interface BreedRepository extends JpaRepository<Breed, Integer> {
 
-	List<Breed> findAllBreedsByAnimalType(String animalType);
+	List<Breed> findAllBreedsByAnimalType(String animalTypeName);
 
 }

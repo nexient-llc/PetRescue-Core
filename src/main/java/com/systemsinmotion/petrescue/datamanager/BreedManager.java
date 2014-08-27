@@ -13,8 +13,8 @@ public class BreedManager {
 	@Autowired
 	BreedRepository breedRepository;
 
-	public List<Breed> findAllBreedsByAnimalType(String animalType) {
-		return this.breedRepository.findAllBreedsByAnimalType(animalType);
+	public List<Breed> findAllBreedsByAnimalTypeName(String animalTypeName) {
+		return this.breedRepository.findAllBreedsByAnimalType(animalTypeName);
 	}
 
 	public Breed findById(int id) {
@@ -26,7 +26,7 @@ public class BreedManager {
 	}
 
 	public Breed storeBreed(Breed breed) {
-		return breedRepository.saveAndFlush(breed);
+		return this.breedRepository.saveAndFlush(breed);
 	}
 
 	public void removeBreed(Breed breed) {

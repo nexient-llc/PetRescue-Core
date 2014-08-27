@@ -20,10 +20,10 @@ public class Photo extends AbstractPersistable<Integer> {
 	private String url;
 
 	@JoinColumn(name = "pet_id")
-	private PetRecord pet;
+	private int petId;
 
-	public void setPet(PetRecord pet) {
-		this.pet = pet;
+	public void setPet(int petId) {
+		this.petId = petId;
 	}
 
 	public String getSize() {
@@ -42,7 +42,7 @@ public class Photo extends AbstractPersistable<Integer> {
 		this.url = url;
 	}
 
-	public PetRecord getPet() {
-		return pet;
+	public int getPet() {
+		return this.petId;
 	}
 }

@@ -18,6 +18,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.systemsinmotion.petrescue.datamanager.PetManager;
+import com.systemsinmotion.petrescue.datamanager.RemoteIdentifierManager;
 import com.systemsinmotion.petrescue.entity.AnimalType;
 import com.systemsinmotion.petrescue.entity.Breed;
 import com.systemsinmotion.petrescue.entity.Location;
@@ -28,8 +30,6 @@ import com.systemsinmotion.petrescue.entity.type.AgeType;
 import com.systemsinmotion.petrescue.entity.type.GenderType;
 import com.systemsinmotion.petrescue.entity.type.SizeType;
 import com.systemsinmotion.petrescue.entity.type.StatusType;
-import com.systemsinmotion.petrescue.service.PetService;
-import com.systemsinmotion.petrescue.service.RemoteIdentifierService;
 import com.systemsinmotion.petrescue.web.PetFinderConsumer;
 
 @Component
@@ -39,16 +39,20 @@ public class DataBaseBackUpUtil {
 	private static final String DEFAULT_CRON_INTERVAL = "00 00 * * *";
 
 	@Autowired
-	PetService petService;
+	PetManager petService;
 
 	@Autowired
 	Environment environment;
 
 	@Autowired
 	PetFinderConsumer petFinderService;
-
+	
 	@Autowired
-	RemoteIdentifierService remoteIdentifierService;
+	RemoteIdentifierManager remoteIdentifierService;
+
+
+
+
 
 	public String getCronProperty() {
 
@@ -191,7 +195,7 @@ public class DataBaseBackUpUtil {
 
 			petRecordPhoto.setSize(photo.getSize());
 			petRecordPhoto.setUrl(photo.getValue());
-			petRecordPhoto.setPet(pet);
+			petRecordPhoto.setPet(pet.getId());
 			photos.add(petRecordPhoto);
 			// photoservice.save(photo);
 			petRecordPhoto = new Photo();

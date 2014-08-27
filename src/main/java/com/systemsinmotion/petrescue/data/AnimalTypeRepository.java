@@ -10,12 +10,10 @@ import com.systemsinmotion.petrescue.entity.AnimalType;
 //@formatter:off
 @Repository("animalTypeRepository")
 public interface AnimalTypeRepository extends JpaRepository<AnimalType, Integer> {
-
 	
 	public List<AnimalType> findByAnimalType(String animalType);
 	
 	public List<AnimalType> findByAnimalTypeLike(String animalType);
-	
 	
 }
 // @formatter:on

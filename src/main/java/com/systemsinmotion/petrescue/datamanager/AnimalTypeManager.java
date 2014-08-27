@@ -1,4 +1,4 @@
-package com.systemsinmotion.petrescue.service;
+package com.systemsinmotion.petrescue.datamanager;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.systemsinmotion.petrescue.data.AnimalTypeRepository;
 import com.systemsinmotion.petrescue.entity.AnimalType;
 
-@Service("animalTypeService")
-public class AnimalTypeService {
+@Service("animalTypeManager")
+public class AnimalTypeManager {
 
 	@Autowired
 	private AnimalTypeRepository animalTypeRepository;

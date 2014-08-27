@@ -14,6 +14,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.systemsinmotion.petrescue.config.PetRescueConfig;
+import com.systemsinmotion.petrescue.entity.Entities;
+import com.systemsinmotion.petrescue.entity.Location;
 import com.systemsinmotion.petrescue.entity.PetRecord;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,8 +27,20 @@ public class PetRepositoryTest {
 	@Autowired
 	PetRepository repository;
 	
+	
+	private PetRecord petRecord;
+	private Location location;
+	
+	
 	@Before
 	public void init() {
+//		location = Entities.location();
+//		locationRepo.save(location);
+//		
+//		petRecord = Entities.pet();
+//		petRecord.setLocation(location);
+//		
+//		repository.saveAndFlush(Entities.pet());
 	}
 	
 	@Test

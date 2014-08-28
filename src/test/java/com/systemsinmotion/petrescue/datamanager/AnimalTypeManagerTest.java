@@ -37,7 +37,7 @@ public class AnimalTypeManagerTest {
 	@Test
 	public void testFindAnimalTypeByName() throws Exception {
 		animalTypeManager.findAnimalTypeByName("");
-		verify(mockAnimalTypeRepository).findByName("");
+		verify(mockAnimalTypeRepository).findByAnimalType("");
 	}
 	
 	@Test

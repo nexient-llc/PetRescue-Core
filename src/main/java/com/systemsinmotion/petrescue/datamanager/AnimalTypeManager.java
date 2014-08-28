@@ -20,7 +20,7 @@ public class AnimalTypeManager {
 	}
 
 	public AnimalType findAnimalTypeByName(String name) {
-		return this.animalTypeRepository.findByName(name);
+		return this.animalTypeRepository.findByAnimalType(name);
 	}
 
 	public List<AnimalType> findAll() {

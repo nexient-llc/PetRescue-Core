@@ -41,7 +41,7 @@ public class BreedManagerTest {
 	}
 
 	@Test
-	public void findById() throws Exception {
+	public void findBreedById() throws Exception {
 		int id = random.nextInt();
 		breedService.findById(id);
 		verify(mockBreedRepository).findOne(id);

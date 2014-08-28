@@ -3,6 +3,8 @@ package com.systemsinmotion.petrescue.datamanager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +15,8 @@ import com.systemsinmotion.petrescue.data.LocationRepository;
 import com.systemsinmotion.petrescue.entity.Location;
 
 public class LocationManagerTest {
+	int id;
+	Random random;
 	@InjectMocks
 	LocationManager locationManager;
 	
@@ -25,20 +29,21 @@ public class LocationManagerTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
+		random = new Random();
+		id = random.nextInt();
 	}
 
 	@Test
-	public void testFindAll() throws Exception {
-		locationManager.findAll();
-		verify(mockLocationRepository).findAll();
-	}
+		public void testFindAllLocations() throws Exception {
+			locationManager.findAllLocations();
+			verify(mockLocationRepository).findAll();
+		}
 	
 	@Test
-	public void testFindById() throws Exception {
-		int id = 0;
-		locationManager.findById(id);
-		verify(mockLocationRepository).findOne(id);
-	}
+		public void testFindLocationById() throws Exception {
+			locationManager.findLocationById(id);
+			verify(mockLocationRepository).findOne(id);
+		}
 	
 	@Test
 	public void testFindByContactName() throws Exception {

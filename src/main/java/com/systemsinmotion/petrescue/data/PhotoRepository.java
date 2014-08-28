@@ -8,4 +8,6 @@ import com.systemsinmotion.petrescue.entity.Photo;
 @Repository("photoRepository")
 public interface PhotoRepository extends JpaRepository<Photo, Integer> {
 
+	void findByPetId(int id);
+
 }

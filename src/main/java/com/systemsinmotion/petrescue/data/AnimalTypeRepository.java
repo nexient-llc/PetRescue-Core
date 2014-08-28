@@ -8,6 +8,6 @@ import com.systemsinmotion.petrescue.entity.AnimalType;
 @Repository("animalTypeRepository")
 public interface AnimalTypeRepository extends JpaRepository<AnimalType, Integer> {
 	
-	public AnimalType findByName(String animalType);
+	public AnimalType findByAnimalType(String animalTypeName);
 	
 }

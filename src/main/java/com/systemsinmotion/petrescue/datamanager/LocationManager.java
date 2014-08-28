@@ -15,11 +15,11 @@ LocationManager {
 	@Autowired
 	LocationRepository locationRepository;
 
-	public List<Location> findAll() {
+	public List<Location> findAllLocations() {
 		return locationRepository.findAll();
 	}
 
-	public Location findById(int id) {
+	public Location findLocationById(int id) {
 		return locationRepository.findOne(id);
 	}
 

@@ -14,32 +14,23 @@ public class PhotoManager {
 	PhotoRepository photoRepository;
 
 	public Photo findPhotoById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-		
+		return photoRepository.findOne(id);
 	}
 
 	public List<Photo> findAllPhotos() {
-		// TODO Auto-generated method stub
-		return null;
-		
+		return photoRepository.findAll();
 	}
 
 	public List<Photo> findPhotosByPetId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-		
+		return photoRepository.findByPetId(id);
 	}
 
 	public Photo storePhoto(Photo photo) {
-		// TODO Auto-generated method stub
-		return null;
-		
+		return photoRepository.saveAndFlush(photo);
 	}
 
 	public void removePhoto(Photo photo) {
-		// TODO Auto-generated method stub
-		
+		photoRepository.delete(photo);
 	}
 
 }

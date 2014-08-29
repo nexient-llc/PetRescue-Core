@@ -18,11 +18,6 @@ public class RemoteIdentifierManager {
 	@Autowired
 	RemoteIdentifierRepository remoteIdentifierRepository;
 
-	@Bean
-	public RemoteIdentifierManager remoteIdentifierService() {
-		return new RemoteIdentifierManager();
-	}
-
 	public List<RemoteIdentifier> findAllRemoteIdentifiers() {
 		return this.remoteIdentifierRepository.findAll();
 	}
@@ -50,6 +45,11 @@ public class RemoteIdentifierManager {
 
 	public List<RemoteIdentifier> findAllLastUpdatedThatIsBefore(Date date) {
 		return this.remoteIdentifierRepository.findByLastUpdatedBefore(date);
+	}
+
+	public void storeRemoteIdentifier(List<? extends RemoteIdentifier> remoteIdentifiersRecords) {
+		this.remoteIdentifierRepository.save(remoteIdentifiersRecords);
+
 	}
 
 }

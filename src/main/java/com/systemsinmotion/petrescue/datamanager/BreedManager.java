@@ -33,4 +33,14 @@ public class BreedManager {
 		breedRepository.delete(breed);
 	}
 
+	public void storeBreed(List<? extends Breed> breeds) {
+		this.breedRepository.save(breeds);
+
+	}
+
+	public Breed findBreedByName(String typeOfBreed) {
+
+		return this.breedRepository.findByName(typeOfBreed);
+	}
+
 }

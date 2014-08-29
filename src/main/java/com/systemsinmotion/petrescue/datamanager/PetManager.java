@@ -39,7 +39,8 @@ public class PetManager {
 		storePetRecord(petRecord);
 	}
 
-	public void storeAllPets(List<PetRecord> pets) {
-		this.petRepository.save(pets);
+	public void storeAllPets(List<? extends PetRecord> petRecords) {
+		this.petRepository.save(petRecords);
+
 	}
 }

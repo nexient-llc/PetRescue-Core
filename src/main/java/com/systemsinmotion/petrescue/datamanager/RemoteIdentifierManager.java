@@ -52,4 +52,9 @@ public class RemoteIdentifierManager {
 		return this.remoteIdentifierRepository.findByLastUpdatedBefore(date);
 	}
 
+	public void storeRemoteIdentifier(List<? extends RemoteIdentifier> remoteIdentifiersRecords) {
+		this.remoteIdentifierRepository.save(remoteIdentifiersRecords);
+
+	}
+
 }

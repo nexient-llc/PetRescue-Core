@@ -7,14 +7,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -29,8 +27,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.StringUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.systemsinmotion.petrescue.web.bean.AdoptionApplication;
 
 @Component("emailManager")
@@ -44,64 +40,97 @@ public class MailManager {
 	private static final String SUBJECT_LAST_NAME = "[lastName]";
 	private static final String SUBJECT_PET_NAME = "[petName]";
 
-	@Value("${shelter.email.from}")
-	private String from;
-
-	@Value("${shelter.email.host}")
-	private String host;
-
-	@Value("${shelter.email.password}")
-	private String password;
-
-	@Value("#{'${shelter.email.recipients}'.split(';')}")
-	private String[] shelterRecipients;
-
-	@Value("#{'${shelter.email.dog.recipients}'.split(';')}")
-	private String[] shelterDogRecipients;
-
-	@Value("#{'${shelter.email.cat.recipients}'.split(';')}")
-	private String[] shelterCatRecipients;
-
 	@Value("#{'${admin.email.recipients}'.split(';')}")
 	private String[] adminRecipients;
+	@Value("${adoption.email.from}")
+	private String adoptionFrom;
 
-	@Value("${shelter.email.subject}")
-	private String subject;
+	@Value("${adoption.email.subject}")
+	private String adoptionSubject;
 
-	@Value("${shelter.email.username}")
-	private String username;
+	@Value("${exception.email.from}")
+	private String exceptionFrom;
+
+	@Value("${exception.email.subject}")
+	private String exceptionSubject;
+
+	@Value("${admin.email.host}")
+	private String host;
+
+	private Properties mailProperties;
+
+	private Session mailSession;
+
+	@Value("${admin.email.password}")
+	private String password;
+
+	@Value("#{'${adoption.email.cat.recipients}'.split(';')}")
+	private String[] shelterCatRecipients;
+
+	@Value("#{'${adoption.email.dog.recipients}'.split(';')}")
+	private String[] shelterDogRecipients;
 
 	@Value("${shelter.name.full}")
-	private String sheltername;
+	private String shelterNameFull;
 
-	@Value("${shelter.name.abv}")
-	private String shelterabv;
+	@Value("${shelter.name.short}")
+	private String shelterNameShort;
+
+	@Value("${admin.email.username}")
+	private String username;
 
 	@Autowired
 	private VelocityEngine velocityEngine;
 
-	protected void addRecipients(MimeMessage message, AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException, AddressException {
-		String[] recipients = {};
-		if (StringUtils.hasText(application.getEmail()) && application.getEmail().equals(adminRecipients[0])) {
-			recipients = new String[] {adminRecipients[0]};
-		} else if (pet != null && pet.getAnimal() == AnimalType.CAT) {
-			recipients = this.shelterCatRecipients;
-		} else if (pet != null && pet.getAnimal() == AnimalType.DOG) {
-			recipients = this.shelterDogRecipients;
-		} else {
-			recipients = this.shelterRecipients;
-		}
-		for (String recipient : recipients) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-		}
+	@PostConstruct
+	private void init() {
+		this.mailProperties = createMailProperties();
+		this.mailSession = createMailSession();
 	}
 
-	protected void addSubject(MimeMessage message, AdoptionApplication application) throws MessagingException {
-		String subject = this.subject;
+	public void sendAdoptionApplication(AdoptionApplication application, PetfinderPetRecord pet)
+			throws MessagingException {
+		logger.debug("Received application to be emailed.");
+
+		String[] recipients = determineAdoptionRecipients(application, pet.getAnimal());
+
+		MailMessage message = new AdoptionMailMessage(this.mailSession);
+		message.setSubject(this.buildAdoptionSubject(application));
+		message.addRecipients(recipients);
+		message.setFrom(new InternetAddress(this.adoptionFrom));
+
+		setAdoptionMailContent(application, pet, message);
+		Transport.send(message);
+	}
+
+	public void sendErrorEmail(Exception e, String path) throws MessagingException {
+		logger.info("Application exception has occured.  Sending message to the admin.");
+		Date time = Calendar.getInstance().getTime();
+
+		MailMessage message = new ExceptionMailMessage(this.mailSession);
+		message.addRecipients(this.adminRecipients);
+		message.setFrom(new InternetAddress(this.exceptionFrom));
+		message.setSubject(this.exceptionSubject + " - " + time);
+		message.setText(this.buildExceptionMessageText(e, path));
+		Transport.send(message);
+	}
+
+	protected String buildAdoptionSubject(AdoptionApplication application) throws MessagingException {
+		String subject = this.adoptionSubject;
 		subject = subject.replace(SUBJECT_FIRST_NAME, application.getFirstName());
 		subject = subject.replace(SUBJECT_LAST_NAME, application.getLastName());
 		subject = subject.replace(SUBJECT_PET_NAME, application.getPetName());
-		message.setSubject(subject);
+		return subject;
+	}
+
+	protected String createAdoptionTextFromTemplate(AdoptionApplication application, PetfinderPetRecord pet)
+			throws MessagingException {
+		Map<String, Object> app = new HashMap<String, Object>();
+		app.put("application", application);
+		app.put("pet", pet);
+		String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+				"/com/systemsinmotion/petrescue/templates/adopt.vm", "UTF-8", app);
+		return text;
 	}
 
 	protected Properties createMailProperties() {
@@ -118,8 +147,8 @@ public class MailManager {
 		return props;
 	}
 
-	protected Session createSession(Properties props) {
-		return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+	protected Session createMailSession() {
+		return Session.getDefaultInstance(this.mailProperties, new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(MailManager.this.username, MailManager.this.password);
@@ -127,152 +156,40 @@ public class MailManager {
 		});
 	}
 
-	String getFrom() {
-		return this.from;
+	protected String[] determineAdoptionRecipients(AdoptionApplication application, AnimalType animalType)
+			throws MessagingException, AddressException {
+		String[] recipients = {};
+		String applicantEmail = application.getEmail();
+		if (StringUtils.hasText(applicantEmail) && applicantEmail.equals(adminRecipients[0])) {
+			recipients = new String[] { adminRecipients[0] };
+		} else if (animalType.equals(AnimalType.CAT)) {
+			recipients = this.shelterCatRecipients;
+		} else if (animalType.equals(AnimalType.DOG)) {
+			recipients = this.shelterDogRecipients;
+		}
+		return recipients;
 	}
 
-	String getHost() {
-		return this.host;
+	private String buildExceptionMessageText(Exception e, String path) throws MessagingException, AddressException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Error occured on ").append(this.shelterNameFull).append(" website when calling ").append(path);
+		sb.append(" at ").append(Calendar.getInstance().getTime());
+		sb.append("\n\n").append(ExceptionUtils.getStackTrace(e));
+		return sb.toString();
 	}
 
-	String getPassword() {
-		return this.password;
-	}
-
-	String[] getShelterRecipients() {
-		return this.shelterRecipients;
-	}
-
-	String[] getAdminRecipients() {
-		return this.adminRecipients;
-	}
-
-	String getSubject() {
-		return this.subject;
-	}
-
-	String getUsername() {
-		return this.username;
-	}
-
-	@PostConstruct
-	public void init() {
-	}
-
-	public void send(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
-		logger.debug("Received application to be emailed.");
-
-		Properties props = createMailProperties();
-		Session session = createSession(props);
-
-		MimeMessage message = new MimeMessage(session);
-		addSubject(message, application);
-		addRecipients(message, application, pet);
-		message.setFrom(new InternetAddress(this.from));
-
-		String type = "text/html";
+	private void setAdoptionMailContent(AdoptionApplication application, PetfinderPetRecord pet, MailMessage message)
+			throws MessagingException {
 		String text;
+		String type;
 		try {
-			text = getText(application, pet);
+			text = createAdoptionTextFromTemplate(application, pet);
+			type = "text/html";
 		} catch (VelocityException e) {
-			text = toJson(application);
+			text = application.toString();
 			type = "text/plain";
 		}
-
 		message.setContent(text, type);
-
-		Transport.send(message);
-	}
-
-	protected String getText(AdoptionApplication application, PetfinderPetRecord pet) throws MessagingException {
-		Map<String, Object> app = new HashMap<String, Object>();
-		app.put("application", application);
-		app.put("pet", pet);
-		String text = new String();
-		text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/com/systemsinmotion/petrescue/templates/adopt.vm", "UTF-8", app);
-
-		return text;
-	}
-
-	public void send_error(Exception e, String path) {
-		logger.debug("Error occured, sending message to the admin");
-
-		Properties props = createMailProperties();
-		Session session = createSession(props);
-
-		MimeMessage message = new MimeMessage(session);
-		try {
-			setErrorMessageFields(e, path, message);
-			Transport.send(message);
-		} catch (Exception e2) {
-			// There's nothing more to report at this level
-			logger.debug("Error! Email failed to send. This may be the result of incorrect connection information in shelter.properties");
-			logger.debug(e.toString());
-		}
-	}
-
-	private void setErrorMessageFields(Exception e, String path, MimeMessage message) throws MessagingException, AddressException {
-		Date time = Calendar.getInstance().getTime();
-		message.setSubject("[" + this.shelterabv + "] Error Report " + time);
-		for (String recipient : this.adminRecipients) {
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-		}
-		message.setFrom(new InternetAddress(this.from));
-
-		String text = "Error occured on " + this.sheltername + " website when calling " + path;
-		text += " at " + time;
-		text += "\n\n" + ExceptionUtils.getStackTrace(e);
-
-		message.setText(text);
-	}
-
-	void setFrom(String from) {
-		this.from = from;
-	}
-
-	void setHost(String host) {
-		this.host = host;
-	}
-
-	void setPassword(String password) {
-		this.password = password;
-	}
-
-	void setShelterRecipients(String[] recipients) {
-		this.shelterRecipients = recipients;
-	}
-
-	void setAdminRecipients(String[] recipients) {
-		this.adminRecipients = recipients;
-	}
-
-	void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String[] getShelterDogRecipients() {
-		return shelterDogRecipients;
-	}
-
-	public void setShelterDogRecipients(String[] shelterDogRecipients) {
-		this.shelterDogRecipients = shelterDogRecipients;
-	}
-
-	public String[] getShelterCatRecipients() {
-		return shelterCatRecipients;
-	}
-
-	public void setShelterCatRecipients(String[] shelterCatRecipients) {
-		this.shelterCatRecipients = shelterCatRecipients;
-	}
-
-	void setUsername(String username) {
-		this.username = username;
-	}
-
-	private String toJson(AdoptionApplication application) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		return gson.toJson(application);
 	}
 
 }

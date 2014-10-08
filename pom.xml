@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.systemsinmotion</groupId>
 		<artifactId>petrescue-parent</artifactId>
-		<version>0.8-SNAPSHOT</version>
+		<version>0.8.4</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -22,9 +22,15 @@
 		<dependency>
 			<groupId>org.petfinder</groupId>
 			<artifactId>petfinder-api</artifactId>
-			<version>0.9</version>
+			<version>1.0.1</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<!-- VELOCITY -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -33,4 +39,21 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.kuali.maven.plugins</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>${plugin.properties.version}</version>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -1,54 +1,46 @@
 package com.systemsinmotion.petrescue.web.bean;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.systemsinmotion.util.OutputUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+/**
+ * @author kskronek
+ */
 @XmlRootElement
-public class AdoptionApplication implements Serializable {
+public class AdoptionApplication {
 
-	private static final long serialVersionUID = 1118000426493607246L;
-
-	private String petName;
-	private String animalType;
-	private List<String> breeds;
-
-	private Boolean agreedToHomeVisit;
-	private Boolean awareOfUnknownIssues;
-	private Boolean familyAware;
-	private Boolean haveAppliedElsewhere;
-	private Boolean petsAllowed;
-	private Boolean petsAllowedProof;
-	private Boolean planToAttendObedienceClasses;
-	private Integer adultCount;
-	private Integer childCount;
-	private Integer currentPetCount;
-	private Integer hoursAlone;
-	private Integer householdMemberCount;
-	private Integer previousPetCount;
-	private List<Integer> childAges;
-	private List<CurrentPet> currentPets;
-	private List<Integer> householdMemberAges;
-	private List<PreviousPet> previousPets;
-	private List<Vet> vets;
-	private List<String> whyWantPet;
 	private String address1;
 	private String address2;
+	private Integer adultCount;
+	private Boolean agreedToHomeVisit;
+	private String animalType;
+	private Boolean awareOfUnknownIssues;
+	private List<String> breeds;
 	private String caretaker;
+	private List<Integer> childAges;
+	private Integer childCount;
 	private String city;
+	private Integer currentPetCount;
+	private List<CurrentPet> currentPets;
 	private String daytimeLocation;
 	private String destructiveBehavior;
 	private String email;
 	private String emailConfirm;
 	private String failedAdoptionReason;
+	private Boolean familyAware;
 	private String familyNotAwareReason;
 	private String fencedYard;
 	private String firstName;
 	private String giveUpSituation;
+	private Boolean haveAppliedElsewhere;
 	private String homePhone;
+	private Integer hoursAlone;
+	private List<Integer> householdMemberAges;
+	private Integer householdMemberCount;
 	private String howContainPet;
 	private String idealPet;
 	private String lastName;
@@ -57,10 +49,19 @@ public class AdoptionApplication implements Serializable {
 	private String monthsLived;
 	private String movingPlan;
 	private String petLivingLocation;
+	private String petName;
+	private Boolean petsAllowed;
+	private Boolean petsAllowedProof;
+	private Boolean planToAttendObedienceClasses;
 	private String planToDeclaw;
+	private Integer previousPetCount;
+	private List<PreviousPet> previousPets;
 	private String sleepLocation;
+	private String state;
 	private String timeSearching;
+	private List<Vet> vets;
 	private String whereApplied;
+	private List<String> whyWantPet;
 	private String willingToInstallFence;
 	private String yearsLived;
 	private String zipCode;
@@ -112,7 +113,7 @@ public class AdoptionApplication implements Serializable {
 	public Integer getCurrentPetCount() {
 		return this.currentPetCount;
 	}
-	
+
 	public List<CurrentPet> getCurrentPets() {
 		return this.currentPets;
 	}
@@ -241,6 +242,10 @@ public class AdoptionApplication implements Serializable {
 		return this.sleepLocation;
 	}
 
+	public String getState() {
+		return this.state;
+	}
+
 	public String getTimeSearching() {
 		return this.timeSearching;
 	}
@@ -316,7 +321,7 @@ public class AdoptionApplication implements Serializable {
 	public void setCurrentPetCount(Integer currentPetCount) {
 		this.currentPetCount = currentPetCount;
 	}
-	
+
 	public void setCurrentPets(List<CurrentPet> currentPets) {
 		this.currentPets = currentPets;
 	}
@@ -445,6 +450,10 @@ public class AdoptionApplication implements Serializable {
 		this.sleepLocation = sleepLocation;
 	}
 
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public void setTimeSearching(String timeSearching) {
 		this.timeSearching = timeSearching;
 	}
@@ -475,6 +484,7 @@ public class AdoptionApplication implements Serializable {
 
 	@Override
 	public String toString() {
-		return OutputUtils.toString(this);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.toJson(this);
 	}
 }

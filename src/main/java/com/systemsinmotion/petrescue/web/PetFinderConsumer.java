@@ -1,26 +1,8 @@
 package com.systemsinmotion.petrescue.web;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import com.systemsinmotion.util.Strings;
 import org.apache.log4j.Logger;
-import org.petfinder.entity.AnimalType;
-import org.petfinder.entity.Petfinder;
-import org.petfinder.entity.PetfinderAuthData;
-import org.petfinder.entity.PetfinderBreedList;
-import org.petfinder.entity.PetfinderPetRecord;
-import org.petfinder.entity.PetfinderPetRecordList;
-import org.petfinder.entity.PetfinderShelterRecord;
-import org.petfinder.entity.PetfinderShelterRecordList;
+import org.petfinder.entity.*;
 import org.petfinder.web.service.Method;
 import org.petfinder.web.service.QueryParam;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +12,9 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
-import com.systemsinmotion.util.Strings;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.util.*;
 
 /**
  * Class to consume PetFinder services. PetFinder API documentation can be found at
@@ -63,13 +47,13 @@ public class PetFinderConsumer {
 	@Value("${petfinder.shelter.id}")
 	public String shelterId;
 
-	private RestTemplate restTemplate = new RestTemplate();
-
 	@Value("${petfinder.shelter.api.key}")
 	private String shelterApiKey;
 
 	@Value("${petfinder.shelter.api.secret}")
 	private String shelterApiSecret;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
 	/**
 	 * @Deprecated Method authToken calls the PetFinder API to retrieve a new token. The token is contained within
@@ -95,7 +79,7 @@ public class PetFinderConsumer {
 	 * @return PetfinderBreedList
 	 */
 	public PetfinderBreedList breedList(String animal, String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.format, format);
 
@@ -105,7 +89,7 @@ public class PetFinderConsumer {
 
 	public PetfinderPetRecordList findPet(String animal, String breed, String size, Character sex, String location,
 			String age, Integer offset, Integer count, String output, String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
 		params.put(QueryParam.size, size);
@@ -126,7 +110,7 @@ public class PetFinderConsumer {
 
 	public PetfinderShelterRecordList findShelter(String location, String name, Integer offset, Integer count,
 			String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.location, location);
 		params.put(QueryParam.name, name);
 		params.put(QueryParam.offset, offset);
@@ -137,23 +121,9 @@ public class PetFinderConsumer {
 		return petfinder.getShelters();
 	}
 
-	// @PostConstruct
-	public void init() {
-		Configuration config;
-		try {
-			config = new PropertiesConfiguration("shelter.properties");
-			this.shelterId = config.getString("petfinder.shelter.id");
-			this.shelterApiKey = config.getString("petfinder.shelter.api.key");
-			this.shelterApiSecret = config.getString("petfinder.shelter.api.secret");
-		} catch (ConfigurationException e) {
-			logger.error("File shelter.properties must exist in the classpath.");
-			throw new RuntimeException(e);
-		}
-	}
-
 	public PetfinderPetRecord randomPet(String animal, String breed, String size, Character sex, String location,
 			String shelterId, String output, String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
 		params.put(QueryParam.size, size);
@@ -171,7 +141,7 @@ public class PetFinderConsumer {
 	}
 
 	public PetfinderPetRecord readPet(BigInteger animalId, String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.id, animalId);
 		params.put(QueryParam.format, format);
 
@@ -203,7 +173,7 @@ public class PetFinderConsumer {
 	}
 
 	public PetfinderShelterRecord readShelter(String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.id, this.shelterId);
 		params.put(QueryParam.format, format);
 
@@ -248,7 +218,7 @@ public class PetFinderConsumer {
 	public List<PetfinderPetRecord> shelterPets(Character status, Integer offset, Integer count, String output,
 			String format) {
 		List<PetfinderPetRecord> pets = Collections.emptyList();
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.id, this.shelterId);
 		params.put(QueryParam.status, status);
 		params.put(QueryParam.offset, offset);
@@ -268,7 +238,7 @@ public class PetFinderConsumer {
 
 	public PetfinderShelterRecordList shelterPetsByBreed(String animal, String breed, Integer offset, Integer count,
 			String format) {
-		Map<QueryParam, Object> params = new TreeMap<QueryParam, Object>();
+		Map<QueryParam, Object> params = new HashMap<>();
 		params.put(QueryParam.animal, animal);
 		params.put(QueryParam.breed, breed);
 		params.put(QueryParam.offset, offset);
@@ -407,8 +377,6 @@ public class PetFinderConsumer {
 	 *             the query string as "&sig={generatedMD5Signature}".
 	 * @param query
 	 *            String
-	 * @param params
-	 *            String[]
 	 * @return String the generated MD5 hash as a hex string
 	 */
 	@Deprecated

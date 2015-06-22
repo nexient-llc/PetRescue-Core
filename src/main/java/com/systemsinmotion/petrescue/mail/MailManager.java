@@ -42,6 +42,7 @@ public class MailManager {
 
 	@Value("#{'${admin.email.recipients}'.split(';')}")
 	private String[] adminRecipients;
+
 	@Value("${adoption.email.from}")
 	private String adoptionFrom;
 

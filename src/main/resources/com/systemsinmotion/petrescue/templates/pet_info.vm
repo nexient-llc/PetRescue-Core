@@ -1,6 +1,7 @@
 ## Pet Description
-<h3>Pet to Adopt</h3>
+
 <div class="module">
+	<h3>Pet to Adopt</h3>
 	<div class="innards">
 		#if ($pet.media)
 			#foreach($photo in $pet.media.photos.photo)
@@ -12,7 +13,7 @@
 			#end
 
 		<div class="pet-details">
-			<h2>${pet.name}</h2>
+			<h3>${pet.name}</h3>
 			<hr>
 			#foreach ($breed in $pet.breeds.breed)
 				#if ($breedList)

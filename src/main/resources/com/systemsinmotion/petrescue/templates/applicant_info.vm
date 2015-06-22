@@ -1,7 +1,7 @@
 ## Application Info
-<h3>Applicant Information</h3>
 
 <div class="module">
+	<h3>Applicant Information</h3>
 	<div class="innards">
 		$application.firstName&nbsp;$application.lastName<br/>
 		$application.address1<br/>

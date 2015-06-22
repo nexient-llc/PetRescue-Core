@@ -1,6 +1,7 @@
-<h3>Living Condition Information</h3>					
+
 <div class="module">
-<div class="innards">	
+	<h3>Living Condition Information</h3>
+	<div class="innards">	
 		#if($pet.animal  == 'CAT')
 			#if($application.planToDeclaw.equals("all") )
 					#set($planToDeclaw ='Yes all four')

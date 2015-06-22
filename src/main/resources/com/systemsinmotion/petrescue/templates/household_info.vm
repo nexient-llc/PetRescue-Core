@@ -1,5 +1,6 @@
-<h3>Household Information</h3>
+
 <div class="module">
+	<h3>Household Information</h3>
 	<div class="innards">
 	
 		#labelfield ("Living Situation", "livingSituation", $application.livingSituation)

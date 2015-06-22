@@ -1,5 +1,6 @@
-<h3>Vet History</h3>
+
 <div class="module">
+	<h3>Vet History</h3>
 	<div class="innards">
 		<label class="autoWidth">Names and phone numbers of
 			veterinarians that they have used previously 

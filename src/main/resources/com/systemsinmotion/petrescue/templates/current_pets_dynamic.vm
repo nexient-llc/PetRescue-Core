@@ -9,8 +9,8 @@
 	#labelfield("This pet is on heartworm preventative", "", $currentpet.isHeartwormed)
 #end
 
-<h3>Current Pets</h3>
 <div class="module">
+	<h3>Current Pets</h3>
 	<div class="innards">
 
 		#labelfield("Pets currently owned", "currentPetCount", $application.currentPetCount)

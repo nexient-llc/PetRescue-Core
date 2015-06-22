@@ -1,4 +1,4 @@
-<h3>Reasons for Adopting</h3>
+
 #foreach ($reason in $application.whyWantPet)
 	#if ($reasonList)
    		#set ($reasonList = $reasonList + ', ' + $reason)
@@ -8,6 +8,7 @@
 #end
 
 <div class="module">
+	<h3>Reasons for Adopting</h3>
 	<div class="innards">
 		#labelfield("Reasons for adopting ${pet.name} as a pet:", "reasonsForAdopting", $reasonList)
 	</div>
